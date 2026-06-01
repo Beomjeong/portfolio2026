@@ -161,6 +161,25 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
 }
 
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.blob-1 {
+  width: 560px;
+  height: 380px;
+  background: var(--accent);
+}
+.blob-2 {
+  width: 480px;
+  height: 340px;
+  background: #4499ff;
+}
+
 .hero-canvas {
   position: absolute;
   inset: 0;

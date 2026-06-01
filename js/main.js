@@ -23,6 +23,27 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
+/* ── Hero blobs ── */
+const blob1 = document.querySelector('.blob-1');
+const blob2 = document.querySelector('.blob-2');
+let b1 = { x: canvas.width * 0.35, y: canvas.height * 0.42 };
+let b2 = { x: canvas.width * 0.55, y: canvas.height * 0.56 };
+
+function animateBlobs() {
+  const tx = mouse.x > 0 ? mouse.x : b1.x;
+  const ty = mouse.y > 0 ? mouse.y : b1.y;
+  b1.x += (tx       - b1.x) * 0.07;
+  b1.y += (ty       - b1.y) * 0.07;
+  b2.x += (tx + 170 - b2.x) * 0.04;
+  b2.y += (ty + 100 - b2.y) * 0.04;
+  blob1.style.left = b1.x + 'px';
+  blob1.style.top  = b1.y + 'px';
+  blob2.style.left = b2.x + 'px';
+  blob2.style.top  = b2.y + 'px';
+  requestAnimationFrame(animateBlobs);
+}
+animateBlobs();
+
 const heroSection = document.querySelector('.hero');
 heroSection.addEventListener('mousemove', e => {
   const r  = canvas.getBoundingClientRect();
