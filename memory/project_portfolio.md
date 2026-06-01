@@ -27,28 +27,55 @@ metadata:
 - https://unshift.jp/ — 마우스오버(호버) 이펙트
 - https://katoshun.com/ — 이벤트페이지 방식의 작업물 노출
 - https://u-d-l.jp/works/ — 깔끔한 분위기
+- https://benjaminjochims.de/ — 섹션 슬라이드업 효과, 마우스 반응 blob 배경
 
 ## 피그마 스케치
 - fileKey: bFVY1Mks4IkZDQhzAt9dt5 (파일명: porfolio-beta)
 - node 3:3 — About 섹션 스케치 (프로필, 스킬, 툴바, 경력)
 - node 5:24 — 컴포넌트 탐색 (탭, 로고, 버튼 상태)
 
-## 구현 현황 (2026-05-30 기준)
+## GitHub 저장소
+- https://github.com/Beomjeong/portfolio2026
+- `main` 브랜치, 작업 후 커밋/푸시로 세이브포인트 관리
+- `memory/` 폴더도 저장소에 포함
+
+## 구현 현황 (2026-06-01 기준)
 
 ### 완료된 것
-- `/index.html` — 전체 페이지 구조 완성
+- `/index.html` — 전체 페이지 구조
   - Header (스크롤 시 blur 전환, nav 호버 언더라인)
-  - Hero (대형 타입 + GSAP 등장 애니메이션)
+  - Hero (리뉴얼 완료 — 아래 상세)
   - Works (탭 필터 All/Web/Video/3D/Printing + 8개 플레이스홀더 카드 + 호버 오버레이)
   - About (프로필 사진 자리, 자기소개 텍스트, 스킬 목록, 툴바, 경력 4개)
-  - Contact (이메일, 인스타)
+  - Contact (이메일, 인스타 + 배경 효과)
 - `/css/style.css` — 전체 스타일 (반응형 포함)
-- `/js/main.js` — GSAP 애니메이션 (Hero 등장, 스크롤 리빌, 탭 필터, 툴바 애니메이션)
+- `/js/main.js` — 애니메이션 및 인터랙션
+
+### Hero 섹션 상세 (리뉴얼)
+- 대형 KIM BEOM JEONG 타이포 제거
+- 구조: "안녕하세요! 저는" (greeting) + "[역할]예요" (role)
+- role 텍스트 3초마다 스크램블 전환: 콘텐츠 디자이너 → 콘텐츠 기획자 → 바이브 코더
+  - "예요"는 고정, 앞부분만 스크램블 (특수기호 82% + 한글 18%)
+- `<canvas>` 그리드 배경: 마우스 근처 격자 볼록 변형 효과
+- 마우스 따라오는 blob 2개: 민트그린(`#00E5B8`) + 파랑(`#4499ff`), lerp 속도 차이로 겹침
+- `position: fixed` — 스크롤 시 완전 고정
+
+### 스크롤 레이어링 구조
+- hero: `position: fixed; z-index: 1` — viewport에 고정
+- works: `margin-top: 100dvh; z-index: 2; border-radius: 20px 20px 0 0` — hero 위로 슬라이드업
+- about: `z-index: 3; border-radius: 20px 20px 0 0` — works 위로 슬라이드업
+- contact: `z-index: 4` — hero와 동일한 grid+blob 배경 효과 적용
+
+### JS 구조
+- `initBgEffect(section)` — canvas 그리드 + blob 애니메이션 재사용 함수
+  - hero, contact 양쪽에 독립적으로 적용
+- `scrambleTo(target)` — 텍스트 스크램블 함수
+- GSAP ScrollTrigger — 섹션 리빌, 툴바 애니메이션, Works 카드 reveal
 
 ### 남은 것
 - 프로필 사진 교체 (`.photo-placeholder` → `<img>`)
 - 실제 작업물 이미지로 플레이스홀더 교체
-- 작업물 상세 페이지 (`/works/*.html`) 제작
+- 작업물 상세 페이지 (`/works/*.html`) 제작 — 8개 (web×3, video×2, 3d×1, print×2)
 - GitHub Pages 배포 설정
 
 ## 파일 구조
@@ -57,7 +84,8 @@ portfolio2026/
 ├── index.html
 ├── css/style.css
 ├── js/main.js
-└── works/          ← 상세 페이지 예정
+├── works/          ← 상세 페이지 예정
+└── memory/         ← 프로젝트 메모 (git 포함)
 ```
 
 **Why:** 스타트업 중심 지원이므로 트렌디하고 인터랙티브한 느낌이 중요
