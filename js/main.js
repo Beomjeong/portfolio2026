@@ -7,109 +7,108 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ═══════════════════════════════════════
-   HERO CANVAS GRID (mouse bulge)
+   BG EFFECT (grid + blobs) — reusable
 ═══════════════════════════════════════ */
-const canvas = document.getElementById('heroCanvas');
-const ctx    = canvas.getContext('2d');
-const mouse  = { x: -9999, y: -9999 };
-const CELL   = 55;
-const RADIUS = 210;
+const CELL     = 55;
+const RADIUS   = 210;
 const STRENGTH = 52;
 
-function resizeCanvas() {
-  canvas.width  = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+function initBgEffect(section) {
+  const canvas = section.querySelector('canvas');
+  const b1el   = section.querySelector('.blob-1');
+  const b2el   = section.querySelector('.blob-2');
+  const ctx    = canvas.getContext('2d');
+  const mouse  = { x: -9999, y: -9999 };
 
-/* ── Hero blobs ── */
-const blob1 = document.querySelector('.blob-1');
-const blob2 = document.querySelector('.blob-2');
-let b1 = { x: canvas.width * 0.35, y: canvas.height * 0.42 };
-let b2 = { x: canvas.width * 0.55, y: canvas.height * 0.56 };
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-function animateBlobs() {
-  const tx = mouse.x > 0 ? mouse.x : b1.x;
-  const ty = mouse.y > 0 ? mouse.y : b1.y;
-  b1.x += (tx       - b1.x) * 0.07;
-  b1.y += (ty       - b1.y) * 0.07;
-  b2.x += (tx + 170 - b2.x) * 0.04;
-  b2.y += (ty + 100 - b2.y) * 0.04;
-  blob1.style.left = b1.x + 'px';
-  blob1.style.top  = b1.y + 'px';
-  blob2.style.left = b2.x + 'px';
-  blob2.style.top  = b2.y + 'px';
-  requestAnimationFrame(animateBlobs);
-}
-animateBlobs();
+  section.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  }, { passive: true });
+  section.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
 
-const heroSection = document.querySelector('.hero');
-heroSection.addEventListener('mousemove', e => {
-  const r  = canvas.getBoundingClientRect();
-  mouse.x  = e.clientX - r.left;
-  mouse.y  = e.clientY - r.top;
-}, { passive: true });
-heroSection.addEventListener('mouseleave', () => {
-  mouse.x = -9999;
-  mouse.y = -9999;
-});
+  let b1 = { x: canvas.width * 0.35, y: canvas.height * 0.42 };
+  let b2 = { x: canvas.width * 0.55, y: canvas.height * 0.56 };
 
-function drawGrid() {
-  const W    = canvas.width;
-  const H    = canvas.height;
-  const cols = Math.ceil(W / CELL) + 1;
-  const rows = Math.ceil(H / CELL) + 1;
+  function draw() {
+    const W    = canvas.width;
+    const H    = canvas.height;
+    const cols = Math.ceil(W / CELL) + 1;
+    const rows = Math.ceil(H / CELL) + 1;
 
-  ctx.clearRect(0, 0, W, H);
-  ctx.strokeStyle = 'rgba(0,0,0,0.06)';
-  ctx.lineWidth   = 0.75;
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+    ctx.lineWidth   = 0.75;
 
-  /* build displaced grid points */
-  const pts = [];
-  for (let r = 0; r < rows; r++) {
-    const row = [];
+    const pts = [];
+    for (let r = 0; r < rows; r++) {
+      const row = [];
+      for (let c = 0; c < cols; c++) {
+        const bx   = c * CELL;
+        const by   = r * CELL;
+        const dx   = bx - mouse.x;
+        const dy   = by - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const f    = Math.max(0, 1 - dist / RADIUS);
+        const push = f * f * STRENGTH;
+        const ang  = Math.atan2(dy, dx);
+        row.push({ x: bx + Math.cos(ang) * push, y: by + Math.sin(ang) * push });
+      }
+      pts.push(row);
+    }
+
+    ctx.beginPath();
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols - 1; c++) {
+        ctx.moveTo(pts[r][c].x,     pts[r][c].y);
+        ctx.lineTo(pts[r][c + 1].x, pts[r][c + 1].y);
+      }
+    }
     for (let c = 0; c < cols; c++) {
-      const bx   = c * CELL;
-      const by   = r * CELL;
-      const dx   = bx - mouse.x;
-      const dy   = by - mouse.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const f    = Math.max(0, 1 - dist / RADIUS);
-      const push = f * f * STRENGTH;
-      const ang  = Math.atan2(dy, dx);
-      row.push({ x: bx + Math.cos(ang) * push, y: by + Math.sin(ang) * push });
+      for (let r = 0; r < rows - 1; r++) {
+        ctx.moveTo(pts[r][c].x,     pts[r][c].y);
+        ctx.lineTo(pts[r + 1][c].x, pts[r + 1][c].y);
+      }
     }
-    pts.push(row);
-  }
+    ctx.stroke();
 
-  ctx.beginPath();
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols - 1; c++) {
-      ctx.moveTo(pts[r][c].x,     pts[r][c].y);
-      ctx.lineTo(pts[r][c + 1].x, pts[r][c + 1].y);
-    }
-  }
-  for (let c = 0; c < cols; c++) {
-    for (let r = 0; r < rows - 1; r++) {
-      ctx.moveTo(pts[r][c].x,     pts[r][c].y);
-      ctx.lineTo(pts[r + 1][c].x, pts[r + 1][c].y);
-    }
-  }
-  ctx.stroke();
+    const tx = mouse.x > 0 ? mouse.x : b1.x;
+    const ty = mouse.y > 0 ? mouse.y : b1.y;
+    b1.x += (tx       - b1.x) * 0.07;
+    b1.y += (ty       - b1.y) * 0.07;
+    b2.x += (tx + 170 - b2.x) * 0.04;
+    b2.y += (ty + 100 - b2.y) * 0.04;
+    b1el.style.left = b1.x + 'px';
+    b1el.style.top  = b1.y + 'px';
+    b2el.style.left = b2.x + 'px';
+    b2el.style.top  = b2.y + 'px';
 
-  requestAnimationFrame(drawGrid);
+    requestAnimationFrame(draw);
+  }
+  draw();
 }
-drawGrid();
+
+initBgEffect(document.querySelector('.hero'));
+initBgEffect(document.querySelector('.contact'));
 
 /* ═══════════════════════════════════════
    ROLE TEXT SCRAMBLE + CYCLE
 ═══════════════════════════════════════ */
-const ROLES    = ['콘텐츠 디자이너', '콘텐츠 기획자', '바이브 코더'];
-const SPECIAL  = '~!@#$%^&*()_+=-';
-const KOREAN   = '가나다라마바사아자차카타파하';
-let roleIndex  = 0;
-const roleEl   = document.getElementById('roleText');
+const ROLES   = ['콘텐츠 디자이너', '콘텐츠 기획자', '바이브 코더'];
+const SPECIAL = '~!@#$%^&*()_+=-';
+const KOREAN  = '가나다라마바사아자차카타파하';
+let roleIndex = 0;
+const roleEl  = document.getElementById('roleText');
 
 function randChar() {
   return Math.random() < 0.82
@@ -121,7 +120,6 @@ function scrambleTo(target) {
   const DURATION = 750;
   const len      = target.length;
   const t0       = performance.now();
-
   function frame(now) {
     const progress = Math.min((now - t0) / DURATION, 1);
     let result = '';
