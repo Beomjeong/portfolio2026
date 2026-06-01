@@ -176,6 +176,7 @@ img { display: block; max-width: 100%; }
   width: 100%;
   position: relative;
   z-index: 1;
+  text-align: left;
 }
 
 .hero-greeting {
@@ -183,7 +184,8 @@ img { display: block; max-width: 100%; }
   font-size: clamp(1.4rem, 3.5vw, 3rem);
   font-weight: 400;
   color: var(--text);
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.4rem;
+  margin-left: -0.04em;
   opacity: 0;
   transform: translateY(14px);
 }
@@ -194,7 +196,8 @@ img { display: block; max-width: 100%; }
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.1rem;
+  margin-left: -0.04em;
   opacity: 0;
   transform: translateY(20px);
 }
@@ -207,6 +210,7 @@ img { display: block; max-width: 100%; }
   line-height: 1.9;
   opacity: 0;
   transform: translateY(12px);
+  margin-top: 1.0rem;
 }
 
 .hero-scroll {
