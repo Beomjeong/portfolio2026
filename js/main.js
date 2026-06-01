@@ -1,26 +1,139 @@
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Header: transparent → white on scroll ── */
+/* ── Header: transparent → frosted on scroll ── */
 const header = document.getElementById('header');
 window.addEventListener('scroll', () => {
   header.classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
 
-/* ── Hero entrance animation ── */
-const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+/* ═══════════════════════════════════════
+   HERO CANVAS GRID (mouse bulge)
+═══════════════════════════════════════ */
+const canvas = document.getElementById('heroCanvas');
+const ctx    = canvas.getContext('2d');
+const mouse  = { x: -9999, y: -9999 };
+const CELL   = 55;
+const RADIUS = 210;
+const STRENGTH = 52;
 
-heroTl
-  .to('.hero-label', { opacity: 1, y: 0, duration: 0.8 }, 0.2)
-  .to('.name-line', {
-    opacity: 1,
-    y: '0%',
-    duration: 0.9,
-    stagger: 0.12,
-  }, 0.5)
-  .to('.hero-tagline', { opacity: 1, y: 0, duration: 0.8 }, 1.1)
-  .to('.hero-scroll',  { opacity: 1, duration: 0.6 }, 1.5);
+function resizeCanvas() {
+  canvas.width  = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
-/* ── Scroll-triggered section reveals ── */
+const heroSection = document.querySelector('.hero');
+heroSection.addEventListener('mousemove', e => {
+  const r  = canvas.getBoundingClientRect();
+  mouse.x  = e.clientX - r.left;
+  mouse.y  = e.clientY - r.top;
+}, { passive: true });
+heroSection.addEventListener('mouseleave', () => {
+  mouse.x = -9999;
+  mouse.y = -9999;
+});
+
+function drawGrid() {
+  const W    = canvas.width;
+  const H    = canvas.height;
+  const cols = Math.ceil(W / CELL) + 1;
+  const rows = Math.ceil(H / CELL) + 1;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+  ctx.lineWidth   = 0.75;
+
+  /* build displaced grid points */
+  const pts = [];
+  for (let r = 0; r < rows; r++) {
+    const row = [];
+    for (let c = 0; c < cols; c++) {
+      const bx   = c * CELL;
+      const by   = r * CELL;
+      const dx   = bx - mouse.x;
+      const dy   = by - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const f    = Math.max(0, 1 - dist / RADIUS);
+      const push = f * f * STRENGTH;
+      const ang  = Math.atan2(dy, dx);
+      row.push({ x: bx + Math.cos(ang) * push, y: by + Math.sin(ang) * push });
+    }
+    pts.push(row);
+  }
+
+  ctx.beginPath();
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols - 1; c++) {
+      ctx.moveTo(pts[r][c].x,     pts[r][c].y);
+      ctx.lineTo(pts[r][c + 1].x, pts[r][c + 1].y);
+    }
+  }
+  for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < rows - 1; r++) {
+      ctx.moveTo(pts[r][c].x,     pts[r][c].y);
+      ctx.lineTo(pts[r + 1][c].x, pts[r + 1][c].y);
+    }
+  }
+  ctx.stroke();
+
+  requestAnimationFrame(drawGrid);
+}
+drawGrid();
+
+/* ═══════════════════════════════════════
+   ROLE TEXT SCRAMBLE + CYCLE
+═══════════════════════════════════════ */
+const ROLES    = ['콘텐츠 디자이너', '콘텐츠 기획자', '바이브 코더'];
+const SPECIAL  = '~!@#$%^&*()_+=-';
+const KOREAN   = '가나다라마바사아자차카타파하';
+let roleIndex  = 0;
+const roleEl   = document.getElementById('roleText');
+
+function randChar() {
+  return Math.random() < 0.82
+    ? SPECIAL[Math.floor(Math.random() * SPECIAL.length)]
+    : KOREAN[Math.floor(Math.random() * KOREAN.length)];
+}
+
+function scrambleTo(target) {
+  const DURATION = 750;
+  const len      = target.length;
+  const t0       = performance.now();
+
+  function frame(now) {
+    const progress = Math.min((now - t0) / DURATION, 1);
+    let result = '';
+    for (let i = 0; i < len; i++) {
+      const ch = target[i];
+      if (ch === ' ') { result += ch; continue; }
+      const reveal = Math.max(0, (progress - (i / len) * 0.45) / 0.55);
+      result += reveal >= 1 ? ch : randChar();
+    }
+    roleEl.textContent = result;
+    if (progress < 1) requestAnimationFrame(frame);
+    else roleEl.textContent = target;
+  }
+  requestAnimationFrame(frame);
+}
+
+setInterval(() => {
+  roleIndex = (roleIndex + 1) % ROLES.length;
+  scrambleTo(ROLES[roleIndex]);
+}, 3000);
+
+/* ═══════════════════════════════════════
+   HERO ENTRANCE ANIMATION
+═══════════════════════════════════════ */
+gsap.timeline({ defaults: { ease: 'power3.out' } })
+  .to('.hero-greeting', { opacity: 1, y: 0, duration: 0.7 }, 0.3)
+  .to('.hero-role',     { opacity: 1, y: 0, duration: 0.8 }, 0.55)
+  .to('.hero-tagline',  { opacity: 1, y: 0, duration: 0.7 }, 1.0)
+  .to('.hero-scroll',   { opacity: 1, duration: 0.6 },       1.4);
+
+/* ═══════════════════════════════════════
+   SCROLL REVEALS
+═══════════════════════════════════════ */
 gsap.utils.toArray('.section-head, .career-item').forEach(el => {
   gsap.fromTo(el,
     { opacity: 0, y: 30 },
@@ -31,16 +144,26 @@ gsap.utils.toArray('.section-head, .career-item').forEach(el => {
   );
 });
 
-/* ── Works cards: staggered reveal ── */
+gsap.utils.toArray('.about-headline, .about-desc, .skills-wrap').forEach((el, i) => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 25 },
+    {
+      opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    }
+  );
+});
+
+/* ═══════════════════════════════════════
+   WORKS — TAB FILTER + CARD REVEAL
+═══════════════════════════════════════ */
 function revealVisibleCards() {
-  const visible = document.querySelectorAll('.work-card.visible');
-  gsap.fromTo(visible,
+  gsap.fromTo(document.querySelectorAll('.work-card.visible'),
     { opacity: 0, y: 20 },
     { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }
   );
 }
 
-/* ── Tab filter ── */
 const tabs  = document.querySelectorAll('.tab');
 const cards = document.querySelectorAll('.work-card');
 
@@ -48,20 +171,16 @@ tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     tabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-
     const cat = tab.dataset.cat;
-
     cards.forEach(card => {
       const match = cat === 'all' || card.dataset.cat === cat;
       card.classList.toggle('hidden', !match);
       card.classList.toggle('visible', match);
     });
-
     revealVisibleCards();
   });
 });
 
-/* Initial reveal for all cards (all tab active by default) */
 ScrollTrigger.create({
   trigger: '#worksGrid',
   start: 'top 85%',
@@ -72,26 +191,14 @@ ScrollTrigger.create({
   }
 });
 
-/* ── Tool bars: animate width on scroll ── */
+/* ─── Tool bars ─── */
 ScrollTrigger.create({
   trigger: '.tools-list',
   start: 'top 85%',
   once: true,
   onEnter: () => {
     document.querySelectorAll('.tool-fill').forEach(bar => {
-      const level = bar.dataset.level;
-      bar.style.width = level + '%';
+      bar.style.width = bar.dataset.level + '%';
     });
   }
-});
-
-/* ── About section elements ── */
-gsap.utils.toArray('.about-headline, .about-desc, .skills-wrap').forEach((el, i) => {
-  gsap.fromTo(el,
-    { opacity: 0, y: 25 },
-    {
-      opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
-    }
-  );
 });
