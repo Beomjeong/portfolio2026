@@ -221,8 +221,8 @@ ScrollTrigger.create({
 ScrollTrigger.create({
   trigger: '#contact',
   start: 'top bottom',
-  onEnter:     () => gsap.to('.hero', { autoAlpha: 0, duration: 0.25 }),
-  onLeaveBack: () => gsap.to('.hero', { autoAlpha: 1, duration: 0.25 }),
+  onEnter:     () => gsap.set('.hero', { autoAlpha: 0 }),
+  onLeaveBack: () => gsap.to('.hero', { autoAlpha: 1, duration: 0.3 }),
 });
 
 /* ─── Tool bars ─── */
