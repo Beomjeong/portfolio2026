@@ -1,14 +1,46 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KIM BEOM JEONG — Content Director & Designer</title>
+  <!-- ▼▼ 페이지 정보 (여기만 수정) ▼▼ -->
+  <meta property="og:title" content="Content Designer KIM BEOM JEONG - Portfolio">
+  <meta property="og:description" content="기획부터 디자인까지 필요한 곳에 가장 먼저 닿는 손길. 콘텐츠 디자이너 김범정입니다.">
+  <!-- <meta property="og:url" content=""> -->
+  <meta property="og:image" content="assets/Thumbnail_800x400.jpg">
+  <meta name="twitter:image" content="assets/Thumbnail_1200x630.jpg">
+  <!-- og:image과 twitter:image 주소는 절대경로로 이미지 시안 확정 후 배포 전 반드시 교체해주세요. (상대경로 입력 시 공유 시 이미지가 깨지는 현상 발생) -->
+  <!-- ▲▲ 페이지 정보 ▲▲ -->
+
+  <!-- title / description / twitter 태그는 아래 스크립트가 og: 값을 읽어서 자동으로 채움 -->
+  <script>
+    (function () {
+      var g = function (p) { return document.querySelector('meta[property="og:' + p + '"]').content; };
+      document.title = g('title');
+      [['name', 'description', g('description')],
+      ['name', 'twitter:card', 'summary_large_image'],
+      ['name', 'twitter:title', g('title')],
+      ['name', 'twitter:description', g('description')],
+      ['name', 'twitter:url', g('url')]
+      ].forEach(function (m) {
+        var el = document.createElement('meta');
+        el.setAttribute(m[0], m[1]); el.content = m[2];
+        document.head.appendChild(el);
+      });
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+    <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
 </head>
+
 <body>
 
   <!-- ───────────── HEADER ───────────── -->
@@ -34,8 +66,8 @@
     <div class="hero-inner">
       <p class="hero-greeting">안녕하세요! 저는</p>
       <h1 class="hero-role"><span id="roleText">콘텐츠 디자이너</span></h1>
-      <h1 class="hero-role">아무개입니다.</h1>
-      <p class="hero-tagline">예쁜 디자인보다<br>목표에 맞는 결과물에 집중합니다.</p>
+      <h1 class="hero-role">발닦개입니다.</h1>
+      <p class="hero-tagline">단순히 예쁜 디자인보다<br>목표에 맞는 결과물에 집중합니다.</p>
     </div>
     <div class="hero-scroll">
       <span class="scroll-text">Scroll</span>
@@ -69,7 +101,8 @@
               <div class="card-overlay">
                 <p class="overlay-cat">Web Promotion</p>
                 <ul class="overlay-tools">
-                  <li>Photoshop</li><li>Figma</li>
+                  <li class="tool-ps" title="Photoshop"></li>
+                  <li class="tool-figma" title="Figma"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 100%</p>
               </div>
@@ -88,7 +121,8 @@
               <div class="card-overlay">
                 <p class="overlay-cat">Web Promotion</p>
                 <ul class="overlay-tools">
-                  <li>Photoshop</li><li>Illustrator</li>
+                  <li class="tool-ps" title="Photoshop"></li>
+                  <li class="tool-ai" title="Illustrator"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 100%</p>
               </div>
@@ -107,7 +141,7 @@
               <div class="card-overlay">
                 <p class="overlay-cat">Web Promotion</p>
                 <ul class="overlay-tools">
-                  <li>Photoshop</li>
+                  <li class="tool-ps" title="Photoshop"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 80%</p>
               </div>
@@ -127,7 +161,8 @@
               <div class="card-overlay">
                 <p class="overlay-cat">Video</p>
                 <ul class="overlay-tools">
-                  <li>Premiere Pro</li><li>After Effects</li>
+                  <li class="tool-pr" title="Premiere Pro"></li>
+                  <li class="tool-ae" title="After Effects"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 100%</p>
               </div>
@@ -146,7 +181,8 @@
               <div class="card-overlay">
                 <p class="overlay-cat">Video</p>
                 <ul class="overlay-tools">
-                  <li>Premiere Pro</li><li>Lightroom</li>
+                  <li class="tool-pr" title="Premiere Pro"></li>
+                  <li class="tool-lr" title="Lightroom"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 100%</p>
               </div>
@@ -166,7 +202,7 @@
               <div class="card-overlay">
                 <p class="overlay-cat">3D</p>
                 <ul class="overlay-tools">
-                  <li>Blender</li>
+                  <li class="tool-blender" title="Blender"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 100%</p>
               </div>
@@ -186,7 +222,8 @@
               <div class="card-overlay">
                 <p class="overlay-cat">Printing</p>
                 <ul class="overlay-tools">
-                  <li>Illustrator</li><li>Photoshop</li>
+                  <li class="tool-ai" title="Illustrator"></li>
+                  <li class="tool-ps" title="Photoshop"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 100%</p>
               </div>
@@ -205,7 +242,7 @@
               <div class="card-overlay">
                 <p class="overlay-cat">Printing</p>
                 <ul class="overlay-tools">
-                  <li>Illustrator</li>
+                  <li class="tool-ai" title="Illustrator"></li>
                 </ul>
                 <p class="overlay-contribution">기여도 100%</p>
               </div>
@@ -275,31 +312,45 @@
               <ul class="tools-list">
                 <li>
                   <span class="tool-name">Adobe Photoshop</span>
-                  <div class="tool-bar"><div class="tool-fill" data-level="100"></div></div>
+                  <div class="tool-bar">
+                    <div class="tool-fill" data-level="100"></div>
+                  </div>
                 </li>
                 <li>
                   <span class="tool-name">Adobe Illustrator</span>
-                  <div class="tool-bar"><div class="tool-fill" data-level="100"></div></div>
+                  <div class="tool-bar">
+                    <div class="tool-fill" data-level="100"></div>
+                  </div>
                 </li>
                 <li>
                   <span class="tool-name">Adobe Lightroom</span>
-                  <div class="tool-bar"><div class="tool-fill" data-level="100"></div></div>
+                  <div class="tool-bar">
+                    <div class="tool-fill" data-level="100"></div>
+                  </div>
                 </li>
                 <li>
                   <span class="tool-name">Adobe Premiere Pro</span>
-                  <div class="tool-bar"><div class="tool-fill" data-level="80"></div></div>
+                  <div class="tool-bar">
+                    <div class="tool-fill" data-level="80"></div>
+                  </div>
                 </li>
                 <li>
                   <span class="tool-name">Adobe After Effects</span>
-                  <div class="tool-bar"><div class="tool-fill" data-level="60"></div></div>
+                  <div class="tool-bar">
+                    <div class="tool-fill" data-level="60"></div>
+                  </div>
                 </li>
                 <li>
                   <span class="tool-name">Figma</span>
-                  <div class="tool-bar"><div class="tool-fill" data-level="60"></div></div>
+                  <div class="tool-bar">
+                    <div class="tool-fill" data-level="60"></div>
+                  </div>
                 </li>
                 <li>
                   <span class="tool-name">Blender</span>
-                  <div class="tool-bar"><div class="tool-fill" data-level="60"></div></div>
+                  <div class="tool-bar">
+                    <div class="tool-fill" data-level="60"></div>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -369,4 +420,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>

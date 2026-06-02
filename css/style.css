@@ -387,17 +387,25 @@ img { display: block; max-width: 100%; }
 .overlay-tools {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
 .overlay-tools li {
-  font-family: var(--font-en);
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.7);
-  background: rgba(255,255,255,0.1);
-  padding: 0.15rem 0.6rem;
-  border-radius: 2px;
+  width: 28px;
+  height: 28px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
+/* ── Tool icon map ── */
+.tool-ps      { background-image: url('../assets/ic_photoshop.svg'); }
+.tool-ai      { background-image: url('../assets/ic_illustrator.svg'); }
+.tool-lr      { background-image: url('../assets/ic_lightroom.svg'); }
+.tool-ae      { background-image: url('../assets/ic_after_effects.svg'); }
+.tool-pr      { background-image: url('../assets/ic_premiere_pro.svg'); }
+.tool-blender { background-image: url('../assets/ic_blender.svg'); }
+.tool-figma   { background-image: url('../assets/ic_figma.svg'); }
 .overlay-contribution {
   font-family: var(--font-ko);
   font-size: 0.72rem;
@@ -430,7 +438,7 @@ img { display: block; max-width: 100%; }
   position: relative;
   z-index: 3;
   border-radius: 20px 20px 0 0;
-  box-shadow: 0 0 40px rgba(0,0,0,0.06);
+  /* box-shadow: 0 10px 40px rgba(0,0,0,0.06); */
 }
 
 .about-grid {
