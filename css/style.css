@@ -286,7 +286,7 @@ img { display: block; max-width: 100%; }
   z-index: 2;
   background: var(--bg);
   border-radius: 20px 20px 0 0;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.06);
+  box-shadow: 0 0 40px rgba(0,0,0,0.06);
 }
 
 /* Tabs */
@@ -430,7 +430,7 @@ img { display: block; max-width: 100%; }
   position: relative;
   z-index: 3;
   border-radius: 20px 20px 0 0;
-  /* box-shadow: 0 -8px 40px rgba(0,0,0,0.06); */
+  box-shadow: 0 0 40px rgba(0,0,0,0.06);
 }
 
 .about-grid {
@@ -576,13 +576,21 @@ img { display: block; max-width: 100%; }
 /* ═══════════════════════════════════════
    CONTACT
 ═══════════════════════════════════════ */
+#contactBg {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .contact {
   padding-block: clamp(5rem, 10vw, 8rem);
   text-align: center;
-  background: var(--bg);
+  background: transparent;
   position: relative;
   z-index: 4;
-  overflow: hidden;
 }
 .contact-cta {
   font-family: var(--font-en);

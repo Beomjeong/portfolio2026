@@ -13,7 +13,7 @@ const CELL     = 55;
 const RADIUS   = 210;
 const STRENGTH = 52;
 
-function initBgEffect(section) {
+function initBgEffect(section, opts = {}) {
   const canvas = section.querySelector('canvas');
   const b1el   = section.querySelector('.blob-1');
   const b2el   = section.querySelector('.blob-2');
@@ -27,15 +27,22 @@ function initBgEffect(section) {
   resize();
   window.addEventListener('resize', resize);
 
-  section.addEventListener('mousemove', e => {
-    const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-  }, { passive: true });
-  section.addEventListener('mouseleave', () => {
-    mouse.x = -9999;
-    mouse.y = -9999;
-  });
+  if (opts.useWindowMouse) {
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    }, { passive: true });
+  } else {
+    section.addEventListener('mousemove', e => {
+      const r = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - r.left;
+      mouse.y = e.clientY - r.top;
+    }, { passive: true });
+    section.addEventListener('mouseleave', () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+  }
 
   let b1 = { x: canvas.width * 0.35, y: canvas.height * 0.42 };
   let b2 = { x: canvas.width * 0.55, y: canvas.height * 0.56 };
@@ -99,7 +106,7 @@ function initBgEffect(section) {
 }
 
 initBgEffect(document.querySelector('.hero'));
-initBgEffect(document.querySelector('.contact'));
+initBgEffect(document.getElementById('contactBg'), { useWindowMouse: true });
 
 /* ═══════════════════════════════════════
    ROLE TEXT SCRAMBLE + CYCLE
@@ -208,6 +215,14 @@ ScrollTrigger.create({
     cards.forEach(c => c.classList.add('visible'));
     revealVisibleCards();
   }
+});
+
+/* Hide hero when contact is in view */
+ScrollTrigger.create({
+  trigger: '#contact',
+  start: 'top bottom',
+  onEnter:     () => gsap.to('.hero', { autoAlpha: 0, duration: 0.25 }),
+  onLeaveBack: () => gsap.to('.hero', { autoAlpha: 1, duration: 0.25 }),
 });
 
 /* ─── Tool bars ─── */
