@@ -270,11 +270,12 @@ img { display: block; max-width: 100%; }
 .works {
   margin-top: 100dvh;
   padding-block: clamp(5rem, 10vw, 8rem);
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 2;
   background: var(--bg);
   border-radius: 20px 20px 0 0;
-  box-shadow: 0 0 40px rgba(0,0,0,0.06);
+  box-shadow: 0 -8px 48px rgba(0,0,0,0.08);
 }
 
 /* Tabs */
@@ -423,10 +424,11 @@ img { display: block; max-width: 100%; }
 .about {
   padding-block: clamp(5rem, 10vw, 8rem);
   background: var(--surface);
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 3;
   border-radius: 20px 20px 0 0;
-  /* box-shadow: 0 10px 40px rgba(0,0,0,0.06); */
+  box-shadow: 0 -8px 48px rgba(0,0,0,0.08);
 }
 
 .about-grid {
@@ -584,7 +586,7 @@ img { display: block; max-width: 100%; }
 .contact {
   padding-block: clamp(5rem, 10vw, 8rem);
   text-align: center;
-  background: transparent;
+  background: var(--bg);
   position: relative;
   z-index: 4;
 }
