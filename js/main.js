@@ -451,18 +451,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   function setViewerImages(images, animate, maxWidth) {
     clearTimeout(switchTimer);
     viewerImgWrap.scrollTop = 0;
-    viewerImgStack.style.maxWidth = maxWidth || '';
-    viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
     const html = images.map((src, i) =>
       `<img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}>`
     ).join('');
     if (animate) {
       viewerImgStack.style.opacity = '0';
       switchTimer = setTimeout(() => {
+        viewerImgStack.style.maxWidth = maxWidth || '';
+        viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
         viewerImgStack.innerHTML = html;
         viewerImgStack.style.opacity = '1';
       }, 200);
     } else {
+      viewerImgStack.style.maxWidth = maxWidth || '';
+      viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
       viewerImgStack.innerHTML = html;
       viewerImgStack.style.opacity = '1';
     }
