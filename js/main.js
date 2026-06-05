@@ -334,6 +334,14 @@ const MODAL_DATA = {
     views: [
       { label: 'PC ver', image: 'source/디아블로2 레저렉션_PC.jpg' },
       { label: 'MO ver', image: 'source/디아블로2 레저렉션_MO.jpg' },
+      { label: 'Banner', type: 'banner', images: [
+        'works/webpromo_diaII/banner 1.jpg',
+        'works/webpromo_diaII/banner_2.jpg',
+        'works/webpromo_diaII/banner_3.jpg',
+        'works/webpromo_diaII/banner_4.png',
+        'works/webpromo_diaII/banner_5.jpg',
+        'works/webpromo_diaII/banner_6.jpg',
+      ]},
     ],
   },
   'web-02':   { cat: 'Web Promotion', title: '상세페이지 타이틀',    sub: '상세페이지',     contribution: '기여도 100%', tools: ['tool-ps','tool-ai'] },
@@ -422,6 +430,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   const viewerDescEl  = document.getElementById('viewerDesc');
   const viewerTabsEl  = document.getElementById('viewerTabs');
 
+  const viewerBannerGrid = document.getElementById('viewerBannerGrid');
+
   let viewerTween = null;
   let activeLayer = 'A';
 
@@ -447,6 +457,21 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     }
   }
 
+  function switchView(view, animate) {
+    if (view.type === 'banner') {
+      viewerBannerGrid.innerHTML = view.images
+        .map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="lazy"></div>`)
+        .join('');
+      viewerBannerGrid.classList.add('is-active');
+      viewerImgA.style.opacity = '0';
+      viewerImgB.style.opacity = '0';
+    } else {
+      viewerBannerGrid.classList.remove('is-active');
+      viewerBannerGrid.scrollTop = 0;
+      setViewerImage(view.image, animate);
+    }
+  }
+
   function openViewer(id) {
     const data = MODAL_DATA[id];
     if (!data || data.type !== 'viewer') return;
@@ -466,12 +491,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       btn.addEventListener('click', () => {
         viewerTabsEl.querySelectorAll('.viewer-tab').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        setViewerImage(view.image, true);
+        switchView(view, true);
       });
       viewerTabsEl.appendChild(btn);
     });
 
-    setViewerImage(data.views[0].image, false);
+    switchView(data.views[0], false);
     viewerPanel.classList.remove('collapsed');
 
     viewerOverlay.setAttribute('aria-hidden', 'false');
