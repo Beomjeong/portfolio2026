@@ -446,7 +446,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   let viewerTween = null;
 
+  let switchTimer = null;
+
   function setViewerImages(images, animate, maxWidth) {
+    clearTimeout(switchTimer);
     viewerImgWrap.scrollTop = 0;
     viewerImgStack.style.maxWidth = maxWidth || '';
     viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
@@ -454,18 +457,21 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       `<img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}>`
     ).join('');
     if (animate) {
-      gsap.to(viewerImgStack, { opacity: 0, duration: 0.15, onComplete: () => {
+      viewerImgStack.style.opacity = '0';
+      switchTimer = setTimeout(() => {
         viewerImgStack.innerHTML = html;
-        gsap.to(viewerImgStack, { opacity: 1, duration: 0.3 });
-      }});
+        viewerImgStack.style.opacity = '1';
+      }, 200);
     } else {
       viewerImgStack.innerHTML = html;
-      gsap.set(viewerImgStack, { opacity: 1 });
+      viewerImgStack.style.opacity = '1';
     }
   }
 
   function switchView(view, animate) {
+    clearTimeout(switchTimer);
     if (view.type === 'banner') {
+      viewerImgStack.style.opacity = '0';
       viewerBannerGrid.innerHTML = `<div class="banner-inner">${
         view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="lazy"></div>`).join('')
       }</div>`;

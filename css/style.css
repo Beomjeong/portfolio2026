@@ -801,6 +801,9 @@ img { display: block; max-width: 100%; }
 }
 .viewer-img-wrap::-webkit-scrollbar { display: none; }
 
+#viewerImgStack {
+  transition: opacity 0.2s ease;
+}
 #viewerImgStack img {
   width: 100%;
   height: auto;
