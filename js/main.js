@@ -556,6 +556,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerImgWrap.scrollTop = 0;
       viewerImgStack.classList.add('no-transition');
       viewerImgStack.style.opacity = '0';
+      viewerImgStack.innerHTML = '';
       requestAnimationFrame(() => viewerImgStack.classList.remove('no-transition'));
       viewerBannerGrid.classList.remove('is-active');
       viewerIframe.src = view.url;
