@@ -460,20 +460,28 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let viewerTween = null;
   let switchTimer = null;
   let lastScrollTop = 0;
+  let showPanelTimer = null;
 
 
 
   function onViewerScroll(scrollTop) {
+    const delta = scrollTop - lastScrollTop;
+    lastScrollTop = scrollTop;
+
+    if (Math.abs(delta) < 6) return;
+
     if (viewerPanel.classList.contains('collapsed')) {
-      if (scrollTop > lastScrollTop && scrollTop > 40) {
+      clearTimeout(showPanelTimer);
+      if (delta > 0 && scrollTop > 40) {
         viewerPanel.classList.add('scroll-hidden');
-      } else {
-        viewerPanel.classList.remove('scroll-hidden');
+      } else if (delta < 0) {
+        showPanelTimer = setTimeout(() => {
+          viewerPanel.classList.remove('scroll-hidden');
+        }, 150);
       }
     } else {
       viewerPanel.classList.remove('scroll-hidden');
     }
-    lastScrollTop = scrollTop;
   }
 
   viewerImgWrap.addEventListener('scroll', () => {
