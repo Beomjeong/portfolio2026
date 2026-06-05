@@ -356,7 +356,19 @@ const MODAL_DATA = {
       ]},
     ],
   },
-  'web-02':   { cat: 'Web Promotion', title: '상세페이지 타이틀',    sub: '상세페이지',     contribution: '기여도 100%', tools: ['tool-ps','tool-ai'] },
+  'web-02': {
+    type: 'viewer',
+    cat: 'Web Promotion',
+    title: '상세페이지 타이틀',
+    sub: '상세페이지',
+    contribution: '기여도 100%',
+    tools: ['tool-ps', 'tool-ai'],
+    desc: '프로젝트 설명이 들어갈 자리입니다.',
+    views: [
+      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/nte/' },
+      { label: 'Banner', type: 'banner', images: [] },
+    ],
+  },
   'web-03':   { cat: 'Web Promotion', title: '배너 프로젝트',        sub: '배너',          contribution: '기여도 80%',  tools: ['tool-ps'] },
   'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
   'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
@@ -443,13 +455,41 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   const viewerImgStack   = document.getElementById('viewerImgStack');
   const viewerImgWrap    = document.getElementById('viewerImgWrap');
   const viewerBannerGrid = document.getElementById('viewerBannerGrid');
+  const viewerIframe     = document.getElementById('viewerIframe');
 
   let viewerTween = null;
   let switchTimer = null;
+  let lastScrollTop = 0;
 
   function syncImgPadding() {
     viewerImgWrap.style.paddingBottom = viewerPanel.offsetHeight + 'px';
   }
+
+  function onViewerScroll(scrollTop) {
+    if (viewerPanel.classList.contains('collapsed')) {
+      if (scrollTop > lastScrollTop && scrollTop > 40) {
+        viewerPanel.classList.add('scroll-hidden');
+      } else {
+        viewerPanel.classList.remove('scroll-hidden');
+      }
+    } else {
+      viewerPanel.classList.remove('scroll-hidden');
+    }
+    lastScrollTop = scrollTop;
+  }
+
+  viewerImgWrap.addEventListener('scroll', () => {
+    onViewerScroll(viewerImgWrap.scrollTop);
+  }, { passive: true });
+
+  viewerIframe.addEventListener('load', () => {
+    try {
+      lastScrollTop = 0;
+      viewerIframe.contentWindow.addEventListener('scroll', () => {
+        onViewerScroll(viewerIframe.contentWindow.scrollY);
+      }, { passive: true });
+    } catch (e) {}
+  });
 
   function setViewerImages(images, animate, maxWidth) {
     clearTimeout(switchTimer);
@@ -475,7 +515,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   function switchView(view, animate) {
     clearTimeout(switchTimer);
-    if (view.type === 'banner') {
+    if (view.type === 'iframe') {
+      viewerImgWrap.scrollTop = 0;
+      viewerImgStack.classList.add('no-transition');
+      viewerImgStack.style.opacity = '0';
+      requestAnimationFrame(() => viewerImgStack.classList.remove('no-transition'));
+      viewerBannerGrid.classList.remove('is-active');
+      viewerIframe.src = view.url;
+      viewerIframe.classList.add('is-active');
+      viewerPanel.classList.add('collapsed');
+      setTimeout(syncImgPadding, 420);
+    } else if (view.type === 'banner') {
+      viewerIframe.classList.remove('is-active');
+      viewerIframe.src = '';
+      viewerPanel.classList.remove('collapsed');
       viewerImgWrap.scrollTop = 0;
       viewerImgStack.classList.add('no-transition');
       viewerImgStack.style.opacity = '0';
@@ -484,10 +537,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="eager"></div>`).join('')
       }</div>`;
       viewerBannerGrid.classList.add('is-active');
+      setTimeout(syncImgPadding, 420);
     } else {
+      viewerIframe.classList.remove('is-active');
+      viewerIframe.src = '';
+      viewerPanel.classList.remove('collapsed');
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
       setViewerImages(view.images, animate, view.maxWidth);
+      setTimeout(syncImgPadding, 420);
     }
   }
 
@@ -510,13 +568,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       btn.addEventListener('click', () => {
         viewerTabsEl.querySelectorAll('.viewer-tab').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        viewerPanel.classList.remove('scroll-hidden');
+        lastScrollTop = 0;
         switchView(view, true);
       });
       viewerTabsEl.appendChild(btn);
     });
 
+    viewerPanel.classList.remove('collapsed', 'scroll-hidden');
+    lastScrollTop = 0;
     switchView(data.views[0], false);
-    viewerPanel.classList.remove('collapsed');
     requestAnimationFrame(syncImgPadding);
 
     viewerOverlay.setAttribute('aria-hidden', 'false');

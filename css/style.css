@@ -647,6 +647,16 @@ img { display: block; max-width: 100%; }
 /* ═══════════════════════════════════════
    WORK MODAL
 ═══════════════════════════════════════ */
+.viewer-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: none;
+}
+.viewer-iframe.is-active { display: block; }
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -824,6 +834,8 @@ img { display: block; max-width: 100%; }
   flex-direction: column;
   align-items: center;
   isolation: isolate;
+  transform: translateY(0);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Liquid glass base */
   background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.55) 100%);
@@ -880,6 +892,7 @@ img { display: block; max-width: 100%; }
 
 .toggle-chevron { transition: transform 0.35s ease; }
 .viewer-panel.collapsed .toggle-chevron { transform: rotate(180deg); }
+.viewer-panel.scroll-hidden { transform: translateY(100%); }
 
 .viewer-info {
   display: flex;
