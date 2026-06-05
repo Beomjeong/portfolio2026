@@ -323,7 +323,19 @@ ScrollTrigger.create({
    WORK MODAL
 ═══════════════════════════════════════ */
 const MODAL_DATA = {
-  'web-01':   { cat: 'Web Promotion', title: '이벤트페이지 타이틀',  sub: 'PC / MO',       contribution: '기여도 100%', tools: ['tool-ps','tool-figma'] },
+  'web-01': {
+    type: 'viewer',
+    cat: 'Web Promotion',
+    title: '이벤트페이지 타이틀',
+    sub: '적응형(PC/MO)',
+    contribution: '기여도 100%',
+    tools: ['tool-ps', 'tool-figma'],
+    desc: '프로젝트 설명이 들어갈 자리입니다.',
+    views: [
+      { label: 'PC ver', image: 'source/디아블로2 레저렉션_PC.jpg' },
+      { label: 'MO ver', image: 'source/디아블로2 레저렉션_MO.jpg' },
+    ],
+  },
   'web-02':   { cat: 'Web Promotion', title: '상세페이지 타이틀',    sub: '상세페이지',     contribution: '기여도 100%', tools: ['tool-ps','tool-ai'] },
   'web-03':   { cat: 'Web Promotion', title: '배너 프로젝트',        sub: '배너',          contribution: '기여도 80%',  tools: ['tool-ps'] },
   'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
@@ -379,13 +391,121 @@ function closeModal() {
 document.querySelectorAll('.card-link[data-modal]').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
-    openModal(link.dataset.modal);
+    const id = link.dataset.modal;
+    const data = MODAL_DATA[id];
+    if (data && data.type === 'viewer') {
+      openViewer(id);
+    } else {
+      openModal(id);
+    }
   });
 });
 
 closeBtn.addEventListener('click', closeModal);
 overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal(); });
+
+/* ═══════════════════════════════════════
+   WORK VIEWER MODAL
+═══════════════════════════════════════ */
+(function () {
+  const viewerOverlay = document.getElementById('workViewer');
+  const viewerImgA    = document.getElementById('viewerImgA');
+  const viewerImgB    = document.getElementById('viewerImgB');
+  const viewerPanel   = document.getElementById('viewerPanel');
+  const viewerToggle  = document.getElementById('viewerToggle');
+  const viewerCatEl   = document.getElementById('viewerCat');
+  const viewerTitleEl = document.getElementById('viewerTitle');
+  const viewerSubEl   = document.getElementById('viewerSub');
+  const viewerContEl  = document.getElementById('viewerContrib');
+  const viewerToolsEl = document.getElementById('viewerTools');
+  const viewerDescEl  = document.getElementById('viewerDesc');
+  const viewerTabsEl  = document.getElementById('viewerTabs');
+
+  let viewerTween = null;
+  let activeLayer = 'A';
+
+  function setViewerImage(url, animate) {
+    const encoded = encodeURI(url);
+    if (!animate) {
+      viewerImgA.style.backgroundImage = `url('${encoded}')`;
+      viewerImgA.style.opacity = '1';
+      viewerImgB.style.opacity = '0';
+      activeLayer = 'A';
+      return;
+    }
+    if (activeLayer === 'A') {
+      viewerImgB.style.backgroundImage = `url('${encoded}')`;
+      viewerImgB.style.opacity = '1';
+      viewerImgA.style.opacity = '0';
+      activeLayer = 'B';
+    } else {
+      viewerImgA.style.backgroundImage = `url('${encoded}')`;
+      viewerImgA.style.opacity = '1';
+      viewerImgB.style.opacity = '0';
+      activeLayer = 'A';
+    }
+  }
+
+  function openViewer(id) {
+    const data = MODAL_DATA[id];
+    if (!data || data.type !== 'viewer') return;
+
+    viewerCatEl.textContent   = data.cat;
+    viewerTitleEl.textContent = data.title;
+    viewerSubEl.textContent   = data.sub;
+    viewerContEl.textContent  = data.contribution;
+    viewerDescEl.textContent  = data.desc;
+    viewerToolsEl.innerHTML   = data.tools.map(t => `<li class="${t}"></li>`).join('');
+
+    viewerTabsEl.innerHTML = '';
+    data.views.forEach((view, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'viewer-tab' + (i === 0 ? ' active' : '');
+      btn.textContent = view.label;
+      btn.addEventListener('click', () => {
+        viewerTabsEl.querySelectorAll('.viewer-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        setViewerImage(view.image, true);
+      });
+      viewerTabsEl.appendChild(btn);
+    });
+
+    setViewerImage(data.views[0].image, false);
+    viewerPanel.classList.remove('collapsed');
+
+    viewerOverlay.setAttribute('aria-hidden', 'false');
+    viewerOverlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+
+    if (viewerTween) viewerTween.kill();
+    gsap.set(viewerOverlay, { opacity: 0 });
+    viewerTween = gsap.to(viewerOverlay, { opacity: 1, duration: 0.35, ease: 'power2.out' });
+  }
+
+  function closeViewer() {
+    if (viewerTween) viewerTween.kill();
+    viewerTween = gsap.to(viewerOverlay, {
+      opacity: 0, duration: 0.3, ease: 'power2.in',
+      onComplete: () => {
+        viewerOverlay.classList.remove('is-open');
+        viewerOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  viewerToggle.addEventListener('click', () => {
+    viewerPanel.classList.toggle('collapsed');
+  });
+
+  document.getElementById('viewerClose').addEventListener('click', closeViewer);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && viewerOverlay.classList.contains('is-open')) closeViewer();
+  });
+
+  window.openViewer = openViewer;
+})();
 
 /* ─── Tool bars ─── */
 ScrollTrigger.create({

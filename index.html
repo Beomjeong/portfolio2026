@@ -408,6 +408,43 @@
     </div>
   </footer>
 
+  <!-- ───────────── WORK VIEWER MODAL ───────────── -->
+  <div class="viewer-overlay" id="workViewer" aria-hidden="true">
+    <button class="viewer-close" id="viewerClose" aria-label="닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <div class="viewer-img-wrap" id="viewerImgWrap">
+      <div class="viewer-img-layer" id="viewerImgA"></div>
+      <div class="viewer-img-layer" id="viewerImgB"></div>
+    </div>
+
+    <div class="viewer-panel" id="viewerPanel">
+      <button class="viewer-toggle" id="viewerToggle" aria-label="패널 열기/닫기">
+        <svg class="toggle-chevron" width="24" height="13" viewBox="0 0 24 13" fill="none">
+          <path d="M1 1L12 12L23 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="viewer-info" id="viewerInfo">
+        <div class="viewer-text-group">
+          <span class="viewer-cat" id="viewerCat"></span>
+          <h2 class="viewer-title" id="viewerTitle"></h2>
+        </div>
+        <div class="viewer-detail-group">
+          <ul class="viewer-tools" id="viewerTools"></ul>
+          <div class="viewer-meta-row">
+            <span class="viewer-sub" id="viewerSub"></span>
+            <span class="viewer-contribution" id="viewerContrib"></span>
+          </div>
+          <p class="viewer-desc" id="viewerDesc"></p>
+        </div>
+        <div class="viewer-tabs" id="viewerTabs"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ───────────── WORK MODAL ───────────── -->
   <div class="modal-overlay" id="workModal" aria-hidden="true">
     <div class="modal-panel">
