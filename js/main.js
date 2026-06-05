@@ -327,7 +327,7 @@ const MODAL_DATA = {
     type: 'viewer',
     cat: 'Web Promotion',
     title: '디아블로II 악마술사 출시기념 이벤트',
-    sub: '적응형(PC/MO)',
+    sub: '적응형(PC/MO)·배너',
     contribution: '기여도: 디자인 100%',
     tools: ['tool-ps'],
     desc: '디아블로II 신규 클래스 악마술사 런칭 기념으로 진행한 PC방 이벤트 랜딩페이지 및 배너 디자인입니다.',
@@ -359,11 +359,11 @@ const MODAL_DATA = {
   'web-02': {
     type: 'viewer',
     cat: 'Web Promotion',
-    title: '상세페이지 타이틀',
-    sub: '상세페이지',
-    contribution: '기여도 100%',
-    tools: ['tool-ps', 'tool-ai'],
-    desc: '프로젝트 설명이 들어갈 자리입니다.',
+    title: '이환 그랜드 오픈 기념 이벤트',
+    sub: '반응형·배너',
+    contribution: '기여도: 디자인·퍼블리싱 100%',
+    tools: ['tool-ps', 'tool-ai', 'tool-figma', 'tool-claude' ],
+    desc: '이환 그랜드 오픈 기념 PC방 이벤트 반응형 랜딩 페이지 및 배너 디자인입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/nte/' },
       { label: 'Banner', type: 'banner', images: [] },
@@ -460,29 +460,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let viewerTween = null;
   let switchTimer = null;
   let lastScrollTop = 0;
-  let upScrollAccum = 0;
 
 
 
   function onViewerScroll(scrollTop) {
-    const delta = scrollTop - lastScrollTop;
-    lastScrollTop = scrollTop;
-
     if (viewerPanel.classList.contains('collapsed')) {
-      if (delta > 0 && scrollTop > 40) {
-        upScrollAccum = 0;
+      if (scrollTop > lastScrollTop && scrollTop > 40) {
         viewerPanel.classList.add('scroll-hidden');
-      } else if (delta < 0) {
-        upScrollAccum += Math.abs(delta);
-        if (upScrollAccum >= 40) {
-          viewerPanel.classList.remove('scroll-hidden');
-          upScrollAccum = 0;
-        }
+      } else {
+        viewerPanel.classList.remove('scroll-hidden');
       }
     } else {
-      upScrollAccum = 0;
       viewerPanel.classList.remove('scroll-hidden');
     }
+    lastScrollTop = scrollTop;
   }
 
   viewerImgWrap.addEventListener('scroll', () => {
@@ -536,11 +527,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerBannerGrid.classList.remove('is-active');
       viewerIframe.src = view.url;
       viewerIframe.classList.add('is-active');
-      if (animate) viewerPanel.classList.add('collapsed');
     } else if (view.type === 'banner') {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
-      if (animate) viewerPanel.classList.remove('collapsed');
       viewerImgWrap.scrollTop = 0;
       viewerImgStack.classList.add('no-transition');
       viewerImgStack.style.opacity = '0';
@@ -552,7 +541,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     } else {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
-      if (animate) viewerPanel.classList.remove('collapsed');
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
       setViewerImages(view.images, animate, view.maxWidth);
@@ -580,7 +568,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         btn.classList.add('active');
         viewerPanel.classList.remove('scroll-hidden');
         lastScrollTop = 0;
-        upScrollAccum = 0;
         switchView(view, true);
       });
       viewerTabsEl.appendChild(btn);
@@ -588,7 +575,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
     viewerPanel.classList.remove('collapsed', 'scroll-hidden');
     lastScrollTop = 0;
-    upScrollAccum = 0;
     switchView(data.views[0], false);
 
     viewerOverlay.setAttribute('aria-hidden', 'false');
