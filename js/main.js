@@ -106,7 +106,6 @@ function initBgEffect(section, opts = {}) {
 }
 
 initBgEffect(document.querySelector('.hero'));
-initBgEffect(document.getElementById('contactBg'), { useWindowMouse: true });
 
 /* ═══════════════════════════════════════
    ROLE TEXT SCRAMBLE + CYCLE
@@ -217,13 +216,176 @@ ScrollTrigger.create({
   }
 });
 
-/* Hide hero when contact is in view */
-ScrollTrigger.create({
-  trigger: '#contact',
-  start: 'top bottom',
-  onEnter:     () => gsap.set('.hero', { autoAlpha: 0 }),
-  onLeaveBack: () => gsap.to('.hero', { autoAlpha: 1, duration: 0.3 }),
+/* ═══════════════════════════════════════
+   CONSTELLATION BACKGROUND (contact)
+═══════════════════════════════════════ */
+(function initConstellation() {
+  const canvas = document.getElementById('constellationCanvas');
+  const ctx    = canvas.getContext('2d');
+  const ACCENT = '0,229,184';
+  const COUNT  = 90;
+  const DIST   = 140;
+  const mouse  = { x: -9999, y: -9999 };
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  canvas.parentElement.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  }, { passive: true });
+  canvas.parentElement.addEventListener('mouseleave', () => {
+    mouse.x = -9999; mouse.y = -9999;
+  });
+
+  const particles = Array.from({ length: COUNT }, () => ({
+    x:  Math.random(),
+    y:  Math.random(),
+    vx: (Math.random() - 0.5) * 0.0003,
+    vy: (Math.random() - 0.5) * 0.0003,
+    r:  Math.random() * 1.5 + 0.8,
+    twinkle: Math.random() * Math.PI * 2,
+    twinkleSpeed: 0.01 + Math.random() * 0.02,
+  }));
+
+  function draw() {
+    const W = canvas.width;
+    const H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    // resolve absolute positions
+    const pts = particles.map(p => ({
+      x: p.x * W, y: p.y * H,
+      r: p.r,
+      alpha: 0.5 + Math.sin(p.twinkle) * 0.35,
+    }));
+
+    // connections between particles
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x;
+        const dy = pts[i].y - pts[j].y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < DIST) {
+          ctx.strokeStyle = `rgba(${ACCENT},${(1 - d / DIST) * 0.25})`;
+          ctx.lineWidth   = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // mouse connections
+    if (mouse.x > 0) {
+      pts.forEach(p => {
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < DIST * 1.4) {
+          ctx.strokeStyle = `rgba(${ACCENT},${(1 - d / (DIST * 1.4)) * 0.5})`;
+          ctx.lineWidth   = 0.9;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      });
+    }
+
+    // particles
+    pts.forEach((p, i) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${ACCENT},${p.alpha})`;
+      ctx.fill();
+
+      particles[i].x += particles[i].vx;
+      particles[i].y += particles[i].vy;
+      if (particles[i].x < 0 || particles[i].x > 1) particles[i].vx *= -1;
+      if (particles[i].y < 0 || particles[i].y > 1) particles[i].vy *= -1;
+      particles[i].twinkle += particles[i].twinkleSpeed;
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+
+/* ═══════════════════════════════════════
+   WORK MODAL
+═══════════════════════════════════════ */
+const MODAL_DATA = {
+  'web-01':   { cat: 'Web Promotion', title: '이벤트페이지 타이틀',  sub: 'PC / MO',       contribution: '기여도 100%', tools: ['tool-ps','tool-figma'] },
+  'web-02':   { cat: 'Web Promotion', title: '상세페이지 타이틀',    sub: '상세페이지',     contribution: '기여도 100%', tools: ['tool-ps','tool-ai'] },
+  'web-03':   { cat: 'Web Promotion', title: '배너 프로젝트',        sub: '배너',          contribution: '기여도 80%',  tools: ['tool-ps'] },
+  'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
+  'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
+  '3d-01':    { cat: '3D',            title: '3D 에셋 타이틀',      sub: 'Blender',        contribution: '기여도 100%', tools: ['tool-blender'] },
+  'print-01': { cat: 'Printing',      title: '포스터 타이틀',       sub: '포스터',         contribution: '기여도 100%', tools: ['tool-ai','tool-ps'] },
+  'print-02': { cat: 'Printing',      title: 'X배너 / 사이니지',    sub: 'Stand Banner',   contribution: '기여도 100%', tools: ['tool-ai'] },
+};
+
+const overlay   = document.getElementById('workModal');
+const panel     = overlay.querySelector('.modal-panel');
+const closeBtn  = overlay.querySelector('.modal-close');
+const modalCat  = overlay.querySelector('.modal-cat');
+const modalTitle= overlay.querySelector('.modal-title');
+const modalSub  = overlay.querySelector('.modal-sub');
+const modalCont = overlay.querySelector('.modal-contribution');
+const modalTools= overlay.querySelector('.modal-tools');
+
+let modalTween = null;
+
+function openModal(id) {
+  const data = MODAL_DATA[id];
+  if (!data) return;
+
+  modalCat.textContent   = data.cat;
+  modalTitle.textContent = data.title;
+  modalSub.textContent   = data.sub;
+  modalCont.textContent  = data.contribution;
+  modalTools.innerHTML   = data.tools.map(t => `<li class="${t}"></li>`).join('');
+
+  overlay.setAttribute('aria-hidden', 'false');
+  overlay.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+
+  if (modalTween) modalTween.kill();
+  gsap.set(panel, { y: '100%' });
+  modalTween = gsap.timeline()
+    .to(overlay, { opacity: 1, duration: 0.3, ease: 'power2.out' })
+    .to(panel,   { y: '0%',   duration: 0.45, ease: 'power3.out' }, 0.05);
+}
+
+function closeModal() {
+  if (modalTween) modalTween.kill();
+  modalTween = gsap.timeline({ onComplete: () => {
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }})
+    .to(panel,   { y: '100%', duration: 0.35, ease: 'power3.in' })
+    .to(overlay, { opacity: 0, duration: 0.2, ease: 'power2.in' }, 0.1);
+}
+
+document.querySelectorAll('.card-link[data-modal]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    openModal(link.dataset.modal);
+  });
 });
+
+closeBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal(); });
 
 /* ─── Tool bars ─── */
 ScrollTrigger.create({

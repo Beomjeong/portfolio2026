@@ -93,7 +93,7 @@
 
         <!-- WEB PROMOTION -->
         <article class="work-card" data-cat="web">
-          <a href="works/web-01.html" class="card-link">
+          <a href="#" class="card-link" data-modal="web-01">
             <div class="card-thumb cat-web">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -113,7 +113,7 @@
         </article>
 
         <article class="work-card" data-cat="web">
-          <a href="works/web-02.html" class="card-link">
+          <a href="#" class="card-link" data-modal="web-02">
             <div class="card-thumb cat-web">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -133,7 +133,7 @@
         </article>
 
         <article class="work-card" data-cat="web">
-          <a href="works/web-03.html" class="card-link">
+          <a href="#" class="card-link" data-modal="web-03">
             <div class="card-thumb cat-web">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -153,7 +153,7 @@
 
         <!-- VIDEO -->
         <article class="work-card" data-cat="video">
-          <a href="works/video-01.html" class="card-link">
+          <a href="#" class="card-link" data-modal="video-01">
             <div class="card-thumb cat-video">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -173,7 +173,7 @@
         </article>
 
         <article class="work-card" data-cat="video">
-          <a href="works/video-02.html" class="card-link">
+          <a href="#" class="card-link" data-modal="video-02">
             <div class="card-thumb cat-video">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -194,7 +194,7 @@
 
         <!-- 3D -->
         <article class="work-card" data-cat="3d">
-          <a href="works/3d-01.html" class="card-link">
+          <a href="#" class="card-link" data-modal="3d-01">
             <div class="card-thumb cat-3d">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -214,7 +214,7 @@
 
         <!-- PRINTING -->
         <article class="work-card" data-cat="print">
-          <a href="works/print-01.html" class="card-link">
+          <a href="#" class="card-link" data-modal="print-01">
             <div class="card-thumb cat-print">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -234,7 +234,7 @@
         </article>
 
         <article class="work-card" data-cat="print">
-          <a href="works/print-02.html" class="card-link">
+          <a href="#" class="card-link" data-modal="print-02">
             <div class="card-thumb cat-print">
               <div class="thumb-placeholder"></div>
               <div class="card-overlay">
@@ -395,17 +395,11 @@
     </div>
   </section>
 
-  <!-- ───────────── CONTACT BG (fixed) ───────────── -->
-  <div id="contactBg" aria-hidden="true">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <canvas class="hero-canvas" id="contactCanvas"></canvas>
-  </div>
-
   <!-- ───────────── CONTACT ───────────── -->
   <footer class="contact" id="contact">
+    <canvas class="contact-canvas" id="constellationCanvas" aria-hidden="true"></canvas>
     <div class="container">
-      <p class="contact-cta">Let's work together.</p>
+      <p class="contact-cta">일단 연락부터 주시죠</p>
       <a href="mailto:hisokang@gmail.com" class="contact-email">hisokang@gmail.com</a>
       <div class="contact-links">
         <a href="https://instagram.com/integral_j" target="_blank" rel="noopener">Instagram</a>
@@ -413,6 +407,40 @@
       <p class="copyright">© 2026 KIM BEOM JEONG. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- ───────────── WORK MODAL ───────────── -->
+  <div class="modal-overlay" id="workModal" aria-hidden="true">
+    <div class="modal-panel">
+
+      <!-- 고정 헤더 -->
+      <div class="modal-header">
+        <div class="modal-header-meta">
+          <span class="modal-cat"></span>
+          <h2 class="modal-title"></h2>
+          <div class="modal-sub-row">
+            <span class="modal-sub"></span>
+            <span class="modal-contribution"></span>
+            <ul class="modal-tools"></ul>
+          </div>
+        </div>
+        <button class="modal-close" aria-label="닫기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 스크롤 영역 -->
+      <div class="modal-body">
+        <!-- 피그마 디자인 확정 후 카테고리별 내용 채울 자리 -->
+        <div class="modal-content-web modal-content-block">
+          <div class="modal-img-placeholder"></div>
+          <p class="modal-desc-placeholder">프로젝트 설명이 들어갈 자리입니다.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>

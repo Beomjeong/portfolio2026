@@ -40,7 +40,7 @@ metadata:
 - **GitHub Pages 라이브**: https://beomjeong.github.io/portfolio2026/
 - `memory/` 폴더도 저장소에 포함
 
-## 구현 현황 (2026-06-02 기준)
+## 구현 현황 (2026-06-04 기준)
 
 ### 완료된 것
 - `/index.html` — 전체 페이지 구조
@@ -61,25 +61,36 @@ metadata:
 - 마우스 따라오는 blob 2개: 민트그린(`#00E5B8`) + 파랑(`#4499ff`)
 - `position: fixed` — 스크롤 시 완전 고정
 
-### 스크롤 레이어링 구조
+### 스크롤 레이어링 구조 (2026-06-04 업데이트)
 - hero: `position: fixed; z-index: 1`
-- works: `margin-top: 100dvh; z-index: 2; border-radius: 20px 20px 0 0`
-- about: `z-index: 3; border-radius: 20px 20px 0 0`
-- contact: `position: relative; z-index: 4; background: transparent`
-- **contactBg**: `position: fixed; inset: 0; z-index: 0` — contact의 배경(canvas+blob)을 별도 fixed 레이어로 분리
+- works: `margin-top: 100dvh; position: relative; z-index: 2; border-radius: 20px 20px 0 0; box-shadow: 0 -8px 48px rgba(0,0,0,0.08)`
+- about: `position: relative; z-index: 3; border-radius: 20px 20px 0 0; box-shadow 동일`
+- contact: `position: relative; z-index: 4; background: #0d0d0d` (다크 배경)
+- **contactBg 제거됨** — contact 자체에 배경+canvas 내장
 
-### Contact 배경 고정 효과
-- `#contactBg` div (fixed, z-index: 0): canvas + blob 포함, 뷰포트 전체 고정
-- contact 섹션 자체는 투명 배경으로 그 위를 스크롤
-- about(z-index:3)이 화면에 있을 때 contactBg를 가림 → about 스크롤 아웃 시 배경 드러남
-- ScrollTrigger: contact 진입 시 hero `autoAlpha: 0` 즉시 설정, 복귀 시 0.3s 페이드인
+> sticky stacking 시도했으나 섹션 높이가 100dvh 초과로 콘텐츠 잘림 문제 발생 → 각 섹션 relative로 복귀. 이후 레이아웃 재설계 시 재도전 예정.
+
+### Contact 배경 (2026-06-04 변경)
+- 다크 배경 `#0d0d0d` + `<canvas id="constellationCanvas">` 내장
+- 별자리 파티클 효과: accent 컬러(`0,229,184`) 파티클 90개, 연결선 거리 140px
+- 마우스 인터랙션: 마우스 주변 파티클과 연결선 추가 표시
+- 파티클 반짝임(twinkle) 효과 포함
+- 텍스트 색상 모두 흰색 계열(`#f0f0f0`, `rgba(240,240,240,x)`)로 변경
+
+### Works 모달 시스템 (2026-06-04 신규)
+- 카드 클릭 → 전체화면 모달 (97dvh, 아래서 슬라이드업 GSAP 애니메이션)
+- 닫기: X 버튼 / ESC / 배경 클릭
+- 모달 헤더 고정 (카테고리 · 제목 · 툴 · 기여도) + 본문 스크롤
+- `MODAL_DATA` 객체로 8개 카드 데이터 관리
+- **내부 레이아웃은 피그마 디자인 완성 후 채울 예정** (Web Promotion 먼저)
+- 카드 썸네일 비율: `4:3`
 
 ### JS 구조
-- `initBgEffect(section, opts)` — canvas 그리드 + blob 애니메이션 재사용 함수
-  - `opts.useWindowMouse: true` 옵션: fixed canvas용 (clientX/Y 직접 사용)
-  - hero, contactBg 양쪽에 독립적으로 적용
+- `initBgEffect(section, opts)` — canvas 그리드 + blob (hero에만 적용)
+- `initConstellation()` — contact 별자리 파티클 (IIFE)
 - `scrambleTo(target)` — 텍스트 스크램블 함수
-- GSAP ScrollTrigger — 섹션 리빌, 툴바 애니메이션, Works 카드 reveal, hero 숨김
+- GSAP ScrollTrigger — 섹션 리빌, 툴바 애니메이션, Works 카드 reveal
+- hero 숨기기 ScrollTrigger 제거됨 (z-index로 자연스럽게 가려짐)
 
 ### Works 툴 아이콘 CSS 맵
 ```css
@@ -105,9 +116,11 @@ HTML: `<li class="tool-ps" title="Photoshop"></li>` 형태로 사용
 - 기준 URL: `https://beomjeong.github.io/portfolio2026/`
 
 ### 남은 것
+- 피그마 디자인 완성 → Web Promotion 모달 내부 레이아웃 구현 (최우선)
+- 이후 카테고리별 모달 레이아웃 (Video, 3D, Print) 순차 작업
 - 프로필 사진 교체 (`.photo-placeholder` → `<img>`)
-- 실제 작업물 이미지로 플레이스홀더 교체
-- 작업물 상세 페이지 (`/works/*.html`) 제작 — 8개 (web×3, video×2, 3d×1, print×2)
+- 실제 작업물 이미지/썸네일(4:3)로 플레이스홀더 교체
+- (필요 시) Works/About 섹션 stacking sticky 재도전 — 각 섹션 100dvh 이하 재설계 필요
 
 ## 파일 구조
 ```
