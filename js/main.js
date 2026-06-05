@@ -347,7 +347,7 @@ const MODAL_DATA = {
         'works/webpromo_diaII/dia_mo_05.jpg',
       ]},
       { label: 'Banner', type: 'banner', images: [
-        'works/webpromo_diaII/banner-1.jpg',
+        'works/webpromo_diaII/banner_1.jpg',
         'works/webpromo_diaII/banner_2.jpg',
         'works/webpromo_diaII/banner_3.jpg',
         'works/webpromo_diaII/banner_4.png',
