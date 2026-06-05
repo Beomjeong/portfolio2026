@@ -913,11 +913,12 @@ img { display: block; max-width: 100%; }
   inset: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
+  scrollbar-width: none;
   background: #111;
   padding: 2rem;
   display: none;
 }
+.viewer-banner-grid::-webkit-scrollbar { display: none; }
 .viewer-banner-grid.is-active { display: block; }
 
 .banner-inner {
