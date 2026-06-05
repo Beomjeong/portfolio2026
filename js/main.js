@@ -326,11 +326,11 @@ const MODAL_DATA = {
   'web-01': {
     type: 'viewer',
     cat: 'Web Promotion',
-    title: '이벤트페이지 타이틀',
+    title: '디아블로II 악마술사 출시기념 이벤트',
     sub: '적응형(PC/MO)',
-    contribution: '기여도 100%',
-    tools: ['tool-ps', 'tool-figma'],
-    desc: '프로젝트 설명이 들어갈 자리입니다.',
+    contribution: '기여도: 디자인 100%',
+    tools: ['tool-ps'],
+    desc: '디아블로II 신규 클래스 악마술사 런칭 기념으로 진행한 PC방 이벤트 랜딩페이지 및 배너 디자인입니다.',
     views: [
       { label: 'PC ver', images: [
         'works/webpromo_diaII/dia_pc_01.jpg',
