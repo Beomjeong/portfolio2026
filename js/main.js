@@ -339,7 +339,7 @@ const MODAL_DATA = {
         'works/webpromo_diaII/dia_pc_04.jpg',
         'works/webpromo_diaII/dia_pc_05.jpg',
       ]},
-      { label: 'MO ver', images: [
+      { label: 'MO ver', maxWidth: '720px', images: [
         'works/webpromo_diaII/dia_mo_01.jpg',
         'works/webpromo_diaII/dia_mo_02.jpg',
         'works/webpromo_diaII/dia_mo_03.jpg',
@@ -446,8 +446,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   let viewerTween = null;
 
-  function setViewerImages(images, animate) {
+  function setViewerImages(images, animate, maxWidth) {
     viewerImgWrap.scrollTop = 0;
+    viewerImgStack.style.maxWidth = maxWidth || '';
+    viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
     const html = images.map((src, i) =>
       `<img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}>`
     ).join('');
@@ -471,7 +473,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     } else {
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
-      setViewerImages(view.images, animate);
+      setViewerImages(view.images, animate, view.maxWidth);
     }
   }
 
