@@ -459,9 +459,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   function switchView(view, animate) {
     if (view.type === 'banner') {
-      viewerBannerGrid.innerHTML = view.images
-        .map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="lazy"></div>`)
-        .join('');
+      viewerBannerGrid.innerHTML = `<div class="banner-inner">${
+        view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="lazy"></div>`).join('')
+      }</div>`;
       viewerBannerGrid.classList.add('is-active');
       viewerImgA.style.opacity = '0';
       viewerImgB.style.opacity = '0';
