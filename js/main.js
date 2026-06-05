@@ -461,9 +461,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let switchTimer = null;
   let lastScrollTop = 0;
 
-  function syncImgPadding() {
-    viewerImgWrap.style.paddingBottom = viewerPanel.offsetHeight + 'px';
-  }
+
 
   function onViewerScroll(scrollTop) {
     if (viewerPanel.classList.contains('collapsed')) {
@@ -530,7 +528,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerIframe.src = view.url;
       viewerIframe.classList.add('is-active');
       viewerPanel.classList.add('collapsed');
-      setTimeout(syncImgPadding, 420);
     } else if (view.type === 'banner') {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
@@ -543,7 +540,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="eager"></div>`).join('')
       }</div>`;
       viewerBannerGrid.classList.add('is-active');
-      setTimeout(syncImgPadding, 420);
     } else {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
@@ -551,7 +547,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
       setViewerImages(view.images, animate, view.maxWidth);
-      setTimeout(syncImgPadding, 420);
     }
   }
 
@@ -584,7 +579,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     viewerPanel.classList.remove('collapsed', 'scroll-hidden');
     lastScrollTop = 0;
     switchView(data.views[0], false);
-    requestAnimationFrame(syncImgPadding);
 
     viewerOverlay.setAttribute('aria-hidden', 'false');
     viewerOverlay.classList.add('is-open');
@@ -623,10 +617,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   viewerToggle.addEventListener('click', () => {
     viewerPanel.classList.toggle('collapsed');
-    setTimeout(syncImgPadding, 420);
   });
 
-  window.addEventListener('resize', syncImgPadding, { passive: true });
 
   document.getElementById('viewerClose').addEventListener('click', closeViewer);
   document.addEventListener('keydown', e => {
