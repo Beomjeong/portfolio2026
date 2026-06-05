@@ -808,6 +808,7 @@ img { display: block; max-width: 100%; }
   scrollbar-width: none;
   position: relative;
   background: #000;
+  overscroll-behavior: none;
 }
 .viewer-img-wrap::-webkit-scrollbar { display: none; }
 
