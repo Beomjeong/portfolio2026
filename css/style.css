@@ -359,9 +359,7 @@ img { display: block; max-width: 100%; }
   object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s;
 }
-.thumb-img-hover { opacity: 0; }
 .card-link:hover .thumb-img { transform: scale(1.05); }
-.card-link:hover .thumb-img-hover { opacity: 1; }
 
 /* Overlay */
 .card-overlay {
