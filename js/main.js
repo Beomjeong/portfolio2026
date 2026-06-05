@@ -515,7 +515,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   }
 
   viewerImgWrap.addEventListener('scroll', () => {
-    onViewerScroll(viewerImgWrap.scrollTop);
+    if (!viewerIframe.classList.contains('is-active')) {
+      onViewerScroll(viewerImgWrap.scrollTop);
+    }
   }, { passive: true });
 
   viewerIframe.addEventListener('load', () => {
