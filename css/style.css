@@ -798,7 +798,6 @@ img { display: block; max-width: 100%; }
   scrollbar-width: none;
   position: relative;
   background: #000;
-  padding-bottom: 210px;
 }
 .viewer-img-wrap::-webkit-scrollbar { display: none; }
 

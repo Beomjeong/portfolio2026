@@ -445,8 +445,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   const viewerBannerGrid = document.getElementById('viewerBannerGrid');
 
   let viewerTween = null;
-
   let switchTimer = null;
+
+  function syncImgPadding() {
+    viewerImgWrap.style.paddingBottom = viewerPanel.offsetHeight + 'px';
+  }
 
   function setViewerImages(images, animate, maxWidth) {
     clearTimeout(switchTimer);
@@ -473,6 +476,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   function switchView(view, animate) {
     clearTimeout(switchTimer);
     if (view.type === 'banner') {
+      viewerImgWrap.scrollTop = 0;
       viewerImgStack.classList.add('no-transition');
       viewerImgStack.style.opacity = '0';
       requestAnimationFrame(() => viewerImgStack.classList.remove('no-transition'));
@@ -513,6 +517,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
     switchView(data.views[0], false);
     viewerPanel.classList.remove('collapsed');
+    requestAnimationFrame(syncImgPadding);
 
     viewerOverlay.setAttribute('aria-hidden', 'false');
     viewerOverlay.classList.add('is-open');
@@ -551,7 +556,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   viewerToggle.addEventListener('click', () => {
     viewerPanel.classList.toggle('collapsed');
+    setTimeout(syncImgPadding, 420);
   });
+
+  window.addEventListener('resize', syncImgPadding, { passive: true });
 
   document.getElementById('viewerClose').addEventListener('click', closeViewer);
   document.addEventListener('keydown', e => {
