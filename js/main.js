@@ -527,11 +527,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerBannerGrid.classList.remove('is-active');
       viewerIframe.src = view.url;
       viewerIframe.classList.add('is-active');
-      viewerPanel.classList.add('collapsed');
+      if (animate) viewerPanel.classList.add('collapsed');
     } else if (view.type === 'banner') {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
-      viewerPanel.classList.remove('collapsed');
+      if (animate) viewerPanel.classList.remove('collapsed');
       viewerImgWrap.scrollTop = 0;
       viewerImgStack.classList.add('no-transition');
       viewerImgStack.style.opacity = '0';
@@ -543,7 +543,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     } else {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
-      viewerPanel.classList.remove('collapsed');
+      if (animate) viewerPanel.classList.remove('collapsed');
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
       setViewerImages(view.images, animate, view.maxWidth);

@@ -6,7 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "start": "node script.js",
-    "dev": "serve ."
+    "dev": "serve .",
+    "predeploy": "npm run build"
   },
   "author": "",
   "license": "ISC",
