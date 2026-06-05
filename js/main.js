@@ -347,7 +347,7 @@ const MODAL_DATA = {
         'works/webpromo_diaII/dia_mo_05.jpg',
       ]},
       { label: 'Banner', type: 'banner', images: [
-        'works/webpromo_diaII/banner 1.jpg',
+        'works/webpromo_diaII/banner-1.jpg',
         'works/webpromo_diaII/banner_2.jpg',
         'works/webpromo_diaII/banner_3.jpg',
         'works/webpromo_diaII/banner_4.png',
@@ -477,7 +477,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerImgStack.style.opacity = '0';
       requestAnimationFrame(() => viewerImgStack.classList.remove('no-transition'));
       viewerBannerGrid.innerHTML = `<div class="banner-inner">${
-        view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="lazy"></div>`).join('')
+        view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="eager"></div>`).join('')
       }</div>`;
       viewerBannerGrid.classList.add('is-active');
     } else {
