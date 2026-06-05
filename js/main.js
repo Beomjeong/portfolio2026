@@ -518,6 +518,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     viewerOverlay.classList.add('is-open');
 
     const scrollY = window.scrollY;
+    ScrollTrigger.getAll().forEach(st => st.disable(false));
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollY}px`;
@@ -530,17 +531,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   function closeViewer() {
     if (viewerTween) viewerTween.kill();
+
+    const scrollY = parseInt(document.body.style.top || '0') * -1;
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo({ top: scrollY, behavior: 'instant' });
+    ScrollTrigger.getAll().forEach(st => st.enable(false));
+
     viewerTween = gsap.to(viewerOverlay, {
       opacity: 0, duration: 0.3, ease: 'power2.in',
       onComplete: () => {
         viewerOverlay.classList.remove('is-open');
         viewerOverlay.setAttribute('aria-hidden', 'true');
-        const scrollY = parseInt(document.body.style.top || '0') * -1;
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        window.scrollTo(0, scrollY);
       }
     });
   }
