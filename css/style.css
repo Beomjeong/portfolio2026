@@ -404,6 +404,7 @@ img { display: block; max-width: 100%; }
 .tool-pr      { background-image: url('../assets/ic_premiere_pro.svg'); }
 .tool-blender { background-image: url('../assets/ic_blender.svg'); }
 .tool-figma   { background-image: url('../assets/ic_figma.svg'); }
+.tool-claude  { background-image: url('../assets/ic_claude.svg'); }
 .overlay-contribution {
   font-family: var(--font-ko);
   font-size: 0.72rem;
