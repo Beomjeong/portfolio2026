@@ -418,8 +418,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 ═══════════════════════════════════════ */
 (function () {
   const viewerOverlay = document.getElementById('workViewer');
-  const viewerImgA    = document.getElementById('viewerImgA');
-  const viewerImgB    = document.getElementById('viewerImgB');
   const viewerPanel   = document.getElementById('viewerPanel');
   const viewerToggle  = document.getElementById('viewerToggle');
   const viewerCatEl   = document.getElementById('viewerCat');
@@ -430,30 +428,23 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   const viewerDescEl  = document.getElementById('viewerDesc');
   const viewerTabsEl  = document.getElementById('viewerTabs');
 
+  const viewerImg        = document.getElementById('viewerImg');
+  const viewerImgWrap    = document.getElementById('viewerImgWrap');
   const viewerBannerGrid = document.getElementById('viewerBannerGrid');
 
   let viewerTween = null;
-  let activeLayer = 'A';
 
   function setViewerImage(url, animate) {
     const encoded = encodeURI(url);
-    if (!animate) {
-      viewerImgA.style.backgroundImage = `url('${encoded}')`;
-      viewerImgA.style.opacity = '1';
-      viewerImgB.style.opacity = '0';
-      activeLayer = 'A';
-      return;
-    }
-    if (activeLayer === 'A') {
-      viewerImgB.style.backgroundImage = `url('${encoded}')`;
-      viewerImgB.style.opacity = '1';
-      viewerImgA.style.opacity = '0';
-      activeLayer = 'B';
+    viewerImgWrap.scrollTop = 0;
+    if (animate) {
+      gsap.to(viewerImg, { opacity: 0, duration: 0.15, onComplete: () => {
+        viewerImg.src = encoded;
+        gsap.to(viewerImg, { opacity: 1, duration: 0.3 });
+      }});
     } else {
-      viewerImgA.style.backgroundImage = `url('${encoded}')`;
-      viewerImgA.style.opacity = '1';
-      viewerImgB.style.opacity = '0';
-      activeLayer = 'A';
+      viewerImg.src = encoded;
+      gsap.set(viewerImg, { opacity: 1 });
     }
   }
 

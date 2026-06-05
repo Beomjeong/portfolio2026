@@ -783,16 +783,18 @@ img { display: block; max-width: 100%; }
 
 .viewer-img-wrap {
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
   position: relative;
-  overflow: hidden;
+  background: #000;
 }
-.viewer-img-layer {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  transition: opacity 0.45s ease;
+.viewer-img-wrap::-webkit-scrollbar { display: none; }
+
+.viewer-img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .viewer-panel {
