@@ -473,7 +473,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   function switchView(view, animate) {
     clearTimeout(switchTimer);
     if (view.type === 'banner') {
+      viewerImgStack.classList.add('no-transition');
       viewerImgStack.style.opacity = '0';
+      requestAnimationFrame(() => viewerImgStack.classList.remove('no-transition'));
       viewerBannerGrid.innerHTML = `<div class="banner-inner">${
         view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="lazy"></div>`).join('')
       }</div>`;
@@ -514,7 +516,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
     viewerOverlay.setAttribute('aria-hidden', 'false');
     viewerOverlay.classList.add('is-open');
+
+    const scrollY = window.scrollY;
     document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
 
     if (viewerTween) viewerTween.kill();
     gsap.set(viewerOverlay, { opacity: 0 });
@@ -528,7 +535,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       onComplete: () => {
         viewerOverlay.classList.remove('is-open');
         viewerOverlay.setAttribute('aria-hidden', 'true');
+        const scrollY = parseInt(document.body.style.top || '0') * -1;
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
       }
     });
   }

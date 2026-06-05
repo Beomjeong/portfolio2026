@@ -804,6 +804,9 @@ img { display: block; max-width: 100%; }
 #viewerImgStack {
   transition: opacity 0.2s ease;
 }
+#viewerImgStack.no-transition {
+  transition: none;
+}
 #viewerImgStack img {
   width: 100%;
   height: auto;
