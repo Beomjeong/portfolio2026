@@ -40,7 +40,7 @@ metadata:
 - **GitHub Pages 라이브**: https://beomjeong.github.io/portfolio2026/
 - `memory/` 폴더도 저장소에 포함
 
-## 구현 현황 (2026-06-04 기준)
+## 구현 현황 (2026-06-05 기준)
 
 ### 완료된 것
 - `/index.html` — 전체 페이지 구조
@@ -77,13 +77,39 @@ metadata:
 - 파티클 반짝임(twinkle) 효과 포함
 - 텍스트 색상 모두 흰색 계열(`#f0f0f0`, `rgba(240,240,240,x)`)로 변경
 
-### Works 모달 시스템 (2026-06-04 신규)
+### Works 모달 시스템
 - 카드 클릭 → 전체화면 모달 (97dvh, 아래서 슬라이드업 GSAP 애니메이션)
 - 닫기: X 버튼 / ESC / 배경 클릭
 - 모달 헤더 고정 (카테고리 · 제목 · 툴 · 기여도) + 본문 스크롤
-- `MODAL_DATA` 객체로 8개 카드 데이터 관리
-- **내부 레이아웃은 피그마 디자인 완성 후 채울 예정** (Web Promotion 먼저)
+- `MODAL_DATA` 객체로 카드 데이터 관리
 - 카드 썸네일 비율: `4:3`
+
+### Viewer Modal (2026-06-05 신규) — `type: 'viewer'`
+전체화면 이미지 뷰어 팝업. Web Promotion 카드(web-01)에 적용.
+
+**구조:**
+- `#workViewer` — position:fixed fullscreen overlay (z-index: 300)
+- `#viewerImgWrap` — 이미지 스크롤 영역 (flex:1, overflow-y:auto, 스크롤바 숨김)
+- `#viewerImgStack` — PC/MO 이미지 스택 (CSS transition:opacity 0.2s)
+- `#viewerBannerGrid` — 배너 2열 그리드 (position:absolute, is-active 클래스로 토글)
+- `#viewerPanel` — 하단 정보 패널 (collapsed 클래스로 접기/펼치기)
+
+**탭 버튼:** DM Sans 0.75rem 500 0.12em, 3가지 상태 (default/hover/active=accent색)
+
+**애니메이션:**
+- 오버레이 열기/닫기: GSAP opacity fade (0.35s/0.3s)
+- 탭 전환: CSS transition opacity 0.2s + setTimeout 200ms (GSAP 사용 시 zoom artifact 발생하여 교체)
+
+**스크롤 잠금:** iOS Safari 대응 position:fixed 패턴 — `openViewer`에서 scrollY 저장 후 body에 position:fixed/top:-scrollY 적용, `closeViewer` onComplete에서 복원
+
+**현재 등록 카드:** `web-01` — PC 5장 / MO 5장 (max-width:720px) / Banner 6장 2열 그리드
+
+**해결된 버그:**
+- 모달 열고닫을 때 페이지 가로 흔들림 → `scrollbar-gutter: stable` on html
+- 배너 그리드 스크롤바로 인한 패널 내부 흔들림 → `scrollbar-width: none`
+- PC↔MO 전환 시 스케일 artifact → GSAP 대신 CSS transition + setTimeout
+- Banner 뒤에 PC/MO 이미지 겹침 → `no-transition` 클래스로 즉시 숨김
+- iOS 무한 스크롤 → position:fixed 스크롤 잠금 패턴
 
 ### JS 구조
 - `initBgEffect(section, opts)` — canvas 그리드 + blob (hero에만 적용)
@@ -116,7 +142,7 @@ HTML: `<li class="tool-ps" title="Photoshop"></li>` 형태로 사용
 - 기준 URL: `https://beomjeong.github.io/portfolio2026/`
 
 ### 남은 것
-- 피그마 디자인 완성 → Web Promotion 모달 내부 레이아웃 구현 (최우선)
+- Works 섹션에 카드 추가 (web-01 외 다른 작업물 등록)
 - 이후 카테고리별 모달 레이아웃 (Video, 3D, Print) 순차 작업
 - 프로필 사진 교체 (`.photo-placeholder` → `<img>`)
 - 실제 작업물 이미지/썸네일(4:3)로 플레이스홀더 교체
