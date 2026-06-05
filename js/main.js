@@ -483,12 +483,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   }, { passive: true });
 
   viewerIframe.addEventListener('load', () => {
+    lastScrollTop = 0;
     try {
-      lastScrollTop = 0;
       viewerIframe.contentWindow.addEventListener('scroll', () => {
         onViewerScroll(viewerIframe.contentWindow.scrollY);
       }, { passive: true });
     } catch (e) {}
+  });
+
+  window.addEventListener('message', e => {
+    if (e.data && e.data.type === 'scroll' && viewerIframe.classList.contains('is-active')) {
+      onViewerScroll(e.data.y);
+    }
   });
 
   function setViewerImages(images, animate, maxWidth) {
