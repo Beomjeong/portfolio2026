@@ -332,8 +332,20 @@ const MODAL_DATA = {
     tools: ['tool-ps', 'tool-figma'],
     desc: '프로젝트 설명이 들어갈 자리입니다.',
     views: [
-      { label: 'PC ver', image: 'source/디아블로2 레저렉션_PC.jpg' },
-      { label: 'MO ver', image: 'source/디아블로2 레저렉션_MO.jpg' },
+      { label: 'PC ver', images: [
+        'works/webpromo_diaII/dia_pc_01.jpg',
+        'works/webpromo_diaII/dia_pc_02.jpg',
+        'works/webpromo_diaII/dia_pc_03.jpg',
+        'works/webpromo_diaII/dia_pc_04.jpg',
+        'works/webpromo_diaII/dia_pc_05.jpg',
+      ]},
+      { label: 'MO ver', images: [
+        'works/webpromo_diaII/dia_mo_01.jpg',
+        'works/webpromo_diaII/dia_mo_02.jpg',
+        'works/webpromo_diaII/dia_mo_03.jpg',
+        'works/webpromo_diaII/dia_mo_04.jpg',
+        'works/webpromo_diaII/dia_mo_05.jpg',
+      ]},
       { label: 'Banner', type: 'banner', images: [
         'works/webpromo_diaII/banner 1.jpg',
         'works/webpromo_diaII/banner_2.jpg',
@@ -428,23 +440,25 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   const viewerDescEl  = document.getElementById('viewerDesc');
   const viewerTabsEl  = document.getElementById('viewerTabs');
 
-  const viewerImg        = document.getElementById('viewerImg');
+  const viewerImgStack   = document.getElementById('viewerImgStack');
   const viewerImgWrap    = document.getElementById('viewerImgWrap');
   const viewerBannerGrid = document.getElementById('viewerBannerGrid');
 
   let viewerTween = null;
 
-  function setViewerImage(url, animate) {
-    const encoded = encodeURI(url);
+  function setViewerImages(images, animate) {
     viewerImgWrap.scrollTop = 0;
+    const html = images.map((src, i) =>
+      `<img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}>`
+    ).join('');
     if (animate) {
-      gsap.to(viewerImg, { opacity: 0, duration: 0.15, onComplete: () => {
-        viewerImg.src = encoded;
-        gsap.to(viewerImg, { opacity: 1, duration: 0.3 });
+      gsap.to(viewerImgStack, { opacity: 0, duration: 0.15, onComplete: () => {
+        viewerImgStack.innerHTML = html;
+        gsap.to(viewerImgStack, { opacity: 1, duration: 0.3 });
       }});
     } else {
-      viewerImg.src = encoded;
-      gsap.set(viewerImg, { opacity: 1 });
+      viewerImgStack.innerHTML = html;
+      gsap.set(viewerImgStack, { opacity: 1 });
     }
   }
 
@@ -454,12 +468,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="lazy"></div>`).join('')
       }</div>`;
       viewerBannerGrid.classList.add('is-active');
-      viewerImgA.style.opacity = '0';
-      viewerImgB.style.opacity = '0';
     } else {
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
-      setViewerImage(view.image, animate);
+      setViewerImages(view.images, animate);
     }
   }
 

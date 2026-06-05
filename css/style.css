@@ -791,7 +791,7 @@ img { display: block; max-width: 100%; }
 }
 .viewer-img-wrap::-webkit-scrollbar { display: none; }
 
-.viewer-img {
+#viewerImgStack img {
   width: 100%;
   height: auto;
   display: block;
