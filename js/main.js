@@ -460,7 +460,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let viewerTween = null;
   let switchTimer = null;
   let lastScrollTop = 0;
-  let showPanelTimer = null;
+  let upScrollAccum = 0;
 
 
 
@@ -468,18 +468,19 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     const delta = scrollTop - lastScrollTop;
     lastScrollTop = scrollTop;
 
-    if (Math.abs(delta) < 6) return;
-
     if (viewerPanel.classList.contains('collapsed')) {
-      clearTimeout(showPanelTimer);
       if (delta > 0 && scrollTop > 40) {
+        upScrollAccum = 0;
         viewerPanel.classList.add('scroll-hidden');
       } else if (delta < 0) {
-        showPanelTimer = setTimeout(() => {
+        upScrollAccum += Math.abs(delta);
+        if (upScrollAccum >= 40) {
           viewerPanel.classList.remove('scroll-hidden');
-        }, 150);
+          upScrollAccum = 0;
+        }
       }
     } else {
+      upScrollAccum = 0;
       viewerPanel.classList.remove('scroll-hidden');
     }
   }
@@ -579,6 +580,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         btn.classList.add('active');
         viewerPanel.classList.remove('scroll-hidden');
         lastScrollTop = 0;
+        upScrollAccum = 0;
         switchView(view, true);
       });
       viewerTabsEl.appendChild(btn);
@@ -586,6 +588,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
     viewerPanel.classList.remove('collapsed', 'scroll-hidden');
     lastScrollTop = 0;
+    upScrollAccum = 0;
     switchView(data.views[0], false);
 
     viewerOverlay.setAttribute('aria-hidden', 'false');
