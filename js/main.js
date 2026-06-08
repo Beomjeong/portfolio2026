@@ -366,7 +366,14 @@ const MODAL_DATA = {
     desc: '이환 그랜드 오픈 기념 PC방 이벤트 반응형 랜딩 페이지 및 배너 디자인입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/nte/' },
-      { label: 'Banner', type: 'banner', images: [] },
+      { label: 'Banner', type: 'banner', images: [
+        'works/webpromo_nte/banner_1.jpg',
+        'works/webpromo_nte/banner_2.jpg',
+        'works/webpromo_nte/banner_3.jpg',
+        'works/webpromo_nte/banner_4.png',
+        'works/webpromo_nte/banner_5.jpg',
+        'works/webpromo_nte/banner_6.jpg',
+      ]},
     ],
   },
   'web-03': {
@@ -379,7 +386,14 @@ const MODAL_DATA = {
     desc: '2026년 06월 카카오페이 첫 결제 할인 프로모션 랜딩 페이지 및 배너 디자인입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/kakaopay_202606/' },
-      { label: 'Banner', type: 'banner', images: [] },
+      { label: 'Banner', type: 'banner', images: [
+        'works/webpromo_kakaopay/banner_1.jpg',
+        'works/webpromo_kakaopay/banner_2.jpg',
+        'works/webpromo_kakaopay/banner_3.jpg',
+        'works/webpromo_kakaopay/banner_4.png',
+        'works/webpromo_kakaopay/banner_5.png',
+        'works/webpromo_kakaopay/banner_6.jpg',
+      ]},
     ],
   },
   'web-04': {
@@ -405,7 +419,14 @@ const MODAL_DATA = {
     desc: '피카 PC방 QR로그인 혜택 및 피카플레이 마일리지 혜택 안내 페이지입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/mediaweb_qr_sign_in/event_qr_v2.html' },
-      { label: 'Banner', type: 'banner', images: [] },
+      { label: 'Banner', type: 'banner', images: [
+        'works/webpromo_qr/banner_1.jpg',
+        'works/webpromo_qr/banner_2.jpg',
+        'works/webpromo_qr/banner_3.png',
+        'works/webpromo_qr/banner_4.png',
+        'works/webpromo_qr/banner_5.png',
+        'works/webpromo_qr/banner_6.jpg',
+      ]},
     ],
   },
   'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
