@@ -522,6 +522,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   viewerIframe.addEventListener('load', () => {
     lastScrollTop = 0;
     try {
+      const iframeDoc = viewerIframe.contentDocument;
+      const style = iframeDoc.createElement('style');
+      style.textContent = '::-webkit-scrollbar{display:none}*{scrollbar-width:none;-ms-overflow-style:none}';
+      iframeDoc.head.appendChild(style);
+
       viewerIframe.contentWindow.addEventListener('scroll', () => {
         if (viewerIframe.classList.contains('is-active')) {
           onViewerScroll(viewerIframe.contentWindow.scrollY);
