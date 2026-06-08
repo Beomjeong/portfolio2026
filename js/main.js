@@ -402,9 +402,9 @@ const MODAL_DATA = {
     sub: '이벤트페이지',
     contribution: '기여도 100%',
     tools: ['tool-ps'],
-    desc: '프로젝트 설명이 들어갈 자리입니다.',
+    desc: '피카 PC방 QR로그인 혜택 및 피카플레이 마일리지 혜택 안내 페이지입니다.',
     views: [
-      { label: 'Landing Page', type: 'iframe', url: '' },
+      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/mediaweb_qr_sign_in/event_qr_v2.html' },
       { label: 'Banner', type: 'banner', images: [] },
     ],
   },
