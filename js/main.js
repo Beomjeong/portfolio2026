@@ -502,6 +502,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
 
   function onViewerScroll(scrollTop) {
+    if (scrollTop === lastScrollTop) return;
     if (viewerPanel.classList.contains('collapsed')) {
       if (scrollTop > lastScrollTop && scrollTop > 40) {
         viewerPanel.classList.add('scroll-hidden');
