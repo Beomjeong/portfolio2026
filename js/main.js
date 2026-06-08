@@ -362,7 +362,7 @@ const MODAL_DATA = {
     title: '이환 그랜드 오픈 기념 이벤트',
     sub: '반응형 페이지·배너',
     contribution: '기여도: 디자인·퍼블리싱 100%',
-    tools: ['tool-ps', 'tool-ai', 'tool-figma', 'tool-claude'],
+    tools: ['tool-figma', 'tool-ps', 'tool-ai','tool-claude'],
     desc: '이환 그랜드 오픈 기념 PC방 이벤트 반응형 랜딩 페이지 및 배너 디자인입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/nte/' },
@@ -382,7 +382,7 @@ const MODAL_DATA = {
     title: '카카오페이 첫 결제 할인 프로모션',
     sub: '반응형 페이지·배너',
     contribution: '기여도: 디자인·퍼블리싱 100%',
-    tools: ['tool-ps', 'tool-ai', 'tool-figma', 'tool-claude'],
+    tools: ['tool-figma', 'tool-ps','tool-blender','tool-claude'],
     desc: '2026년 06월 카카오페이 첫 결제 할인 프로모션 랜딩 페이지 및 배너 디자인입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/kakaopay_202606/' },
@@ -400,9 +400,9 @@ const MODAL_DATA = {
     type: 'viewer',
     cat: 'Web Promotion',
     title: '명일방주: 앤드필드 PC방 플레이 이벤트',
-    sub: '이벤트페이지',
-    contribution: '기여도 100%',
-    tools: ['tool-ps'],
+    sub: '반응형 페이지·배너',
+    contribution: '디자인·퍼블리싱 100%',
+    tools: ['tool-figma', 'tool-ps', 'tool-ai', 'tool-claude'],
     desc: '프로젝트 설명이 들어갈 자리입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: '' },
@@ -411,11 +411,11 @@ const MODAL_DATA = {
   },
   'web-05': {
     type: 'viewer',
-    cat: 'Web Promotion',
+    cat: 'Web Promotion·Information',
     title: '피카플레이 QR로그인 이벤트',
     sub: '이벤트페이지',
-    contribution: '기여도 100%',
-    tools: ['tool-ps'],
+    contribution: '디자인·퍼블리싱 100%',
+    tools: ['tool-figma', 'tool-ps', 'tool-ai', 'tool-blender', 'tool-claude'],
     desc: '피카 PC방 QR로그인 혜택 및 피카플레이 마일리지 혜택 안내 페이지입니다.',
     views: [
       { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/mediaweb_qr_sign_in/event_qr_v2.html' },
