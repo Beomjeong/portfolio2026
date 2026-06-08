@@ -986,7 +986,7 @@ img { display: block; max-width: 100%; }
   position: absolute;
   inset: 0;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior: none;
   scrollbar-width: none;
   background: #111;
   padding: 2rem;

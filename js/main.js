@@ -524,7 +524,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     try {
       const iframeDoc = viewerIframe.contentDocument;
       const style = iframeDoc.createElement('style');
-      style.textContent = 'html,body{scrollbar-width:none!important;scrollbar-gutter:auto!important;-ms-overflow-style:none!important}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none!important;width:0!important}';
+      style.textContent = 'html,body{scrollbar-width:none!important;scrollbar-gutter:auto!important;-ms-overflow-style:none!important;overscroll-behavior:none!important}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none!important;width:0!important}';
       iframeDoc.head.appendChild(style);
 
       viewerIframe.contentWindow.addEventListener('scroll', () => {
