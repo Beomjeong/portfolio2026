@@ -7,11 +7,14 @@
   "scripts": {
     "start": "node script.js",
     "dev": "serve .",
-    "predeploy": "npm run build"
+    "deploy": "gh-pages -d ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "serve": "^14.2.6"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
