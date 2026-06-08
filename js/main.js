@@ -520,6 +520,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   viewerIframe.addEventListener('load', () => {
     lastScrollTop = 0;
+    try {
+      viewerIframe.contentWindow.addEventListener('scroll', () => {
+        if (viewerIframe.classList.contains('is-active')) {
+          onViewerScroll(viewerIframe.contentWindow.scrollY);
+        }
+      }, { passive: true });
+    } catch (e) {}
   });
 
   window.addEventListener('message', e => {
