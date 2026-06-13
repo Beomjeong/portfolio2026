@@ -403,10 +403,17 @@ const MODAL_DATA = {
     sub: '반응형 페이지·배너',
     contribution: '디자인·퍼블리싱 100%',
     tools: ['tool-figma', 'tool-ps', 'tool-ai', 'tool-claude'],
-    desc: '프로젝트 설명이 들어갈 자리입니다.',
+    desc: '명일방주: 앤드필드 PC방 플레이 이벤트 반응형 랜딩 페이지 및 배너 디자인입니다.',
     views: [
-      { label: 'Landing Page', type: 'iframe', url: '' },
-      { label: 'Banner', type: 'banner', images: [] },
+      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/endfield/' },
+      { label: 'Banner', type: 'banner', images: [
+        'works/webpromo_endfield/banner_1.jpg',
+        'works/webpromo_endfield/banner_2.jpg',
+        'works/webpromo_endfield/banner_3.jpg',
+        'works/webpromo_endfield/banner_4.jpg',
+        'works/webpromo_endfield/banner_5.png',
+        'works/webpromo_endfield/banner_6.jpg',
+      ]},
     ],
   },
   'web-05': {
