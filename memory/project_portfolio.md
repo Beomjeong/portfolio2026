@@ -45,22 +45,29 @@ metadata:
 |---------|--------|-----------|
 | web-02 | https://github.com/Beomjeong/nte | https://beomjeong.github.io/nte/ |
 | web-03 | https://github.com/Beomjeong/kakaopay_202606 | https://beomjeong.github.io/kakaopay_202606/ |
+| web-04 | https://github.com/Beomjeong/endfield | https://beomjeong.github.io/endfield/ |
+| web-05 | — | https://beomjeong.github.io/mediaweb_qr_sign_in/event_qr_v2.html |
+| web-06 | https://github.com/Beomjeong/sol | https://beomjeong.github.io/sol/ |
 
 ---
 
-## 구현 현황 (2026-06-06 기준)
+## 구현 현황 (2026-06-13 기준)
 
 ### 완료된 것
 - `/index.html` — 전체 페이지 구조
   - Header (스크롤 시 blur 전환, nav 호버 언더라인)
-  - **Nav 로고**: `assets/logo_beomjeong.svg` img 태그로 교체 (height: 26px)
+  - **Nav 로고**: `assets/logo_beomjeong.svg` img 태그로 교체 (height: 26px), 링크 `#` (최상단)
   - Hero (리뉴얼 완료 — 아래 상세)
   - Works (탭 필터 All/Web/Video/3D/Printing + 카드 + 호버 오버레이)
     - 오버레이 툴 표시: 텍스트 pill → **SVG 아이콘** (CSS tool icon map)
   - About (프로필 사진 자리, 자기소개 텍스트, 스킬 목록, 툴바, 경력 4개)
   - Contact (이메일, 인스타 + 고정 배경 효과)
 - `/css/style.css` — 전체 스타일 (반응형 포함)
+  - 스크롤바 전역 숨김: `scrollbar-width: none` + `-webkit-scrollbar: display:none`
+  - 뷰어 `overscroll-behavior: none`
 - `/js/main.js` — 애니메이션 및 인터랙션
+  - `onViewerScroll`: `scrollTop === lastScrollTop`이면 early return (중복 처리 차단)
+  - iframe load 시 내부 스크롤바 숨김 스타일 주입 + iframe 내부 scroll 이벤트 → `onViewerScroll` 연결
 
 ### Hero 섹션 상세 (리뉴얼)
 - 구조: "안녕하세요! 저는" (greeting) + "[역할]" (role)
@@ -88,7 +95,7 @@ metadata:
 - 카드 썸네일 비율: `4:3`
 
 ### Viewer Modal — `type: 'viewer'`
-전체화면 뷰어 팝업. web-01~03 카드에 적용.
+전체화면 뷰어 팝업. web-01~07 카드에 적용.
 
 **구조:**
 - `#workViewer` — position:fixed fullscreen overlay (z-index: 300)
@@ -103,7 +110,7 @@ metadata:
 |------|--------|----------------|
 | 이미지 (default) | viewerImgStack에 img 렌더 | viewerImgWrap.scroll 이벤트 |
 | banner | viewerBannerGrid에 그리드 렌더 | viewerBannerGrid.scroll |
-| iframe | viewerIframe src 설정 | iframe → postMessage → window.message 이벤트 |
+| iframe | viewerIframe src 설정 | iframe load 시 내부 scroll 이벤트 직접 연결 |
 
 **하단 패널 스크롤 숨김:**
 - 패널이 `collapsed` 상태일 때만 작동
@@ -111,62 +118,25 @@ metadata:
 - 스크롤 업 → 패널 복귀
 
 **등록 카드:**
-- `web-01` — PC 5장 / MO 5장 (max-width:720px) / Banner 6장 2열 그리드 (이미지 뷰)
-- `web-02` — nte 랜딩 / Banner (iframe 뷰 + banner 뷰)
-- `web-03` — kakaopay 랜딩 / Banner (iframe 뷰 + banner 뷰)
+| 카드 | 제목 | 썸네일 | 뷰 |
+|------|------|--------|-----|
+| web-01 | (diaII 관련) | ✅ | PC 5장 / MO 5장 / Banner 6장 |
+| web-02 | 이환 그랜드 오픈 기념 이벤트 | ✅ | iframe + Banner 6장 |
+| web-03 | 카카오페이 첫 결제 할인 프로모션 | ✅ | iframe + Banner 6장 |
+| web-04 | 명일방주: 앤드필드 PC방 플레이 이벤트 | ✅ | iframe + Banner 6장 |
+| web-05 | 피카플레이 QR로그인 이벤트 | ✅ | iframe + Banner 6장 |
+| web-06 | SOL: inchant 그랜드 론칭 기념 프로모션 | ✅ | iframe + Banner 6장 |
+| web-07 | 한게임 포커 이벤트 | ❌ 플레이스홀더 | iframe(URL 미등록) + Banner(미등록) |
 
 ---
 
-## ⚠️ 버그 이력 및 해결 과정 (2026-06-06)
+## ✅ 버그 해결 완료 (2026-06-13 확인)
 
-### 문제
-- web-03 (kakaopay): 로컬(`npm run dev`)에서는 패널 스크롤 숨김 작동, GitHub Pages에서 안 됨
-- web-02 (nte): 로컬에서 안 됨, GitHub Pages에서 작동
-
-### 원인 분석
-**환경별 iframe 스크롤 감지 메커니즘의 차이:**
-
-| 환경 | 동일 오리진 여부 | iframe → viewerImgWrap 스크롤 체이닝 |
-|------|----------------|--------------------------------------|
-| 로컬 (`localhost`) | 크로스 오리진 | ❌ 차단 (브라우저 보안) |
-| GitHub Pages | 동일 오리진 (`beomjeong.github.io`) | ✅ 발생 |
-
-- **스크롤 체이닝**: 동일 오리진 iframe에서 스크롤 이벤트가 부모의 `viewerImgWrap`으로 전파됨. 단, `viewerImgStack`에 이전 뷰어 세션의 이미지가 남아 있을 때만 발생.
-- **postMessage**: iframe 페이지가 `window.parent.postMessage({type:'scroll', y:window.scrollY}, '*')` 전송 시 작동. 크로스/동일 오리진 모두 작동.
-
-**각 카드 상태 (수정 전):**
-- nte: postMessage 코드 **없음** → 로컬 감지 불가. GitHub Pages는 체이닝으로 우연히 작동.
-- kakaopay: postMessage 코드 **있음** (2026-06-05 추가). 로컬은 postMessage로 작동. GitHub Pages는 체이닝 + postMessage 동시 발화로 **충돌** → 패널 숨김 실패.
-
-**충돌 메커니즘:**
-1. postMessage → `onViewerScroll(iframe.scrollY = 50)` → 패널 숨김 → lastScrollTop = 50
-2. 체이닝 → `viewerImgWrap.scrollTop = 10` → `onViewerScroll(10)` → `10 > 50` FALSE → **패널 다시 표시** → lastScrollTop = 10
-→ 매 스크롤마다 반복 → 패널이 숨겨지지 않음
-
-### 수정 내역
-
-**1차 시도 (잘못된 접근 — 되돌림):**
-- portfolio `viewerImgWrap.scroll` 에서 iframe 활성 시 무시하는 분기 추가
-- 결과: nte GitHub Pages에서 체이닝도 차단되어 패널 숨김 전면 중단. nte postMessage CDN 미반영 상태라 완전히 깨짐.
-
-**최종 수정 (2026-06-06, commit `bf02e6a`):**
-- `js/main.js` `switchView` 내 iframe 분기에 `viewerImgStack.innerHTML = ''` 추가
-- iframe으로 전환 시 이미지 잔여물 즉시 제거 → `viewerImgWrap` 스크롤 불가 → 체이닝 원천 차단
-- iframe 뷰는 **postMessage만** 사용하도록 일원화
-
-**nte postMessage 추가 (commit `10bd56d` — nte 저장소):**
-- `nte/index.html` 스크립트 끝에 scroll → postMessage 코드 추가
-- kakaopay와 동일한 방식으로 포트폴리오 패널 연동
-
-### ⏳ 미확인 사항 (2026-06-06 저녁 기준)
-- 위 수정들이 실제로 양쪽 환경에서 모두 정상 작동하는지 **내일 직접 브라우저로 확인 필요**
-- GitHub Pages CDN `max-age=600` (10분)이 만료된 후 테스트해야 정확함
-- 확인 체크리스트:
-  - [ ] web-02 로컬(`npm run dev`)에서 패널 스크롤 숨김 작동
-  - [ ] web-02 GitHub Pages에서 패널 스크롤 숨김 작동
-  - [ ] web-03 로컬에서 패널 스크롤 숨김 작동
-  - [ ] web-03 GitHub Pages에서 패널 스크롤 숨김 작동
-  - [ ] web-01(이미지 뷰) 패널 스크롤 숨김 여전히 작동하는지
+### iframe 패널 스크롤 숨김 문제 (해결)
+- **증상**: web-02/03 로컬↔GitHub Pages 환경 간 패널 스크롤 숨김 동작 불일치
+- **원인**: 동일 오리진(GitHub Pages)에서 iframe 스크롤이 부모 `viewerImgWrap`으로 체이닝
+- **최종 수정**: iframe 전환 시 `viewerImgStack.innerHTML = ''`로 체이닝 원천 차단 + iframe load 시 내부 scroll 이벤트 직접 연결로 일원화
+- **2026-06-13**: 배포 버전에서 정상 작동 최종 확인 ✅
 
 ---
 
@@ -199,11 +169,10 @@ HTML: `<li class="tool-ps" title="Photoshop"></li>` 형태로 사용
 - `ic_photoshop/illustrator/lightroom/after_effects/premiere_pro/blender/figma/claude.svg` — 툴 아이콘 8종
 
 ## 남은 것
-- **[우선]** 내일 web-02/03 패널 스크롤 숨김 양쪽 환경에서 동작 확인 (위 체크리스트)
-- Works 섹션 카드 추가 (web-04/05 등 실제 작업물 이미지/썸네일 등록)
-- 이후 카테고리별 모달 레이아웃 (Video, 3D, Print) 순차 작업
+- **web-07** 에셋/URL 준비되면 등록
+- Video/3D/Print 카테고리 모달 레이아웃 순차 작업
 - 프로필 사진 교체 (`.photo-placeholder` → `<img>`)
-- 실제 작업물 썸네일(4:3)로 플레이스홀더 교체
+- X(닫기) 버튼 가시성 개선 (IDEAS.md 02번 — 크기 확실히 키우기)
 
 ## 파일 구조
 ```
@@ -213,6 +182,12 @@ portfolio2026/
 ├── js/main.js
 ├── assets/         ← SVG 아이콘, 로고, 썸네일 등
 ├── works/          ← 작업물 이미지
+│   ├── webpromo_diaII/
+│   ├── webpromo_nte/
+│   ├── webpromo_kakaopay/
+│   ├── webpromo_endfield/
+│   ├── webpromo_qr/
+│   └── webpromo_sol/
 └── memory/         ← 프로젝트 메모 (git 포함)
 ```
 
@@ -221,6 +196,7 @@ portfolio2026/
 1. **불분명한 게 있으면 반드시 물어보고 진행** — 추측으로 작업하지 말 것
 2. **에셋 파일이 필요하면 사용자에게 요청** — 임의로 placeholder 처리하거나 생략하지 말 것
 3. **커밋/푸시는 사용자가 요청할 때만** — 코드 수정 후 자동으로 실행하지 말 것
+4. **커밋 시 `assets/`, `works/` 폴더 반드시 포함** — git status로 untracked 확인 후 스테이징
 
 **Why:** 스타트업 중심 지원이므로 트렌디하고 인터랙티브한 느낌이 중요
 **How to apply:** 과도한 장식보다 모션 퀄리티에 집중, 작업물이 주인공이 되도록 레이아웃 구성
