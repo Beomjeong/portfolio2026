@@ -469,6 +469,36 @@ const MODAL_DATA = {
       { label: 'Banner', type: 'banner', images: [] },
     ],
   },
+  'web-08': {
+    type: 'viewer',
+    cat: 'Card News',
+    title: '위례포에버의원 블로그 카드뉴스',
+    sub: '블로그 카드뉴스',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ai', 'tool-ps', 'tool-ae'],
+    desc: '위례포에버의원 블로그용 카드뉴스 디자인입니다.',
+    views: [
+      { label: '병원 소개', type: 'cardnews', images: [
+        'works/webpromo_forever/intro_1.jpg',
+        'works/webpromo_forever/intro_2.jpg',
+        'works/webpromo_forever/intro_3.jpg',
+        'works/webpromo_forever/intro_4.jpg',
+        'works/webpromo_forever/intro_5.jpg',
+        'works/webpromo_forever/intro_6.jpg',
+        'works/webpromo_forever/intro_7.jpg',
+        'works/webpromo_forever/intro_8.jpg',
+        'works/webpromo_forever/intro_9.jpg',
+        'works/webpromo_forever/intro_10.jpg',
+      ]},
+      { label: '시술 소개', type: 'cardnews', images: [
+        'works/webpromo_forever/onda_1.jpg',
+        'works/webpromo_forever/onda_2.jpg',
+        'works/webpromo_forever/onda_3.jpg',
+        'works/webpromo_forever/onda_4.jpg',
+        'works/webpromo_forever/onda_5.jpg',
+      ]},
+    ],
+  },
   'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
   'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
   '3d-01':    { cat: '3D',            title: '3D 에셋 타이틀',      sub: 'Blender',        contribution: '기여도 100%', tools: ['tool-blender'] },
@@ -559,6 +589,45 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let viewerTween = null;
   let switchTimer = null;
   let lastScrollTop = 0;
+  let cardSTs = [];
+
+  function killCardSTs() {
+    cardSTs.forEach(st => st.kill());
+    cardSTs = [];
+    viewerImgStack.querySelectorAll('.cn-card').forEach(c => {
+      gsap.set(c, { clearProps: 'scale,filter' });
+    });
+  }
+
+  function initCardnewsStack() {
+    const cards = Array.from(viewerImgStack.querySelectorAll('.cn-card'));
+    cards.forEach((card, i) => {
+      if (i >= cards.length - 1) return;
+      const st = ScrollTrigger.create({
+        trigger: cards[i + 1],
+        scroller: viewerImgWrap,
+        start: 'top bottom',
+        end: 'top top',
+        scrub: true,
+        onUpdate(self) {
+          const p = self.progress;
+          gsap.set(card, {
+            scale: 1 - p * 0.06,
+            // filter: `brightness(${1 - p * 0.12})`
+          });
+        }
+      });
+      cardSTs.push(st);
+    });
+    const imgs = Array.from(viewerImgStack.querySelectorAll('img'));
+    let remaining = imgs.filter(img => !img.complete).length;
+    if (remaining === 0) { ScrollTrigger.refresh(); return; }
+    imgs.forEach(img => {
+      if (!img.complete) img.addEventListener('load', () => {
+        if (--remaining === 0) ScrollTrigger.refresh();
+      }, { once: true });
+    });
+  }
 
 
 
@@ -626,6 +695,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   function switchView(view, animate) {
     clearTimeout(switchTimer);
+    killCardSTs();
+    viewerImgStack.classList.remove('is-cardnews');
     if (view.type === 'iframe') {
       viewerImgWrap.scrollTop = 0;
       viewerImgStack.classList.add('no-transition');
@@ -646,6 +717,25 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         view.images.map(src => `<div class="banner-item"><img src="${encodeURI(src)}" alt="" loading="eager"></div>`).join('')
       }</div>`;
       viewerBannerGrid.classList.add('is-active');
+    } else if (view.type === 'cardnews') {
+      viewerIframe.classList.remove('is-active');
+      viewerIframe.src = '';
+      viewerBannerGrid.classList.remove('is-active');
+      viewerImgWrap.scrollTop = 0;
+      viewerImgStack.classList.add('is-cardnews');
+      const loadCards = () => {
+        viewerImgStack.innerHTML = view.images.map((src, i) =>
+          `<div class="cn-card" style="z-index:${i + 1}"><img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}></div>`
+        ).join('');
+        viewerImgStack.style.opacity = '1';
+        initCardnewsStack();
+      };
+      if (animate) {
+        viewerImgStack.style.opacity = '0';
+        switchTimer = setTimeout(loadCards, 200);
+      } else {
+        loadCards();
+      }
     } else {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
@@ -701,6 +791,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   }
 
   function closeViewer() {
+    killCardSTs();
     if (viewerTween) viewerTween.kill();
 
     const scrollY = parseInt(document.body.style.top || '0') * -1;
