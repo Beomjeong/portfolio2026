@@ -742,6 +742,17 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     }
   });
 
+  function applyImgFadeIn() {
+    viewerImgStack.querySelectorAll('img').forEach(img => {
+      if (img.complete && img.naturalWidth > 0) {
+        img.style.opacity = '1';
+      } else {
+        img.addEventListener('load',  () => { img.style.opacity = '1'; }, { once: true });
+        img.addEventListener('error', () => { img.style.opacity = '1'; }, { once: true });
+      }
+    });
+  }
+
   function setViewerImages(images, animate, maxWidth) {
     clearTimeout(switchTimer);
     viewerImgWrap.scrollTop = 0;
@@ -755,12 +766,14 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
         viewerImgStack.innerHTML = html;
         viewerImgStack.style.opacity = '1';
+        applyImgFadeIn();
       }, 200);
     } else {
       viewerImgStack.style.maxWidth = maxWidth || '';
       viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
       viewerImgStack.innerHTML = html;
       viewerImgStack.style.opacity = '1';
+      applyImgFadeIn();
     }
   }
 
@@ -801,6 +814,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
           `<div class="cn-card" style="z-index:${i + 1}"><img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}></div>`
         ).join('');
         viewerImgStack.style.opacity = '1';
+        applyImgFadeIn();
         initCardnewsStack();
       };
       if (animate) {
