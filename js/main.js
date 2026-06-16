@@ -425,7 +425,7 @@ const MODAL_DATA = {
     tools: ['tool-figma', 'tool-ps', 'tool-ai', 'tool-blender', 'tool-claude'],
     desc: '피카 PC방 QR로그인 혜택 및 피카플레이 마일리지 혜택 안내 페이지입니다.',
     views: [
-      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/mediaweb_qr_sign_in/event_qr_v2.html' },
+      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/mediaweb_qr_sign_in/' },
       { label: 'Banner', type: 'banner', images: [
         'works/webpromo_qr/banner_1.jpg',
         'works/webpromo_qr/banner_2.jpg',
