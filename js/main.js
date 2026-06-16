@@ -499,6 +499,77 @@ const MODAL_DATA = {
       ]},
     ],
   },
+  'web-09': {
+    type: 'viewer',
+    cat: 'Card News',
+    title: '서울베스트치과 블로그 카드뉴스',
+    sub: '블로그 카드뉴스',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ai', 'tool-ps', 'tool-ae'],
+    desc: '서울베스트치과 블로그용 카드뉴스 디자인입니다.',
+    views: [
+      { label: '임플란트', bg: '#ffffff', maxWidth: '680px', images: [
+        'works/blog_seoulbest/impl_1.gif',
+        'works/blog_seoulbest/impl_2.jpg',
+        'works/blog_seoulbest/impl_3.gif',
+        'works/blog_seoulbest/impl_4.jpg',
+        'works/blog_seoulbest/impl_5.jpg',
+        'works/blog_seoulbest/impl_6.jpg',
+        'works/blog_seoulbest/impl_7.jpg',
+        'works/blog_seoulbest/impl_8.jpg',
+        'works/blog_seoulbest/impl_9.gif',
+        'works/blog_seoulbest/impl_10.jpg',
+        'works/blog_seoulbest/impl_11.jpg',
+        'works/blog_seoulbest/impl_12.gif',
+        'works/blog_seoulbest/impl_13.gif',
+        'works/blog_seoulbest/impl_14.jpg',
+        'works/blog_seoulbest/impl_15.jpg',
+        'works/blog_seoulbest/impl_16.gif',
+        'works/blog_seoulbest/impl_17.jpg',
+        'works/blog_seoulbest/impl_18.gif',
+        'works/blog_seoulbest/impl_19.jpg',
+        'works/blog_seoulbest/impl_20.jpg',
+        'works/blog_seoulbest/impl_21.gif',
+        'works/blog_seoulbest/impl_22.jpg',
+        'works/blog_seoulbest/footer_1.jpg',
+        'works/blog_seoulbest/footer_2.gif',
+        'works/blog_seoulbest/footer_3.gif',
+        'works/blog_seoulbest/footer_4.gif',
+        'works/blog_seoulbest/footer_5.gif',
+        'works/blog_seoulbest/footer_6.gif',
+        'works/blog_seoulbest/footer_7.jpg',
+      ]},
+      { label: '치아교정', bg: '#ffffff', maxWidth: '680px', images: [
+        'works/blog_seoulbest/gyo_1.gif',
+        'works/blog_seoulbest/gyo_2.png',
+        'works/blog_seoulbest/gyo_3.gif',
+        'works/blog_seoulbest/gyo_4.jpg',
+        'works/blog_seoulbest/gyo_5.jpg',
+        'works/blog_seoulbest/gyo_6.jpg',
+        'works/blog_seoulbest/gyo_7.jpg',
+        'works/blog_seoulbest/gyo_8.jpg',
+        'works/blog_seoulbest/gyo_9.jpg',
+        'works/blog_seoulbest/gyo_10.gif',
+        'works/blog_seoulbest/gyo_11.jpg',
+        'works/blog_seoulbest/gyo_12.jpg',
+        'works/blog_seoulbest/gyo_13.jpg',
+        'works/blog_seoulbest/gyo_14.jpg',
+        'works/blog_seoulbest/gyo_15.jpg',
+        'works/blog_seoulbest/gyo_16.gif',
+        'works/blog_seoulbest/gyo_17.gif',
+        'works/blog_seoulbest/gyo_18.gif',
+        'works/blog_seoulbest/gyo_19.jpg',
+        'works/blog_seoulbest/gyo_20.jpg',
+        'works/blog_seoulbest/footer_1.jpg',
+        'works/blog_seoulbest/footer_2.gif',
+        'works/blog_seoulbest/footer_3.gif',
+        'works/blog_seoulbest/footer_4.gif',
+        'works/blog_seoulbest/footer_5.gif',
+        'works/blog_seoulbest/footer_6.gif',
+        'works/blog_seoulbest/footer_7.jpg',
+      ]},
+    ],
+  },
   'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
   'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
   '3d-01':    { cat: '3D',            title: '3D 에셋 타이틀',      sub: 'Blender',        contribution: '기여도 100%', tools: ['tool-blender'] },
@@ -697,6 +768,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     clearTimeout(switchTimer);
     killCardSTs();
     viewerImgStack.classList.remove('is-cardnews');
+    viewerImgWrap.style.background = view.bg || '';
+    viewerOverlay.classList.toggle('is-light-bg', !!view.bg);
     if (view.type === 'iframe') {
       viewerImgWrap.scrollTop = 0;
       viewerImgStack.classList.add('no-transition');
@@ -792,6 +865,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   function closeViewer() {
     killCardSTs();
+    viewerImgWrap.style.background = '';
+    viewerOverlay.classList.remove('is-light-bg');
     if (viewerTween) viewerTween.kill();
 
     const scrollY = parseInt(document.body.style.top || '0') * -1;

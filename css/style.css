@@ -802,6 +802,8 @@ img { display: block; max-width: 100%; }
   transition: color 0.2s;
 }
 .viewer-close:hover { color: #fff; }
+.viewer-overlay.is-light-bg .viewer-close { color: rgba(0,0,0,0.5); }
+.viewer-overlay.is-light-bg .viewer-close:hover { color: #000; }
 
 .viewer-img-wrap {
   flex: 1;
