@@ -665,6 +665,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   function killCardSTs() {
     cardSTs.forEach(st => st.kill());
     cardSTs = [];
+    viewerImgStack.style.paddingBottom = '';
     viewerImgStack.querySelectorAll('.cn-card').forEach(c => {
       gsap.set(c, { clearProps: 'scale,filter' });
     });
@@ -690,12 +691,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       });
       cardSTs.push(st);
     });
+    const lastCard = cards[cards.length - 1];
+    const applyPadding = () => {
+      const deficit = viewerImgWrap.clientHeight - lastCard.offsetHeight;
+      viewerImgStack.style.paddingBottom = Math.max(0, deficit) + 'px';
+      ScrollTrigger.refresh();
+    };
     const imgs = Array.from(viewerImgStack.querySelectorAll('img'));
     let remaining = imgs.filter(img => !img.complete).length;
-    if (remaining === 0) { ScrollTrigger.refresh(); return; }
+    if (remaining === 0) { applyPadding(); return; }
     imgs.forEach(img => {
       if (!img.complete) img.addEventListener('load', () => {
-        if (--remaining === 0) ScrollTrigger.refresh();
+        if (--remaining === 0) applyPadding();
       }, { once: true });
     });
   }

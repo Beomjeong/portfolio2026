@@ -811,6 +811,7 @@ img { display: block; max-width: 100%; }
   overflow-x: hidden;
   scrollbar-width: none;
   position: relative;
+  isolation: isolate;
   background: #000;
   overscroll-behavior: none;
 }
