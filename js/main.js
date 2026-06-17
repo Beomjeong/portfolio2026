@@ -879,8 +879,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   function closeViewer() {
     killCardSTs();
-    viewerImgWrap.style.background = '';
-    viewerOverlay.classList.remove('is-light-bg');
     if (viewerTween) viewerTween.kill();
 
     const scrollY = parseInt(document.body.style.top || '0') * -1;
@@ -894,6 +892,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     viewerTween = gsap.to(viewerOverlay, {
       opacity: 0, duration: 0.3, ease: 'power2.in',
       onComplete: () => {
+        viewerImgWrap.style.background = '';
+        viewerOverlay.classList.remove('is-light-bg');
         viewerOverlay.classList.remove('is-open');
         viewerOverlay.setAttribute('aria-hidden', 'true');
       }
