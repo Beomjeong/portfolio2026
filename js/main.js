@@ -573,7 +573,24 @@ const MODAL_DATA = {
   'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
   'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
   '3d-01':    { cat: '3D',            title: '3D 에셋 타이틀',      sub: 'Blender',        contribution: '기여도 100%', tools: ['tool-blender'] },
-  'print-01': { cat: 'Printing',      title: '포스터 타이틀',       sub: '포스터',         contribution: '기여도 100%', tools: ['tool-ai','tool-ps'] },
+  'print-01': {
+    type: 'viewer',
+    cat: 'Print Design',
+    title: '양양 스파리조트 프로모션 포스터',
+    sub: '프로모션 포스터',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ai', 'tool-ps', 'tool-lr'],
+    desc: '양양 스파리조트 홍보용 프로모션 포스터 시리즈입니다.',
+    views: [
+      { label: '포스터', type: 'hanging', images: [
+        'works/poster_resort/poster_01.jpg',
+        'works/poster_resort/poster_02.jpg',
+        'works/poster_resort/poster_03.jpg',
+        'works/poster_resort/poster_04.jpg',
+        'works/poster_resort/poster_05.jpg',
+      ]},
+    ],
+  },
   'print-02': { cat: 'Printing',      title: 'X배너 / 사이니지',    sub: 'Stand Banner',   contribution: '기여도 100%', tools: ['tool-ai'] },
 };
 
@@ -661,6 +678,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let switchTimer = null;
   let lastScrollTop = 0;
   let cardSTs = [];
+  let hangingScrollHandler = null;
 
   function killCardSTs() {
     cardSTs.forEach(st => st.kill());
@@ -668,6 +686,51 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     viewerImgStack.style.paddingBottom = '';
     viewerImgStack.querySelectorAll('.cn-card').forEach(c => {
       gsap.set(c, { clearProps: 'scale,filter' });
+    });
+  }
+
+  function killHangingST() {
+    if (hangingScrollHandler) {
+      viewerImgWrap.removeEventListener('scroll', hangingScrollHandler);
+      hangingScrollHandler = null;
+    }
+    viewerImgStack.style.height = '';
+    viewerImgStack.classList.remove('is-hanging');
+  }
+
+  function initHangingScroll() {
+    const scene = viewerImgStack.querySelector('.hanging-scene');
+    const track = viewerImgStack.querySelector('.hanging-track');
+    if (!scene || !track) return;
+
+    const setup = () => {
+      const sceneH  = viewerImgWrap.clientHeight;
+      const posterH = Math.max(200, Math.floor(sceneH * 0.68));
+      const stringH = Math.max(60, sceneH - posterH - 60);
+
+      scene.style.height = sceneH + 'px';
+      scene.style.setProperty('--poster-h', posterH + 'px');
+      scene.style.setProperty('--string-h', stringH + 'px');
+
+      requestAnimationFrame(() => {
+        const totalSlide = Math.max(0, track.scrollWidth - viewerImgWrap.clientWidth);
+        viewerImgStack.style.height = (sceneH + totalSlide) + 'px';
+
+        hangingScrollHandler = () => {
+          const x = Math.min(viewerImgWrap.scrollTop, totalSlide);
+          gsap.set(track, { x: -x });
+        };
+        viewerImgWrap.addEventListener('scroll', hangingScrollHandler, { passive: true });
+      });
+    };
+
+    const posters = Array.from(track.querySelectorAll('.hs-poster'));
+    let remaining = posters.filter(img => !img.complete).length;
+    if (remaining === 0) { setup(); return; }
+    posters.forEach(img => {
+      if (!img.complete) img.addEventListener('load', () => {
+        if (--remaining === 0) setup();
+      }, { once: true });
     });
   }
 
@@ -787,6 +850,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   function switchView(view, animate) {
     clearTimeout(switchTimer);
     killCardSTs();
+    killHangingST();
     viewerImgStack.classList.remove('is-cardnews');
     viewerImgWrap.style.background = view.bg || '';
     viewerOverlay.classList.toggle('is-light-bg', !!view.bg);
@@ -829,6 +893,32 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         switchTimer = setTimeout(loadCards, 200);
       } else {
         loadCards();
+      }
+    } else if (view.type === 'hanging') {
+      viewerIframe.classList.remove('is-active');
+      viewerIframe.src = '';
+      viewerBannerGrid.classList.remove('is-active');
+      viewerImgStack.classList.add('is-hanging');
+      const loadHanging = () => {
+        viewerImgStack.innerHTML = `<div class="hanging-scene"><div class="hanging-track">${
+          view.images.map(src => `<div class="hanging-set">
+            <div class="hs-string hs-string-l"></div>
+            <div class="hs-string hs-string-r"></div>
+            <img class="hs-clip hs-clip-l" src="assets/clip.png" alt="">
+            <img class="hs-clip hs-clip-r" src="assets/clip.png" alt="">
+            <img class="hs-poster" src="${encodeURI(src)}" alt="">
+          </div>`).join('')
+        }</div></div>`;
+        viewerImgStack.style.opacity = '1';
+        applyImgFadeIn();
+        initHangingScroll();
+      };
+      viewerImgWrap.scrollTop = 0;
+      if (animate) {
+        viewerImgStack.style.opacity = '0';
+        switchTimer = setTimeout(loadHanging, 200);
+      } else {
+        loadHanging();
       }
     } else {
       viewerIframe.classList.remove('is-active');
@@ -886,6 +976,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
   function closeViewer() {
     killCardSTs();
+    killHangingST();
     if (viewerTween) viewerTween.kill();
 
     const scrollY = parseInt(document.body.style.top || '0') * -1;

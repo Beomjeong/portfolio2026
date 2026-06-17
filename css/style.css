@@ -847,6 +847,60 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
+/* ── Hanging Poster Viewer ── */
+.hanging-scene {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  /* height / --poster-h / --string-h set by JS */
+}
+.hanging-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+  padding: 0 80px;
+  will-change: transform;
+}
+.hanging-set {
+  position: relative;
+  flex-shrink: 0;
+  isolation: isolate;
+  padding-top: var(--string-h, 140px);
+}
+.hs-string {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: calc(var(--string-h, 140px) + 5px);
+  background: #2c2c2c;
+}
+.hs-string-l { left: 20px; }
+.hs-string-r { right: 20px; }
+.hs-clip {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--string-h, 140px) - 22px);
+}
+.hs-clip-l { left: 6px; }
+.hs-clip-r { right: 6px; }
+#viewerImgStack.is-hanging img.hs-clip {
+  width: 28px;
+  height: auto;
+  display: block;
+}
+#viewerImgStack.is-hanging img.hs-poster {
+  display: block;
+  width: auto;
+  height: var(--poster-h, 55vh);
+  position: relative;
+  z-index: 1;
+  margin-top: -22px;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+}
+
 .viewer-panel {
   position: absolute;
   bottom: 0;
