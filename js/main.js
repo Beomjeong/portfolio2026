@@ -471,12 +471,12 @@ const MODAL_DATA = {
   },
   'web-08': {
     type: 'viewer',
-    cat: 'Card News',
-    title: '위례포에버의원 블로그 카드뉴스',
+    cat: 'Branding·Marketing',
+    title: '병의원 마케팅 - 위례포에버의원',
     sub: '블로그 카드뉴스',
     contribution: '디자인·기획 100%',
     tools: ['tool-ai', 'tool-ps', 'tool-ae'],
-    desc: '위례포에버의원 블로그용 카드뉴스 디자인입니다.',
+    desc: '위례포에버의원 블로그 마케팅용 이미지카드입니다. \n원장님과 충분한 소통 후 위례포에버의원 브랜드 아이덴티티에 맞춰 기획, 카피라이팅, 디자인을 진행했습니다.',
     views: [
       { label: '병원 소개', type: 'cardnews', images: [
         'works/webpromo_forever/intro_1.jpg',
@@ -501,12 +501,12 @@ const MODAL_DATA = {
   },
   'web-09': {
     type: 'viewer',
-    cat: 'Card News',
-    title: '서울베스트치과 블로그 카드뉴스',
-    sub: '블로그 카드뉴스',
+    cat: 'Branding·Marketing',
+    title: '병의원 마케팅 - 서울베스트치과',
+    sub: '상세페이지',
     contribution: '디자인·기획 100%',
     tools: ['tool-ai', 'tool-ps', 'tool-ae'],
-    desc: '서울베스트치과 블로그용 카드뉴스 디자인입니다.',
+    desc: '서울베스트치과 블로그 마케팅용 치과소개 상세페이지 스타일 포스팅 이미지입니다. \n원장님의 니즈에 맞춰 서울베스트치과의 장점을 효과적으로 전달할 수 있도록 기획 및 디자인을 진행했습니다.',
     views: [
       { label: '임플란트', bg: '#ffffff', maxWidth: '680px', images: [
         'works/blog_seoulbest/impl_1.gif',
