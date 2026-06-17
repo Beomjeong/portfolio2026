@@ -1000,6 +1000,7 @@ img { display: block; max-width: 100%; }
   text-align: center;
   line-height: 1.8;
   max-width: 640px;
+  white-space: pre-line;
 }
 
 /* Banner Grid */
