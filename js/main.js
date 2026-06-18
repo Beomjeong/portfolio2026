@@ -605,7 +605,21 @@ const MODAL_DATA = {
       ]},
     ],
   },
-  'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
+  'video-02': {
+    type: 'viewer',
+    cat: 'Video',
+    title: 'airbnb 숙소 PR Video',
+    sub: 'PR Video',
+    contribution: '촬영·편집 100%',
+    tools: ['tool-pr', 'tool-lr'],
+    desc: '라라포쉬 수원 airbnb 숙소 홍보용 PR 영상입니다.',
+    views: [
+      { label: 'PR Video', type: 'shortform', items: [
+        { thumb: 'works/longform_01/1.png', url: 'https://www.youtube.com/watch?v=5c8-NwLT_fA', title: '라라포쉬 수원 airbnb 숙소 PR video', equipment: 'iPhone 14 Pro' },
+        { thumb: 'works/longform_01/2.png', url: 'https://www.youtube.com/watch?v=gFYSPHZSwhU', title: '라라포쉬 수원 airbnb 숙소 상세 소개',  equipment: 'iPhone 14 Pro' },
+      ]},
+    ],
+  },
   '3d-01':    { cat: '3D',            title: '3D 에셋 타이틀',      sub: 'Blender',        contribution: '기여도 100%', tools: ['tool-blender'] },
   'print-01': {
     type: 'viewer',
@@ -1049,7 +1063,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
           </div>
           <div class="sf-info">
             <p class="sf-info-title">${item.title}</p>
-            <p class="sf-info-sub">${item.purpose} · ${item.equipment}</p>
+            <p class="sf-info-sub">${[item.purpose, item.equipment].filter(Boolean).join(' · ')}</p>
           </div>
         </div>`).join('')
       }</div></div>`;
@@ -1074,7 +1088,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         track.addEventListener('click', e => {
           const card = e.target.closest('.sf-card');
           if (!card) return;
-          const videoId = card.dataset.url.split('/').pop();
+          const ytUrl = card.dataset.url;
+          const ytMatch = ytUrl.match(/(?:shorts\/|[?&]v=)([^&/]+)/);
+          const videoId = ytMatch ? ytMatch[1] : ytUrl.split('/').pop();
           sfVideoIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
           sfVideoOverlay.classList.add('is-open');
         });
