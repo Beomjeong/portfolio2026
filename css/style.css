@@ -737,15 +737,18 @@ img { display: block; max-width: 100%; }
 
 .modal-close {
   background: none;
-  border: none;
+  border: 1px solid currentColor;
   cursor: pointer;
   color: var(--text-muted);
-  padding: 0.25rem;
+  padding: 0.3rem 0.7rem;
   flex-shrink: 0;
-  transition: color 0.2s;
+  transition: color 0.2s, border-color 0.2s;
   margin-top: 0.1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
 }
-.modal-close:hover { color: var(--text); }
+.modal-close:hover { color: var(--text); border-color: var(--text); }
 
 /* 스크롤 영역 */
 .modal-body {
@@ -791,21 +794,20 @@ img { display: block; max-width: 100%; }
   right: 1.5rem;
   z-index: 10;
   background: none;
-  border: none;
+  border: 1px solid currentColor;
   cursor: pointer;
   color: rgba(255,255,255,0.7);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  transition: color 0.2s, border-color 0.2s;
 }
-.viewer-close:hover { color: #fff; }
+.viewer-close:hover { color: #fff; border-color: #fff; }
 .viewer-overlay.is-light-bg .viewer-close,
 .viewer-overlay:has(#viewerImgStack.is-hanging) .viewer-close { color: rgba(0,0,0,0.5); }
 .viewer-overlay.is-light-bg .viewer-close:hover,
-.viewer-overlay:has(#viewerImgStack.is-hanging) .viewer-close:hover { color: #000; }
+.viewer-overlay:has(#viewerImgStack.is-hanging) .viewer-close:hover { color: #000; border-color: #000; }
 
 .viewer-img-wrap {
   flex: 1;
@@ -1017,16 +1019,17 @@ img { display: block; max-width: 100%; }
   top: 1.5rem;
   right: 1.5rem;
   background: none;
-  border: none;
+  border: 1px solid currentColor;
   color: rgba(255,255,255,0.6);
   cursor: pointer;
   z-index: 1;
-  transition: color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  transition: color 0.2s, border-color 0.2s;
 }
-#sfVideoClose:hover { color: #fff; }
+#sfVideoClose:hover { color: #fff; border-color: #fff; }
 .sf-video-wrap {
   width: min(90vw, 380px);
   aspect-ratio: 9/16;

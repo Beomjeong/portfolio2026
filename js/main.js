@@ -385,8 +385,8 @@ const MODAL_DATA = {
     tools: ['tool-figma', 'tool-ps','tool-blender','tool-claude'],
     desc: '2026년 06월 카카오페이 첫 결제 할인 프로모션 랜딩 페이지 및 배너 디자인입니다.',
     views: [
-      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/kakaopay_202606/' },
-      { label: 'Banner', type: 'banner', images: [
+      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/kakaopay_202606/', bg: true },
+      { label: 'Banner', type: 'banner', bg: true, images: [
         'works/webpromo_kakaopay/banner_1.jpg',
         'works/webpromo_kakaopay/banner_2.jpg',
         'works/webpromo_kakaopay/banner_3.jpg',
