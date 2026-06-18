@@ -705,8 +705,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
     const setup = () => {
       const sceneH  = viewerImgWrap.clientHeight;
-      const posterH = Math.max(200, Math.floor(sceneH * 0.68));
-      const stringH = Math.max(60, sceneH - posterH - 60);
+      const posterH = Math.max(200, Math.floor(sceneH * 0.62));
+      const stringH = Math.max(50, Math.floor(sceneH * 0.10));
 
       scene.style.height = sceneH + 'px';
       scene.style.setProperty('--poster-h', posterH + 'px');
