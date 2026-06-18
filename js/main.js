@@ -1120,6 +1120,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       const thumbH   = Math.max(160, Math.floor(sceneH * 0.56));
       scene.style.height = sceneH + 'px';
       scene.style.setProperty('--sf-thumb-h', thumbH + 'px');
+      gsap.set(track, { opacity: 0 });
 
       requestAnimationFrame(() => {
         const allThumbs = Array.from(track.querySelectorAll('.sf-thumb-wrap'));
@@ -1139,6 +1140,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
         const fullSlide  = Math.max(0, centerOffset - endX);
         viewerImgStack.style.height = (sceneH + fullSlide) + 'px';
         gsap.set(track, { x: centerOffset });
+        gsap.to(track, { opacity: 1, duration: 0.2 });
 
         shortformScrollHandler = () => {
           const x = centerOffset - Math.min(viewerImgWrap.scrollTop, fullSlide);
