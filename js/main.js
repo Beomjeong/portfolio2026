@@ -110,7 +110,7 @@ initBgEffect(document.querySelector('.hero'));
 /* ═══════════════════════════════════════
    ROLE TEXT SCRAMBLE + CYCLE
 ═══════════════════════════════════════ */
-const ROLES   = ['콘텐츠 디자이너', '콘텐츠 기획자', '바이브 코더'];
+const ROLES   = ['콘텐츠 디자이너', '콘텐츠 기획자', '바이브 코더', '시키면 뭐든 하는'];
 const SPECIAL = '~!@#$%^&*()_+=-';
 const KOREAN  = '가나다라마바사아자차카타파하';
 let roleIndex = 0;
@@ -471,7 +471,7 @@ const MODAL_DATA = {
   },
   'web-08': {
     type: 'viewer',
-    cat: 'Branding·Marketing',
+    cat: 'Content Design',
     title: '병의원 마케팅 - 위례포에버의원',
     sub: '블로그 카드뉴스',
     contribution: '디자인·기획 100%',
@@ -501,7 +501,7 @@ const MODAL_DATA = {
   },
   'web-09': {
     type: 'viewer',
-    cat: 'Branding·Marketing',
+    cat: 'Content Design',
     title: '병의원 마케팅 - 서울베스트치과',
     sub: '상세페이지',
     contribution: '디자인·기획 100%',
@@ -572,12 +572,12 @@ const MODAL_DATA = {
   },
   'web-11': {
     type: 'viewer',
-    cat: 'Branding·Marketing',
-    title: '꽃화원 온라인 홍보 이미지 카드',
+    cat: 'Content Design',
+    title: '꽃집 온라인 홍보 이미지 카드',
     sub: '온라인 홍보 카드',
     contribution: '디자인·기획 100%',
     tools: ['tool-ps', 'tool-ai'],
-    desc: '꽃화원 온라인 홍보용 이미지 카드 시리즈입니다.',
+    desc: '꽃집 뉴스레터, 자사몰 게시 등 온라인에서 홍보용으로 활용할 이미지 카드 디자인을 의뢰받아 제작하였습니다.',
     views: [
       { label: '홍보 카드', type: 'cardnews', images: [
         'works/card_flower/flower-01.jpg',
