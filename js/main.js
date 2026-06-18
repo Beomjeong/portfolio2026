@@ -608,6 +608,25 @@ const MODAL_DATA = {
       ]},
     ],
   },
+  'print-04': {
+    type: 'viewer',
+    cat: 'Print Design',
+    title: '수제청 라벨',
+    sub: '라벨 디자인',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ps', 'tool-ai'],
+    desc: '수제청 제품 판매용 라벨 디자인 시리즈입니다.',
+    views: [
+      { label: '라벨', centered: true, images: [
+        'works/print_label/1.jpg',
+        'works/print_label/2.jpg',
+        'works/print_label/3.jpg',
+        'works/print_label/4.jpg',
+        'works/print_label/5.jpg',
+        'works/print_label/6.jpg',
+      ]},
+    ],
+  },
   'print-03': {
     type: 'viewer',
     cat: 'Print Design',
