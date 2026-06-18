@@ -451,12 +451,12 @@ img { display: block; max-width: 100%; }
 .about-photo {
   margin-bottom: 1.5rem;
 }
-.photo-placeholder {
+.photo-img {
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: var(--border);
-  overflow: hidden;
+  object-fit: cover;
+  display: block;
 }
 
 .about-contact { display: flex; flex-direction: column; gap: 0.75rem; }
