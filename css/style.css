@@ -595,7 +595,7 @@ img { display: block; max-width: 100%; }
   text-indent: -1em;
 }
 .career-duties li::before {
-  content: '—';
+  content: '▸';
   margin-right: 0.35em;
 }
 
