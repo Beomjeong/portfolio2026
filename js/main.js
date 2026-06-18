@@ -713,7 +713,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       scene.style.setProperty('--string-h', stringH + 'px');
 
       requestAnimationFrame(() => {
-        const totalSlide = Math.max(0, track.scrollWidth - viewerImgWrap.clientWidth);
+        const totalSlide = Math.max(0, track.scrollWidth - viewerImgWrap.clientWidth + 120);
         viewerImgStack.style.height = (sceneH + totalSlide) + 'px';
 
         hangingScrollHandler = () => {

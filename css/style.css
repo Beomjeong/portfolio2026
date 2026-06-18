@@ -859,7 +859,7 @@ img { display: block; max-width: 100%; }
 .hanging-track {
   display: flex;
   align-items: flex-start;
-  gap: 60px;
+  gap: 120px;
   padding: 0 80px;
   will-change: transform;
 }
