@@ -591,6 +591,21 @@ const MODAL_DATA = {
       ]},
     ],
   },
+  'print-03': {
+    type: 'viewer',
+    cat: 'Print Design',
+    title: 'PC방 게임 오프라인 홍보 포스터',
+    sub: '프로모션 포스터',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ai', 'tool-ps'],
+    desc: 'PC방 게임 오프라인 행사 홍보용 프로모션 포스터 시리즈입니다.',
+    views: [
+      { label: '포스터', type: 'hanging', images: [
+        'works/poster_gamepromo/poster_01.jpg',
+        'works/poster_gamepromo/poster_02.jpg',
+      ]},
+    ],
+  },
   'print-02': {
     type: 'viewer',
     cat: 'Print Design',
@@ -730,12 +745,28 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       scene.style.setProperty('--string-h', stringH + 'px');
 
       requestAnimationFrame(() => {
-        const totalSlide = Math.max(0, track.scrollWidth - viewerImgWrap.clientWidth + 120);
-        viewerImgStack.style.height = (sceneH + totalSlide) + 'px';
+        const allPosters = Array.from(track.querySelectorAll('.hs-poster'));
+        if (!allPosters.length) return;
+
+        const trackLeft     = track.getBoundingClientRect().left;
+        const vpCenter      = viewerImgWrap.clientWidth / 2;
+
+        const firstRect     = allPosters[0].getBoundingClientRect();
+        const firstCenter   = (firstRect.left + firstRect.width / 2) - trackLeft;
+        const centerOffset  = Math.max(0, Math.floor(vpCenter - firstCenter));
+
+        const lastRect      = allPosters[allPosters.length - 1].getBoundingClientRect();
+        const lastCenter    = (lastRect.left + lastRect.width / 2) - trackLeft;
+        const endX          = Math.floor(vpCenter - lastCenter);
+
+        const fullSlide     = Math.max(0, centerOffset - endX);
+
+        viewerImgStack.style.height = (sceneH + fullSlide) + 'px';
+        gsap.set(track, { x: centerOffset });
 
         hangingScrollHandler = () => {
-          const x = Math.min(viewerImgWrap.scrollTop, totalSlide);
-          gsap.set(track, { x: -x });
+          const x = centerOffset - Math.min(viewerImgWrap.scrollTop, fullSlide);
+          gsap.set(track, { x });
         };
         viewerImgWrap.addEventListener('scroll', hangingScrollHandler, { passive: true });
       });
