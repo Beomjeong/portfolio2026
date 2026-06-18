@@ -591,7 +591,24 @@ const MODAL_DATA = {
       ]},
     ],
   },
-  'print-02': { cat: 'Printing',      title: 'X배너 / 사이니지',    sub: 'Stand Banner',   contribution: '기여도 100%', tools: ['tool-ai'] },
+  'print-02': {
+    type: 'viewer',
+    cat: 'Print Design',
+    title: '양양 스파리조트 fnb 메뉴판',
+    sub: '메뉴판',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ai', 'tool-ps', 'tool-lr'],
+    desc: '양양 스파리조트 식음료(F&B) 매장용 메뉴판 시리즈입니다.',
+    views: [
+      { label: '메뉴판', centered: true, images: [
+        'works/poster_menu/1.jpg',
+        'works/poster_menu/2.jpg',
+        'works/poster_menu/3.jpg',
+        'works/poster_menu/4.jpg',
+        'works/poster_menu/5.jpg',
+      ]},
+    ],
+  },
 };
 
 const overlay   = document.getElementById('workModal');
@@ -823,27 +840,25 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     });
   }
 
-  function setViewerImages(images, animate, maxWidth) {
+  function setViewerImages(images, animate, maxWidth, centered) {
     clearTimeout(switchTimer);
     viewerImgWrap.scrollTop = 0;
     const html = images.map((src, i) =>
       `<img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}>`
     ).join('');
-    if (animate) {
-      viewerImgStack.style.opacity = '0';
-      switchTimer = setTimeout(() => {
-        viewerImgStack.style.maxWidth = maxWidth || '';
-        viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
-        viewerImgStack.innerHTML = html;
-        viewerImgStack.style.opacity = '1';
-        applyImgFadeIn();
-      }, 200);
-    } else {
+    const apply = () => {
+      viewerImgStack.classList.toggle('is-image-center', !!centered);
       viewerImgStack.style.maxWidth = maxWidth || '';
       viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
       viewerImgStack.innerHTML = html;
       viewerImgStack.style.opacity = '1';
       applyImgFadeIn();
+    };
+    if (animate) {
+      viewerImgStack.style.opacity = '0';
+      switchTimer = setTimeout(apply, 200);
+    } else {
+      apply();
     }
   }
 
@@ -852,6 +867,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     killCardSTs();
     killHangingST();
     viewerImgStack.classList.remove('is-cardnews');
+    viewerImgStack.classList.remove('is-image-center');
     viewerImgWrap.style.background = view.bg || '';
     viewerOverlay.classList.toggle('is-light-bg', !!view.bg);
     if (view.type === 'iframe') {
@@ -925,7 +941,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerIframe.src = '';
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
-      setViewerImages(view.images, animate, view.maxWidth);
+      setViewerImages(view.images, animate, view.maxWidth, view.centered);
     }
   }
 

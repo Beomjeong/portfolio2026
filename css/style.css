@@ -832,6 +832,18 @@ img { display: block; max-width: 100%; }
   opacity: 0;
   transition: opacity 0.4s ease;
 }
+#viewerImgStack.is-image-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+}
+#viewerImgStack.is-image-center img {
+  width: 1300px;
+  max-width: 100%;
+  height: auto;
+}
 #viewerImgStack.is-cardnews .cn-card {
   position: sticky;
   top: 0;
