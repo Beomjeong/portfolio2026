@@ -802,8 +802,10 @@ img { display: block; max-width: 100%; }
   transition: color 0.2s;
 }
 .viewer-close:hover { color: #fff; }
-.viewer-overlay.is-light-bg .viewer-close { color: rgba(0,0,0,0.5); }
-.viewer-overlay.is-light-bg .viewer-close:hover { color: #000; }
+.viewer-overlay.is-light-bg .viewer-close,
+.viewer-overlay:has(#viewerImgStack.is-hanging) .viewer-close { color: rgba(0,0,0,0.5); }
+.viewer-overlay.is-light-bg .viewer-close:hover,
+.viewer-overlay:has(#viewerImgStack.is-hanging) .viewer-close:hover { color: #000; }
 
 .viewer-img-wrap {
   flex: 1;
@@ -855,6 +857,12 @@ img { display: block; max-width: 100%; }
   display: flex;
   align-items: flex-start;
   /* height / --poster-h / --string-h set by JS */
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%,   rgba(255,255,255,0.85) 0%, transparent 100%),
+    radial-gradient(ellipse 50% 40% at 50% 105%,  rgba(180,180,192,0.25) 0%, transparent 100%),
+    radial-gradient(ellipse 35% 80% at 0%   50%,  rgba(190,190,200,0.13) 0%, transparent 100%),
+    radial-gradient(ellipse 35% 80% at 100% 50%,  rgba(190,190,200,0.13) 0%, transparent 100%),
+    #eaeaed;
 }
 .hanging-track {
   display: flex;
