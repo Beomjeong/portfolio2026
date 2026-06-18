@@ -703,6 +703,7 @@ const modalCont = overlay.querySelector('.modal-contribution');
 const modalTools= overlay.querySelector('.modal-tools');
 
 let modalTween = null;
+let _popupOpen = null;
 
 function openModal(id) {
   const data = MODAL_DATA[id];
@@ -718,6 +719,9 @@ function openModal(id) {
   overlay.classList.add('is-open');
   document.body.style.overflow = 'hidden';
 
+  history.pushState({ popup: 'modal' }, '');
+  _popupOpen = 'modal';
+
   if (modalTween) modalTween.kill();
   gsap.set(panel, { y: '100%' });
   modalTween = gsap.timeline()
@@ -726,6 +730,10 @@ function openModal(id) {
 }
 
 function closeModal() {
+  if (_popupOpen === 'modal') {
+    _popupOpen = null;
+    history.back();
+  }
   if (modalTween) modalTween.kill();
   modalTween = gsap.timeline({ onComplete: () => {
     overlay.classList.remove('is-open');
@@ -992,7 +1000,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerImgStack.innerHTML = '';
       requestAnimationFrame(() => viewerImgStack.classList.remove('no-transition'));
       viewerBannerGrid.classList.remove('is-active');
-      viewerIframe.src = view.url;
+      viewerIframe.contentWindow.location.replace(view.url);
       viewerIframe.classList.add('is-active');
     } else if (view.type === 'banner') {
       viewerIframe.classList.remove('is-active');
@@ -1193,6 +1201,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     viewerOverlay.setAttribute('aria-hidden', 'false');
     viewerOverlay.classList.add('is-open');
 
+    history.pushState({ popup: 'viewer' }, '');
+    _popupOpen = 'viewer';
+
     const scrollY = window.scrollY;
     ScrollTrigger.getAll().forEach(st => st.disable(false));
     document.body.style.overflow = 'hidden';
@@ -1206,6 +1217,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   }
 
   function closeViewer() {
+    if (_popupOpen === 'viewer') {
+      _popupOpen = null;
+      history.back();
+    }
     killCardSTs();
     if (viewerTween) viewerTween.kill();
 
@@ -1249,8 +1264,19 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     if (e.key === 'Escape' && viewerOverlay.classList.contains('is-open')) closeViewer();
   });
 
-  window.openViewer = openViewer;
+  window.openViewer  = openViewer;
+  window.closeViewer = closeViewer;
 })();
+
+window.addEventListener('popstate', () => {
+  if (_popupOpen === 'modal') {
+    _popupOpen = null;
+    closeModal();
+  } else if (_popupOpen === 'viewer') {
+    _popupOpen = null;
+    window.closeViewer();
+  }
+});
 
 /* ─── Tool bars ─── */
 ScrollTrigger.create({
