@@ -579,6 +579,25 @@ img { display: block; max-width: 100%; }
   font-size: 0.78rem;
   color: var(--text-muted);
 }
+.career-duties {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.career-duties li {
+  font-family: var(--font-ko);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding-left: 1em;
+  text-indent: -1em;
+}
+.career-duties li::before {
+  content: '—';
+  margin-right: 0.35em;
+}
 
 /* ═══════════════════════════════════════
    CONTACT
