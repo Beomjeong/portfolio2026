@@ -425,8 +425,8 @@ const MODAL_DATA = {
     tools: ['tool-figma', 'tool-ps', 'tool-ai', 'tool-blender', 'tool-claude'],
     desc: '피카 PC방 QR로그인 혜택 및 피카플레이 마일리지 혜택 안내 페이지입니다.',
     views: [
-      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/mediaweb_qr_sign_in/' },
-      { label: 'Banner', type: 'banner', images: [
+      { label: 'Landing Page', type: 'iframe', url: 'https://beomjeong.github.io/mediaweb_qr_sign_in/', bg: true },
+      { label: 'Banner', type: 'banner', bg: true, images: [
         'works/webpromo_qr/banner_1.jpg',
         'works/webpromo_qr/banner_2.jpg',
         'works/webpromo_qr/banner_3.png',
@@ -579,7 +579,7 @@ const MODAL_DATA = {
     tools: ['tool-ps', 'tool-ai'],
     desc: '꽃집 뉴스레터, 자사몰 게시 등 온라인에서 홍보용으로 활용할 이미지 카드 디자인을 의뢰받아 제작하였습니다.',
     views: [
-      { label: '홍보 카드', type: 'cardnews', images: [
+      { label: 'Card Design', type: 'cardnews', images: [
         'works/card_flower/flower-01.jpg',
         'works/card_flower/flower-02.jpg',
         'works/card_flower/flower-03.jpg',
@@ -594,9 +594,9 @@ const MODAL_DATA = {
     sub: 'Short Form',
     contribution: '촬영·편집 100%',
     tools: ['tool-pr', 'tool-ae'],
-    desc: '제품·공간 체험단 리뷰 숏폼 영상 시리즈입니다.',
+    desc: '제품·공간 체험단 리뷰 숏폼 영상 시리즈입니다.\n체험단 진행 대행사의 가이드라인에 준수하여 제작하였습니다.\n촬영은 모두 iPhone 14 Pro로 진행했습니다.',
     views: [
-      { label: '숏폼', type: 'shortform', items: [
+      { label: 'Short Form Video', type: 'shortform', items: [
         { thumb: 'works/shortform_01/1.png', url: 'https://www.youtube.com/shorts/RMIxTM3aAcc',  title: '스톤 디퓨저',         purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
         { thumb: 'works/shortform_01/2.png', url: 'https://www.youtube.com/shorts/SyBJAjEbmy0',  title: '고양이 저키간식',       purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
         { thumb: 'works/shortform_01/3.png', url: 'https://www.youtube.com/shorts/5VLa1iFZAD4',  title: '익선동 의상대여 vlog',  purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
@@ -612,7 +612,7 @@ const MODAL_DATA = {
     sub: 'PR Video',
     contribution: '촬영·편집 100%',
     tools: ['tool-pr', 'tool-lr'],
-    desc: '라라포쉬 수원 airbnb 숙소 홍보용 PR 영상입니다.',
+    desc: '라라포쉬 수원 airbnb 숙소 홍보용 PR 영상입니다.\n기획부터 소품준비, 촬영, 편집까지 모두 1인 제작으로 진행했습니다.\n촬영은 모두 iPhone 14 Pro로 진행했습니다.',
     views: [
       { label: 'PR Video', type: 'shortform', items: [
         { thumb: 'works/longform_01/1.png', url: 'https://www.youtube.com/watch?v=5c8-NwLT_fA', title: '라라포쉬 수원 airbnb 숙소 PR video', equipment: 'iPhone 14 Pro' },
@@ -624,13 +624,13 @@ const MODAL_DATA = {
   'print-01': {
     type: 'viewer',
     cat: 'Print Design',
-    title: '양양 스파리조트 프로모션 포스터',
-    sub: '프로모션 포스터',
+    title: '양양 SPA리조트 프로모션 포스터',
+    sub: '리조트 프로모션 포스터',
     contribution: '디자인·기획 100%',
     tools: ['tool-ai', 'tool-ps', 'tool-lr'],
-    desc: '양양 스파리조트 홍보용 프로모션 포스터 시리즈입니다.',
+    desc: '양양 SPA리조트에서 진행한 각종 프로모션 안내 포스터입니다.\n기획/카피라이팅 및 디자인 모두 담당하였습니다.',
     views: [
-      { label: '포스터', type: 'hanging', images: [
+      { label: 'Poster', type: 'hanging', images: [
         'works/poster_resort/poster_01.jpg',
         'works/poster_resort/poster_02.jpg',
         'works/poster_resort/poster_03.jpg',
@@ -646,9 +646,9 @@ const MODAL_DATA = {
     sub: '라벨 디자인',
     contribution: '디자인·기획 100%',
     tools: ['tool-ps', 'tool-ai'],
-    desc: '수제청 제품 판매용 라벨 디자인 시리즈입니다.',
+    desc: '핸드메이드 과일청 라벨 일러스트 드로잉 및 디자인을 담당했습니다.\n일러스트레이션은 Photoshop으로 드로잉했고, 라벨 시안은 일러스트레이터로 마무리했습니다.',
     views: [
-      { label: '라벨', centered: true, images: [
+      { label: 'Label', centered: true, images: [
         'works/print_label/1.jpg',
         'works/print_label/2.jpg',
         'works/print_label/3.jpg',
@@ -665,7 +665,7 @@ const MODAL_DATA = {
     sub: '프로모션 포스터',
     contribution: '디자인·기획 100%',
     tools: ['tool-ai', 'tool-ps'],
-    desc: 'PC방 게임 오프라인 행사 홍보용 프로모션 포스터 시리즈입니다.',
+    desc: '제휴사 게임 홍보용 포스터 디자인입니다.\n광고주의 니즈를 반영하여 디자인을 진행했습니다.',
     views: [
       { label: '포스터', type: 'hanging', images: [
         'works/poster_gamepromo/poster_01.jpg',
@@ -676,11 +676,11 @@ const MODAL_DATA = {
   'print-02': {
     type: 'viewer',
     cat: 'Print Design',
-    title: '양양 스파리조트 fnb 메뉴판',
+    title: '양양 SPA리조트 fnb 메뉴판',
     sub: '메뉴판',
-    contribution: '디자인·기획 100%',
+    contribution: '디자인·기획·촬영 100%',
     tools: ['tool-ai', 'tool-ps', 'tool-lr'],
-    desc: '양양 스파리조트 식음료(F&B) 매장용 메뉴판 시리즈입니다.',
+    desc: '양양 SPA리조트 식음료(F&B) 매장용 메뉴판입니다.\n카피라이팅과 디자인, 필요 시 촬영까지 담당했습니다.\n연말 디너 메뉴판 내 음식 사진은 모두 iPhone 12 mini로 직접 촬영 후 가공하여 활용했습니다.',
     views: [
       { label: '메뉴판', centered: true, images: [
         'works/poster_menu/1.jpg',
