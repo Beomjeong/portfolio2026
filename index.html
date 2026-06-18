@@ -414,19 +414,19 @@
         <article class="work-card" data-cat="video">
           <a href="#" class="card-link" data-modal="video-01">
             <div class="card-thumb cat-video">
-              <div class="thumb-placeholder"></div>
+              <img class="thumb-img" src="works/shortform_01/shorts_thumb_rv.jpg" alt="체험단 리뷰 숏폼 영상">
               <div class="card-overlay">
-                <p class="overlay-cat">Video</p>
+                <p class="overlay-cat">Video · Short Form</p>
                 <ul class="overlay-tools">
                   <li class="tool-pr" title="Premiere Pro"></li>
                   <li class="tool-ae" title="After Effects"></li>
                 </ul>
-                <p class="overlay-contribution">기여도 100%</p>
+                <p class="overlay-contribution">2023.07~10</p>
               </div>
             </div>
             <div class="card-info">
-              <h3 class="card-title">Short Form 타이틀</h3>
-              <p class="card-sub">Video · Shorts / Reels</p>
+              <h3 class="card-title">체험단 리뷰 숏폼 영상</h3>
+              <p class="card-sub">Video · Short Form</p>
             </div>
           </a>
         </article>
@@ -625,6 +625,20 @@
       <div class="viewer-banner-grid" id="viewerBannerGrid"></div>
       <iframe class="viewer-iframe" id="viewerIframe" src="" frameborder="0" allowfullscreen></iframe>
     </div>
+
+    <!-- Shortform video lightbox -->
+    <div id="sfVideoOverlay">
+      <button id="sfVideoClose" aria-label="닫기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+      <div class="sf-video-wrap">
+        <iframe id="sfVideoIframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>
+    </div>
+    <!-- Cursor tooltip -->
+    <div id="sfCursorTip">Click</div>
 
     <div class="viewer-panel" id="viewerPanel">
       <button class="viewer-toggle" id="viewerToggle" aria-label="패널 열기/닫기">

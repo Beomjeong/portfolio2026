@@ -587,7 +587,24 @@ const MODAL_DATA = {
       ]},
     ],
   },
-  'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
+  'video-01': {
+    type: 'viewer',
+    cat: 'Video',
+    title: '체험단 리뷰 숏폼 영상',
+    sub: 'Short Form',
+    contribution: '촬영·편집 100%',
+    tools: ['tool-pr', 'tool-ae'],
+    desc: '제품·공간 체험단 리뷰 숏폼 영상 시리즈입니다.',
+    views: [
+      { label: '숏폼', type: 'shortform', items: [
+        { thumb: 'works/shortform_01/1.png', url: 'https://www.youtube.com/shorts/RMIxTM3aAcc',  title: '스톤 디퓨저',         purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
+        { thumb: 'works/shortform_01/2.png', url: 'https://www.youtube.com/shorts/SyBJAjEbmy0',  title: '고양이 저키간식',       purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
+        { thumb: 'works/shortform_01/3.png', url: 'https://www.youtube.com/shorts/5VLa1iFZAD4',  title: '익선동 의상대여 vlog',  purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
+        { thumb: 'works/shortform_01/4.png', url: 'https://www.youtube.com/shorts/ibD1UZRB_bw',  title: '인센스 홀더',           purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
+        { thumb: 'works/shortform_01/5.png', url: 'https://www.youtube.com/shorts/hq36ynuBmiA',  title: '만리동 와인바',         purpose: '체험단 리뷰', equipment: 'iPhone 14 Pro' },
+      ]},
+    ],
+  },
   'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
   '3d-01':    { cat: '3D',            title: '3D 에셋 타이틀',      sub: 'Blender',        contribution: '기여도 100%', tools: ['tool-blender'] },
   'print-01': {
@@ -741,12 +758,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   const viewerImgWrap    = document.getElementById('viewerImgWrap');
   const viewerBannerGrid = document.getElementById('viewerBannerGrid');
   const viewerIframe     = document.getElementById('viewerIframe');
+  const sfVideoOverlay   = document.getElementById('sfVideoOverlay');
+  const sfVideoIframe    = document.getElementById('sfVideoIframe');
+  const sfCursorTip      = document.getElementById('sfCursorTip');
 
   let viewerTween = null;
   let switchTimer = null;
   let lastScrollTop = 0;
   let cardSTs = [];
   let hangingScrollHandler = null;
+  let shortformScrollHandler = null;
 
   function killCardSTs() {
     cardSTs.forEach(st => st.kill());
@@ -764,6 +785,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     }
     viewerImgStack.style.height = '';
     viewerImgStack.classList.remove('is-hanging');
+  }
+
+  function killShortformST() {
+    if (shortformScrollHandler) {
+      viewerImgWrap.removeEventListener('scroll', shortformScrollHandler);
+      shortformScrollHandler = null;
+    }
+    viewerImgStack.style.height = '';
+    viewerImgStack.classList.remove('is-shortform');
+    sfVideoOverlay.classList.remove('is-open');
+    sfVideoIframe.src = '';
+    sfCursorTip.classList.remove('visible');
   }
 
   function initHangingScroll() {
@@ -933,6 +966,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     clearTimeout(switchTimer);
     killCardSTs();
     killHangingST();
+    killShortformST();
     viewerImgStack.classList.remove('is-cardnews');
     viewerImgStack.classList.remove('is-image-center');
     viewerImgWrap.style.background = view.bg || '';
@@ -1003,6 +1037,54 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       } else {
         loadHanging();
       }
+    } else if (view.type === 'shortform') {
+      viewerIframe.classList.remove('is-active');
+      viewerIframe.src = '';
+      viewerBannerGrid.classList.remove('is-active');
+      viewerImgStack.classList.add('is-shortform');
+      const sfHtml = `<div class="shortform-scene"><div class="shortform-track">${
+        view.items.map(item => `<div class="sf-card" data-url="${item.url}">
+          <div class="sf-thumb-wrap">
+            <img class="sf-thumb" src="${encodeURI(item.thumb)}" alt="${item.title}" loading="eager">
+          </div>
+          <div class="sf-info">
+            <p class="sf-info-title">${item.title}</p>
+            <p class="sf-info-sub">${item.purpose} · ${item.equipment}</p>
+          </div>
+        </div>`).join('')
+      }</div></div>`;
+      viewerImgWrap.scrollTop = 0;
+      const loadShortform = () => {
+        viewerImgStack.innerHTML = sfHtml;
+        viewerImgStack.style.opacity = '1';
+        initShortformScroll();
+
+        const track = viewerImgStack.querySelector('.shortform-track');
+        track.addEventListener('mousemove', e => {
+          const card = e.target.closest('.sf-card');
+          if (card) {
+            sfCursorTip.style.left = e.clientX + 'px';
+            sfCursorTip.style.top  = e.clientY + 'px';
+            sfCursorTip.classList.add('visible');
+          } else {
+            sfCursorTip.classList.remove('visible');
+          }
+        });
+        track.addEventListener('mouseleave', () => sfCursorTip.classList.remove('visible'));
+        track.addEventListener('click', e => {
+          const card = e.target.closest('.sf-card');
+          if (!card) return;
+          const videoId = card.dataset.url.split('/').pop();
+          sfVideoIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          sfVideoOverlay.classList.add('is-open');
+        });
+      };
+      if (animate) {
+        viewerImgStack.style.opacity = '0';
+        switchTimer = setTimeout(loadShortform, 200);
+      } else {
+        loadShortform();
+      }
     } else {
       viewerIframe.classList.remove('is-active');
       viewerIframe.src = '';
@@ -1010,6 +1092,54 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerBannerGrid.scrollTop = 0;
       setViewerImages(view.images, animate, view.maxWidth, view.centered);
     }
+  }
+
+  function initShortformScroll() {
+    const scene = viewerImgStack.querySelector('.shortform-scene');
+    const track = viewerImgStack.querySelector('.shortform-track');
+    if (!scene || !track) return;
+
+    const setup = () => {
+      const sceneH   = viewerImgWrap.clientHeight;
+      const thumbH   = Math.max(160, Math.floor(sceneH * 0.56));
+      scene.style.height = sceneH + 'px';
+      scene.style.setProperty('--sf-thumb-h', thumbH + 'px');
+
+      requestAnimationFrame(() => {
+        const allThumbs = Array.from(track.querySelectorAll('.sf-thumb-wrap'));
+        if (!allThumbs.length) return;
+
+        const trackLeft = track.getBoundingClientRect().left;
+        const vpCenter  = viewerImgWrap.clientWidth / 2;
+
+        const firstRect   = allThumbs[0].getBoundingClientRect();
+        const firstCenter = (firstRect.left + firstRect.width / 2) - trackLeft;
+        const centerOffset = Math.max(0, Math.floor(vpCenter - firstCenter));
+
+        const lastRect   = allThumbs[allThumbs.length - 1].getBoundingClientRect();
+        const lastCenter = (lastRect.left + lastRect.width / 2) - trackLeft;
+        const endX       = Math.floor(vpCenter - lastCenter);
+
+        const fullSlide  = Math.max(0, centerOffset - endX);
+        viewerImgStack.style.height = (sceneH + fullSlide) + 'px';
+        gsap.set(track, { x: centerOffset });
+
+        shortformScrollHandler = () => {
+          const x = centerOffset - Math.min(viewerImgWrap.scrollTop, fullSlide);
+          gsap.set(track, { x });
+        };
+        viewerImgWrap.addEventListener('scroll', shortformScrollHandler, { passive: true });
+      });
+    };
+
+    const thumbImgs = Array.from(track.querySelectorAll('.sf-thumb'));
+    let remaining = thumbImgs.filter(img => !img.complete).length;
+    if (remaining === 0) { setup(); return; }
+    thumbImgs.forEach(img => {
+      if (!img.complete) img.addEventListener('load', () => {
+        if (--remaining === 0) setup();
+      }, { once: true });
+    });
   }
 
   function openViewer(id) {
@@ -1073,6 +1203,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       opacity: 0, duration: 0.3, ease: 'power2.in',
       onComplete: () => {
         killHangingST();
+        killShortformST();
         viewerImgWrap.style.background = '';
         viewerOverlay.classList.remove('is-light-bg');
         viewerOverlay.classList.remove('is-open');
@@ -1087,7 +1218,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
 
   document.getElementById('viewerClose').addEventListener('click', closeViewer);
+  document.getElementById('sfVideoClose').addEventListener('click', () => {
+    sfVideoOverlay.classList.remove('is-open');
+    sfVideoIframe.src = '';
+  });
   document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && sfVideoOverlay.classList.contains('is-open')) {
+      sfVideoOverlay.classList.remove('is-open');
+      sfVideoIframe.src = '';
+      return;
+    }
     if (e.key === 'Escape' && viewerOverlay.classList.contains('is-open')) closeViewer();
   });
 

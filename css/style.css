@@ -921,6 +921,124 @@ img { display: block; max-width: 100%; }
   border-radius: 3px;
 }
 
+/* ── Shortform Viewer ── */
+.shortform-scene {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: radial-gradient(ellipse 80% 70% at 50% 45%, #2a2a32 0%, #0e0e11 100%);
+}
+.shortform-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 160px;
+  padding: 0 80px;
+  will-change: transform;
+}
+.sf-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.sf-thumb-wrap {
+  border-radius: 10px;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.sf-thumb {
+  display: block;
+  width: auto;
+  height: var(--sf-thumb-h, 55vh);
+}
+.sf-card:hover .sf-thumb-wrap { transform: scale(1.2); }
+#viewerImgStack.is-shortform img.sf-thumb {
+  width: auto;
+  opacity: 1;
+}
+.sf-info {
+  margin-top: 14px;
+  text-align: center;
+}
+.sf-info-title {
+  font-family: var(--font-ko);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 4px;
+}
+.sf-info-sub {
+  font-family: var(--font-ko);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* Cursor tooltip */
+#sfCursorTip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 500;
+  background: rgba(255,255,255,0.92);
+  color: #111;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--font-en);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transition: opacity 0.15s;
+  transform: translate(14px, -50%);
+}
+#sfCursorTip.visible { opacity: 1; }
+
+/* SF Video Lightbox */
+#sfVideoOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 250;
+  background: rgba(0,0,0,0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+#sfVideoOverlay.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+#sfVideoClose {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  z-index: 1;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sfVideoClose:hover { color: #fff; }
+.sf-video-wrap {
+  width: min(90vw, 380px);
+  aspect-ratio: 9/16;
+  max-height: 82vh;
+}
+.sf-video-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+}
+
 .viewer-panel {
   position: absolute;
   bottom: 0;
