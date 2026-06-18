@@ -570,6 +570,23 @@ const MODAL_DATA = {
       ]},
     ],
   },
+  'web-11': {
+    type: 'viewer',
+    cat: 'Branding·Marketing',
+    title: '꽃화원 온라인 홍보 이미지 카드',
+    sub: '온라인 홍보 카드',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ps', 'tool-ai'],
+    desc: '꽃화원 온라인 홍보용 이미지 카드 시리즈입니다.',
+    views: [
+      { label: '홍보 카드', type: 'cardnews', images: [
+        'works/card_flower/flower-01.jpg',
+        'works/card_flower/flower-02.jpg',
+        'works/card_flower/flower-03.jpg',
+        'works/card_flower/flower-04.jpg',
+      ]},
+    ],
+  },
   'video-01': { cat: 'Video',         title: 'Short Form 타이틀',   sub: 'Shorts / Reels', contribution: '기여도 100%', tools: ['tool-pr','tool-ae'] },
   'video-02': { cat: 'Video',         title: 'PR 영상 타이틀',      sub: 'PR Video',       contribution: '기여도 100%', tools: ['tool-pr','tool-lr'] },
   '3d-01':    { cat: '3D',            title: '3D 에셋 타이틀',      sub: 'Blender',        contribution: '기여도 100%', tools: ['tool-blender'] },
