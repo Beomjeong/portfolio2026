@@ -1,202 +1,147 @@
 ---
 name: project-portfolio
-description: 포트폴리오 사이트 기획 및 진행 현황 — 작업물 카테고리, 디자인 방향, 레퍼런스, 구현 현황
-metadata:
+description: "포트폴리오 사이트(portfolio2026) 구현 현황, 구조, 완료/미완료 작업"
+metadata: 
   type: project
 ---
 
-## 지원 우선순위
-스타트업 > 인하우스 > 에이전시
+## 프로젝트 개요
 
-## 작업물 카테고리
-- **Web Promotion** — 이벤트페이지(PC/MO), 배너, 상세페이지(쇼핑몰/스마트스토어)
-- **Video** — Short form(쇼츠/릴스), PR Video(YouTube)
-- **3D** — Blender 3D 에셋 (소소하게 노출)
-- **Printing** — 포스터, Stand Banner(X배너), Info Signage
+콘텐츠 디자이너 KIM BEOM JEONG의 포트폴리오 사이트. Vanilla JS/HTML/CSS, GSAP 3 사용. 프레임워크 없음.
 
-## 작업물 카드 필수 항목
-타이틀 / 사용툴 / 기여도
+- 주요 CSS 변수: `--accent: #00E5B8`, `--font-en: 'DM Sans'`, `--font-ko: 'Noto Sans KR'`
+- Works, About, Contact 섹션으로 구성
+- 배포: `https://beomjeong.github.io/portfolio2026/`
 
-## 디자인 방향
-- 라이트 모드
-- 심플하면서 모션(스크롤, 클릭, 호버) 활용해 역동감 부여
-- 액센트 컬러: 민트그린 `#00E5B8` (피그마 스케치에서 추출)
+## 주요 파일 구조
 
-## 레퍼런스 사이트
-- https://gamilyapp.com/ — 스크롤 이펙트
-- https://unshift.jp/ — 마우스오버(호버) 이펙트
-- https://katoshun.com/ — 이벤트페이지 방식의 작업물 노출
-- https://u-d-l.jp/works/ — 깔끔한 분위기
-- https://benjaminjochims.de/ — 섹션 슬라이드업 효과, 마우스 반응 blob 배경
+- `index.html` — 전체 마크업
+- `css/style.css` — 스타일 (WORK VIEWER MODAL 섹션 포함)
+- `js/main.js` — 인터랙션 로직 (MODAL_DATA, viewer IIFE)
+- `assets/` — favicon, logo, clip.png, profile.jpg 등 공용 에셋
+- `works/` — 작업물별 이미지 에셋 폴더
+- `memory/` — 세션 간 컨텍스트 유지용 메모리 파일 (git 추적)
 
-## 피그마 스케치
-- fileKey: bFVY1Mks4IkZDQhzAt9dt5 (파일명: porfolio-beta)
-- node 3:3 — About 섹션 스케치 (프로필, 스킬, 툴바, 경력)
-- node 5:24 — 컴포넌트 탐색 (탭, 로고, 버튼 상태)
+## 등록된 카드 현황 (2026-06-19 기준)
 
-## GitHub 저장소 & 배포
-- https://github.com/Beomjeong/portfolio2026
-- `main` 브랜치, 작업 후 커밋/푸시로 세이브포인트 관리
-- **GitHub Pages 라이브**: https://beomjeong.github.io/portfolio2026/
-- `memory/` 폴더도 저장소에 포함
+- **web-01~06, 08~11**: 등록 완료
+- **web-07**: `display:none` 임시 숨김 (작업 미완료)
+- **print-01**: 양양 스파리조트 프로모션 포스터 — hanging 타입
+- **print-02**: 양양 스파리조트 FnB 메뉴판 — centered image 타입 (`works/poster_menu/`)
+- **print-03**: PC방 게임 오프라인 홍보 포스터 — hanging 타입 (`works/poster_gamepromo/`)
+- **print-04**: 신문광고 — hanging 타입 (`works/print_newspaper/`)
+- **print-05**: 수제청 라벨 — centered image 타입 (`works/print_label/`)
+- **video-01**: 숏폼 콘텐츠 모음 — shortform 타입, 5개 YouTube Shorts (`works/shortform_01/`)
+- **video-02**: airbnb 숙소 PR Video — shortform 타입, 2개 YouTube watch URL (`works/longform_01/`)
+- **3d-01**: `display:none` 임시 숨김 + 3D 탭 버튼도 숨김
+- **web-10**: 스마트스토어 파티풍선 — seamless 타입 (`works/smartstore_lalaposh/`)
 
-### 작업물별 별도 저장소 (iframe으로 포트폴리오에 임베드)
-| 카드 ID | 저장소 | 라이브 URL |
-|---------|--------|-----------|
-| web-02 | https://github.com/Beomjeong/nte | https://beomjeong.github.io/nte/ |
-| web-03 | https://github.com/Beomjeong/kakaopay_202606 | https://beomjeong.github.io/kakaopay_202606/ |
-| web-04 | https://github.com/Beomjeong/endfield | https://beomjeong.github.io/endfield/ |
-| web-05 | — | https://beomjeong.github.io/mediaweb_qr_sign_in/event_qr_v2.html |
-| web-06 | https://github.com/Beomjeong/sol | https://beomjeong.github.io/sol/ |
+## Viewer Modal (work 카드 팝업 유형)
 
----
-
-## 구현 현황 (2026-06-13 기준)
-
-### 완료된 것
-- `/index.html` — 전체 페이지 구조
-  - Header (스크롤 시 blur 전환, nav 호버 언더라인)
-  - **Nav 로고**: `assets/logo_beomjeong.svg` img 태그로 교체 (height: 26px), 링크 `#` (최상단)
-  - Hero (리뉴얼 완료 — 아래 상세)
-  - Works (탭 필터 All/Web/Video/3D/Printing + 카드 + 호버 오버레이)
-    - 오버레이 툴 표시: 텍스트 pill → **SVG 아이콘** (CSS tool icon map)
-  - About (프로필 사진 자리, 자기소개 텍스트, 스킬 목록, 툴바, 경력 4개)
-  - Contact (이메일, 인스타 + 고정 배경 효과)
-- `/css/style.css` — 전체 스타일 (반응형 포함)
-  - 스크롤바 전역 숨김: `scrollbar-width: none` + `-webkit-scrollbar: display:none`
-  - 뷰어 `overscroll-behavior: none`
-- `/js/main.js` — 애니메이션 및 인터랙션
-  - `onViewerScroll`: `scrollTop === lastScrollTop`이면 early return (중복 처리 차단)
-  - iframe load 시 내부 스크롤바 숨김 스타일 주입 + iframe 내부 scroll 이벤트 → `onViewerScroll` 연결
-
-### Hero 섹션 상세 (리뉴얼)
-- 구조: "안녕하세요! 저는" (greeting) + "[역할]" (role)
-- role 텍스트 3초마다 스크램블 전환: 콘텐츠 디자이너 → 콘텐츠 기획자 → 바이브 코더
-- `<canvas>` 그리드 배경: 마우스 근처 격자 볼록 변형 효과
-- 마우스 따라오는 blob 2개: 민트그린(`#00E5B8`) + 파랑(`#4499ff`)
-- `position: fixed` — 스크롤 시 완전 고정
-
-### 스크롤 레이어링 구조
-- hero: `position: fixed; z-index: 1`
-- works: `margin-top: 100dvh; position: relative; z-index: 2; border-radius: 20px 20px 0 0`
-- about: `position: relative; z-index: 3; border-radius: 20px 20px 0 0`
-- contact: `position: relative; z-index: 4; background: #0d0d0d` (다크 배경)
-
-### Contact 배경
-- 다크 배경 `#0d0d0d` + `<canvas id="constellationCanvas">` 내장
-- 별자리 파티클 효과: accent 컬러(`0,229,184`) 파티클 90개, 연결선 거리 140px
-- 마우스 인터랙션: 마우스 주변 파티클과 연결선 추가 표시
-
-### Works 모달 시스템
-- 카드 클릭 → 전체화면 모달 (97dvh, 아래서 슬라이드업 GSAP 애니메이션)
-- 닫기: X 버튼 / ESC / 배경 클릭
-- 모달 헤더 고정 (카테고리 · 제목 · 툴 · 기여도) + 본문 스크롤
-- `MODAL_DATA` 객체로 카드 데이터 관리
-- 카드 썸네일 비율: `4:3`
-
-### Viewer Modal — `type: 'viewer'`
-전체화면 뷰어 팝업. web-01~07 카드에 적용.
+`MODAL_DATA[id].type === 'viewer'`인 카드에 사용하는 전체화면 팝업.
 
 **구조:**
-- `#workViewer` — position:fixed fullscreen overlay (z-index: 300)
-- `#viewerImgWrap` — 스크롤 영역 (flex:1, overflow-y:auto, 스크롤바 숨김)
-- `#viewerImgStack` — 이미지 스택 (CSS transition:opacity 0.2s)
-- `#viewerBannerGrid` — 배너 2열 그리드 (position:absolute, is-active 클래스로 토글)
-- `#viewerIframe` — 외부 페이지 임베드 (position:absolute, is-active 클래스로 토글)
-- `#viewerPanel` — 하단 정보 패널 (liquid glass 디자인, collapsed 클래스로 접기/펼치기)
+- `#workViewer` — fullscreen overlay (position: fixed, z-index: 300, background: #000)
+- `#viewerImgWrap` — 이미지 스크롤 영역 (flex: 1, overflow-y: auto, isolation: isolate, background: #000, 스크롤바 숨김)
+- `#viewerImgStack` — 이미지/콘텐츠 영역 (CSS transition: opacity 0.2s)
+- `#viewerBannerGrid` — 배너 2열 그리드 (position: absolute, is-active 클래스로 표시)
+- `#viewerPanel` — 하단 정보 패널 (collapsed 클래스로 접기/펼치기, white-space: pre-line on .viewer-desc)
+- `#sfVideoOverlay` — shortform 유튜브 라이트박스 (is-open 클래스로 표시)
+- `#sfCursorTip` — shortform 커서 "Click" 툴팁 (position: fixed, visible 클래스로 표시)
 
-**뷰 타입별 동작:**
-| type | 콘텐츠 | 스크롤 감지 방법 |
-|------|--------|----------------|
-| 이미지 (default) | viewerImgStack에 img 렌더 | viewerImgWrap.scroll 이벤트 |
-| banner | viewerBannerGrid에 그리드 렌더 | viewerBannerGrid.scroll |
-| iframe | viewerIframe src 설정 | iframe load 시 내부 scroll 이벤트 직접 연결 |
+**닫기 버튼:**
+- `#viewerClose.viewer-close` — viewer overlay 닫기 버튼
+  - 다크 버전(기본): `color: rgba(255,255,255,0.8)`, `background: rgba(0,0,0,0.6)`
+  - 밝은 버전(`.is-light-bg` 또는 `.is-hanging`): `color: rgba(0,0,0,0.8)`, `background: rgba(255,255,255,0.6)`
+  - `is-light-bg` 토글 기준: `switchView`에서 `!!view.bg` (boolean true 명시 필요)
+  - `view.bg: true`인 뷰: web-03 Landing Page·Banner, web-05 Landing Page·Banner (밝은 버전)
+  - web-02, 04, 06: `bg` 없음 → 다크 버전 (iframe 컨텐츠가 어두운 게임 테마이므로 흰 글씨 적합)
+- `.modal-close` — 별도 모달 팝업 닫기 버튼, `background: rgba(255,255,255,0.3)`
 
-**하단 패널 스크롤 숨김:**
-- 패널이 `collapsed` 상태일 때만 작동
-- 스크롤 다운 & scrollTop > 40 → `scroll-hidden` 클래스 추가 → `translateY(100%)`
-- 스크롤 업 → 패널 복귀
+**View 타입 (switchView):**
+- `image` — 세로 스크롤 이미지 스택
+- `iframe` — 외부 페이지 임베드
+- `banner` — 2열 배너 그리드
+- `cardnews` — sticky 카드 스택 (세로스크롤로 카드가 위로 쌓임, `initCardnewsStack`)
+- `hanging` — 포스터 걸이대 뷰어 (세로스크롤 → 가로이동, `initHangingScroll`)
+- `shortform` — 가로 스크롤 썸네일 + YouTube 라이트박스 (`initShortformScroll`)
+- `centered: true` — centered image 타입 (view.type 없이 view.centered로 지정)
 
-**등록 카드:**
-| 카드 | 제목 | 썸네일 | 뷰 |
-|------|------|--------|-----|
-| web-01 | (diaII 관련) | ✅ | PC 5장 / MO 5장 / Banner 6장 |
-| web-02 | 이환 그랜드 오픈 기념 이벤트 | ✅ | iframe + Banner 6장 |
-| web-03 | 카카오페이 첫 결제 할인 프로모션 | ✅ | iframe + Banner 6장 |
-| web-04 | 명일방주: 앤드필드 PC방 플레이 이벤트 | ✅ | iframe + Banner 6장 |
-| web-05 | 피카플레이 QR로그인 이벤트 | ✅ | iframe + Banner 6장 |
-| web-06 | SOL: inchant 그랜드 론칭 기념 프로모션 | ✅ | iframe + Banner 6장 |
-| web-07 | 한게임 포커 이벤트 | ❌ 플레이스홀더 | iframe(URL 미등록) + Banner(미등록) |
+**hanging 타입 구조:**
+- `.hanging-scene` (sticky, full height) > `.hanging-track` (flex row, translateX로 가로이동)
+- `.hanging-set` 1개 = 끈(`.hs-string`) 2개 + 집게(`.hs-clip`, `assets/clip.png`) 2개 + 포스터(`.hs-poster`) 1개
+- CSS 변수 `--string-h`, `--poster-h`를 JS에서 scene에 인라인으로 설정
+- 첫 포스터 가운데서 시작, 마지막 포스터 가운데서 끝나는 center-start/center-end 스크롤 로직
+- **모바일 가로 스와이프 지원**: touchstart/touchmove/touchend 핸들러로 수평 스와이프 → scrollTop 변환, 방향 감지(6px 임계값) + 모멘텀(감속 0.92)
+- `killHangingST()`: scroll·touch 핸들러 및 모멘텀 rAF 제거, height 초기화, is-hanging 클래스 제거 → closeViewer onComplete에서 호출
 
----
+**shortform 타입 구조:**
+- `.shortform-scene` (sticky, dark bg) > `.shortform-track` (flex row, translateX로 가로이동)
+- `.sf-card` > `.sf-thumb-wrap` > `img.sf-thumb` + `.sf-info` (title, purpose·equipment)
+- hanging과 동일한 center-start/center-end 로직 사용
+- 썸네일 높이: JS에서 `--sf-thumb-h` CSS 변수로 scene에 설정 (`sceneH * 0.6` 현재값)
+- **중요**: `#viewerImgStack img { height: auto }` (특이도 101)가 `.sf-thumb { height: var(--sf-thumb-h) }` (특이도 10)를 덮어씀 → `#viewerImgStack.is-shortform img.sf-thumb`에 `height: var(--sf-thumb-h, 55vh)` 명시 필요 (특이도 121로 해결)
+- 모바일(≤600px): track gap 120px, padding 0 24px
+- 초기 flicker 방지: setup() 시작 시 `gsap.set(track, { opacity: 0 })`, 위치 계산 후 페이드인
+- YouTube ID 추출 정규식: `/(?:shorts\/|[?&]v=)([^&/]+)/` (Shorts URL과 watch URL 모두 지원)
+- `purpose` 필드 optional: `[item.purpose, item.equipment].filter(Boolean).join(' · ')`
 
-## ✅ 버그 해결 완료 (2026-06-13 확인)
+**centered image 타입:**
+- `view.centered: true`일 때 `#viewerImgStack`에 `is-image-center` 클래스 추가
+- flex column, center, gap 20px, padding 24px 0
+- img: `width: 1300px; max-width: 100%; height: auto`
+- `view.maxWidth` 지정 시 img에 해당 max-width 적용 (web-08, web-11: `maxWidth: '700px'`)
 
-### iframe 패널 스크롤 숨김 문제 (해결)
-- **증상**: web-02/03 로컬↔GitHub Pages 환경 간 패널 스크롤 숨김 동작 불일치
-- **원인**: 동일 오리진(GitHub Pages)에서 iframe 스크롤이 부모 `viewerImgWrap`으로 체이닝
-- **최종 수정**: iframe 전환 시 `viewerImgStack.innerHTML = ''`로 체이닝 원천 차단 + iframe load 시 내부 scroll 이벤트 직접 연결로 일원화
-- **2026-06-13**: 배포 버전에서 정상 작동 최종 확인 ✅
+**모바일 뷰어 반응성 개선 (2026-06-19):**
+- `openViewer`: overlay 즉시 표시 후 콘텐츠 빌드를 rAF로 지연 (`_pendingOpenRaf`)
+- card-link·viewerClose에 touchend 핸들러 추가 (iOS 터치 딜레이 대응, `_tapFired` 가드)
+- `_viewerClosing` 가드: 더블탭 시 `closeViewer` 중복 호출 방지 (페이지 최상단 이동 버그 수정)
+- `applyPadding`: `ScrollTrigger.refresh()` 전체 → `cardSTs` 범위 한정 refresh
 
----
+**애니메이션:**
+- 오버레이 열기/닫기: GSAP opacity fade (0.35s/0.3s)
+- 탭 전환: CSS transition opacity 0.2s + setTimeout 200ms
 
-## JS 구조
-- `initBgEffect(section, opts)` — canvas 그리드 + blob (hero에만 적용)
-- `initConstellation()` — contact 별자리 파티클 (IIFE)
-- `scrambleTo(target)` — 텍스트 스크램블 함수
-- `openViewer(id)` / `closeViewer()` — viewer 모달 열기/닫기
-- `switchView(view, animate)` — 뷰 타입(이미지/배너/iframe) 전환
-- `onViewerScroll(scrollTop)` — 패널 스크롤 숨김 핵심 함수
-- GSAP ScrollTrigger — 섹션 리빌, 툴바 애니메이션, Works 카드 reveal
+**스크롤 잠금:** iOS Safari 대응 position:fixed 패턴
 
-## Works 툴 아이콘 CSS 맵
-```css
-.tool-ps      → assets/ic_photoshop.svg
-.tool-ai      → assets/ic_illustrator.svg
-.tool-lr      → assets/ic_lightroom.svg
-.tool-ae      → assets/ic_after_effects.svg
-.tool-pr      → assets/ic_premiere_pro.svg
-.tool-blender → assets/ic_blender.svg
-.tool-figma   → assets/ic_figma.svg
-.tool-claude  → assets/ic_claude.svg
-```
-HTML: `<li class="tool-ps" title="Photoshop"></li>` 형태로 사용
+**ESC 키:** sfVideoOverlay 열려있으면 먼저 닫고, 아니면 viewer 닫음
 
-## 에셋 현황 (assets/)
-- `logo_beomjeong.svg` (255×40) — nav 로고
-- `favicon.png` — 파비콘
-- `Thumbnail_800x400.jpg`, `Thumbnail_1200x630.jpg` — OG 이미지
-- `ic_photoshop/illustrator/lightroom/after_effects/premiere_pro/blender/figma/claude.svg` — 툴 아이콘 8종
+## 알려진 해결된 버그
 
-## 남은 것
-- **web-07** 에셋/URL 준비되면 등록
-- Video/3D/Print 카테고리 모달 레이아웃 순차 작업
-- 프로필 사진 교체 (`.photo-placeholder` → `<img>`)
-- X(닫기) 버튼 가시성 개선 (IDEAS.md 02번 — 크기 확실히 키우기)
+- 모달 열고닫을 때 페이지 가로 흔들림 → `scrollbar-gutter: stable` on html
+- 배너 그리드 스크롤바로 인한 내부 흔들림 → `scrollbar-width: none`
+- PC↔MO 전환 시 스케일 artifact → GSAP 대신 CSS transition + setTimeout
+- iOS 무한 스크롤 → position:fixed 스크롤 잠금 패턴
+- iframe 패널 scroll-hidden 미동작 → contentWindow scroll 직접 바인딩
+- bg 있는 카드(white bg) 닫기 시 검정 번쩍임 → background/is-light-bg 초기화를 onComplete으로 이동
+- cardnews 마지막 카드 끝까지 안 올라옴 → 이미지 로드 후 `max(0, viewerH - lastCard.offsetHeight)` padding-bottom 계산
+- cardnews z-index > close 버튼 z-index로 닫기 버튼 클릭 안됨 → `viewer-img-wrap`에 `isolation: isolate`
+- hanging 닫을 때 이미지 확대 번쩍임 → `killHangingST()`를 closeViewer `onComplete`으로 이동
+- shortform 열릴 때 이미지 좌상단 몰림 → `gsap.set(track, { opacity: 0 })` 후 위치 계산 완료 시 페이드인
+- hanging 투명 PNG 그림자 어색함 → `filter: drop-shadow` 사용
+- **모바일 뷰어 스크롤 전혀 안됨** → `#sfVideoOverlay`에 `visibility: hidden` 병행 필요. `pointer-events: none`만으로는 iOS 터치 스크롤 라우팅 문제 해결 안 됨.
+- **web-08, web-11 모바일 뷰어 느림** → cardnews 타입 자체가 성능 문제 유발 → centered 타입으로 변경 (max-width: 700px)
+- **shortform 썸네일 크기 미적용** → `#viewerImgStack img { height: auto }` (특이도 101)가 `.sf-thumb` 규칙 덮어씀 → `#viewerImgStack.is-shortform img.sf-thumb`에 height 명시로 해결
+- **hanging 모바일 직관성 부족** → 가로 스와이프 핸들러 추가로 해결
+
+## 남은 작업 (2026-06-19 기준)
+
+- web-07 작업 완료 후 숨김 해제
+- 3d-01 작업 완료 후 숨김 해제
+- About, Contact 섹션 마무리
+
+**Why:** 세션 간 컨텍스트 유지를 위해 기록. 다른 환경에서도 접근 가능하도록 git으로 관리.
+**How to apply:** 다음 세션에서 viewer modal 관련 작업 시 이 구조와 해결된 버그 목록을 먼저 참고할 것.
 
 ## 파일 구조
-```
-portfolio2026/
-├── index.html
-├── css/style.css
-├── js/main.js
-├── assets/         ← SVG 아이콘, 로고, 썸네일 등
-├── works/          ← 작업물 이미지
-│   ├── webpromo_diaII/
-│   ├── webpromo_nte/
-│   ├── webpromo_kakaopay/
-│   ├── webpromo_endfield/
-│   ├── webpromo_qr/
-│   └── webpromo_sol/
-└── memory/         ← 프로젝트 메모 (git 포함)
-```
 
-## 작업 규칙 (필수)
-
-1. **불분명한 게 있으면 반드시 물어보고 진행** — 추측으로 작업하지 말 것
-2. **에셋 파일이 필요하면 사용자에게 요청** — 임의로 placeholder 처리하거나 생략하지 말 것
-3. **커밋/푸시는 사용자가 요청할 때만** — 코드 수정 후 자동으로 실행하지 말 것
-4. **커밋 시 `assets/`, `works/` 폴더 반드시 포함** — git status로 untracked 확인 후 스테이징
-
-**Why:** 스타트업 중심 지원이므로 트렌디하고 인터랙티브한 느낌이 중요
-**How to apply:** 과도한 장식보다 모션 퀄리티에 집중, 작업물이 주인공이 되도록 레이아웃 구성
+works 폴더 내 에셋:
+- `works/poster_resort/` — print-01 hanging
+- `works/poster_menu/` — print-02 centered
+- `works/poster_gamepromo/` — print-03 hanging
+- `works/print_newspaper/` — print-04 hanging
+- `works/print_label/` — print-05 centered
+- `works/shortform_01/` — video-01 (썸네일)
+- `works/longform_01/` — video-02 (썸네일)
+- `works/webpromo_forever/` — web-08 centered (max-width: 700px)
+- `works/card_flower/` — web-11 centered (max-width: 700px)
