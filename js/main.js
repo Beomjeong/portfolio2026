@@ -643,6 +643,21 @@ const MODAL_DATA = {
   'print-04': {
     type: 'viewer',
     cat: 'Print Design',
+    title: 'PC방 신문 지면광고',
+    sub: '신문 지면광고',
+    contribution: '디자인·기획 100%',
+    tools: ['tool-ai', 'tool-ps'],
+    desc: 'PC방 제휴사 게임 홍보용 신문 지면광고입니다.\n광고주의 니즈에 맞춰 기획, 카피라이팅 및 디자인을 담당했습니다.',
+    views: [
+      { label: '지면광고', type: 'hanging', images: [
+        'works/print_newspaper/1.png',
+        'works/print_newspaper/2.png',
+      ]},
+    ],
+  },
+  'print-05': {
+    type: 'viewer',
+    cat: 'Print Design',
     title: '수제청 라벨',
     sub: '라벨 디자인',
     contribution: '디자인·기획 100%',
@@ -1049,6 +1064,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
             <img class="hs-poster" src="${encodeURI(src)}" alt="">
           </div>`).join('')
         }</div></div>`;
+        if (view.hangingBg !== undefined) {
+          viewerImgStack.querySelector('.hanging-scene').style.background = view.hangingBg;
+        }
         viewerImgStack.style.opacity = '1';
         applyImgFadeIn();
         initHangingScroll();

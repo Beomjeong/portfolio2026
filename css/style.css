@@ -938,7 +938,8 @@ img { display: block; max-width: 100%; }
   position: relative;
   z-index: 1;
   margin-top: 0px;
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 8px 48px rgba(0, 0, 0, 0.2); */
+  filter: drop-shadow(0 8px 48px rgba(0, 0, 0, 0.2));
   border-radius: 3px;
 }
 
