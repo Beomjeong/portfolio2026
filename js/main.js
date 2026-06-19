@@ -857,6 +857,10 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let _pendingOpenRaf = null;
   let _viewerClosing = false;
   let hangingScrollHandler = null;
+  let hangingTouchStartHandler = null;
+  let hangingTouchMoveHandler = null;
+  let hangingTouchEndHandler = null;
+  let hangingMomentumRaf = null;
   let shortformScrollHandler = null;
 
   function killCardSTs() {
@@ -872,6 +876,22 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     if (hangingScrollHandler) {
       viewerImgWrap.removeEventListener('scroll', hangingScrollHandler);
       hangingScrollHandler = null;
+    }
+    if (hangingTouchStartHandler) {
+      viewerImgWrap.removeEventListener('touchstart', hangingTouchStartHandler);
+      hangingTouchStartHandler = null;
+    }
+    if (hangingTouchMoveHandler) {
+      viewerImgWrap.removeEventListener('touchmove', hangingTouchMoveHandler);
+      hangingTouchMoveHandler = null;
+    }
+    if (hangingTouchEndHandler) {
+      viewerImgWrap.removeEventListener('touchend', hangingTouchEndHandler);
+      hangingTouchEndHandler = null;
+    }
+    if (hangingMomentumRaf) {
+      cancelAnimationFrame(hangingMomentumRaf);
+      hangingMomentumRaf = null;
     }
     viewerImgStack.style.height = '';
     viewerImgStack.classList.remove('is-hanging');
@@ -928,6 +948,46 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
           gsap.set(track, { x });
         };
         viewerImgWrap.addEventListener('scroll', hangingScrollHandler, { passive: true });
+
+        // 모바일: 가로 스와이프 → scrollTop 변환
+        let _tx0 = 0, _ty0 = 0, _ts0 = 0, _dir = null, _lastTx = 0, _lastTime = 0, _vel = 0;
+
+        hangingTouchStartHandler = e => {
+          if (hangingMomentumRaf) { cancelAnimationFrame(hangingMomentumRaf); hangingMomentumRaf = null; }
+          _tx0 = e.touches[0].clientX;
+          _ty0 = e.touches[0].clientY;
+          _ts0 = viewerImgWrap.scrollTop;
+          _lastTx = _tx0; _lastTime = Date.now(); _vel = 0; _dir = null;
+        };
+        hangingTouchMoveHandler = e => {
+          const dx = e.touches[0].clientX - _tx0;
+          const dy = e.touches[0].clientY - _ty0;
+          if (!_dir) {
+            if (Math.abs(dx) > 6 || Math.abs(dy) > 6)
+              _dir = Math.abs(dx) > Math.abs(dy) ? 'h' : 'v';
+            return;
+          }
+          if (_dir !== 'h') return;
+          e.preventDefault();
+          const now = Date.now();
+          _vel = (e.touches[0].clientX - _lastTx) / Math.max(1, now - _lastTime);
+          _lastTx = e.touches[0].clientX; _lastTime = now;
+          viewerImgWrap.scrollTop = Math.max(0, Math.min(fullSlide, _ts0 - dx));
+        };
+        hangingTouchEndHandler = () => {
+          if (_dir !== 'h') return;
+          let v = -_vel * 120;
+          const step = () => {
+            v *= 0.92;
+            if (Math.abs(v) < 0.5) { hangingMomentumRaf = null; return; }
+            viewerImgWrap.scrollTop = Math.max(0, Math.min(fullSlide, viewerImgWrap.scrollTop + v));
+            hangingMomentumRaf = requestAnimationFrame(step);
+          };
+          hangingMomentumRaf = requestAnimationFrame(step);
+        };
+        viewerImgWrap.addEventListener('touchstart', hangingTouchStartHandler, { passive: true });
+        viewerImgWrap.addEventListener('touchmove', hangingTouchMoveHandler, { passive: false });
+        viewerImgWrap.addEventListener('touchend', hangingTouchEndHandler, { passive: true });
       });
     };
 
