@@ -571,6 +571,44 @@ const MODAL_DATA = {
       ]},
     ],
   },
+  'web-10': {
+    type: 'viewer',
+    cat: 'Content Design',
+    title: '스마트스토어 파티 풍선 상세페이지',
+    sub: '상세페이지',
+    contribution: '디자인·기획·촬영 100%',
+    tools: ['tool-ai', 'tool-ps'],
+    desc: '라라포쉬 스마트스토어 파티용 풍선 제품 상세페이지입니다.\n기획부터 디자인까지 담당했습니다.',
+    views: [
+      { label: '글리터풍선', bg: '#ffffff', seamless: true, maxWidth: '800px', images: [
+        'works/smartstore_lalaposh/1.jpg',
+        'works/smartstore_lalaposh/2.jpg',
+        'works/smartstore_lalaposh/3.jpg',
+        'works/smartstore_lalaposh/4.jpg',
+        'works/smartstore_lalaposh/5.jpg',
+        'works/smartstore_lalaposh/6_op.jpg',
+        'works/smartstore_lalaposh/7_op.jpg',
+        'works/smartstore_lalaposh/8_op.jpg',
+        'works/smartstore_lalaposh/9_op.jpg',
+        'works/smartstore_lalaposh/10.jpg',
+        'works/smartstore_lalaposh/11.png',
+        'works/smartstore_lalaposh/12.png',
+        'works/smartstore_lalaposh/13.png',
+        'works/smartstore_lalaposh/14.png',
+        'works/smartstore_lalaposh/15.png',
+        'works/smartstore_lalaposh/16.jpg',
+        'works/smartstore_lalaposh/17.jpg',
+        'works/smartstore_lalaposh/18.jpg',
+        'works/smartstore_lalaposh/19.jpg',
+        'works/smartstore_lalaposh/20.jpg',
+        'works/smartstore_lalaposh/21.jpg',
+        'works/smartstore_lalaposh/22.jpg',
+        'works/smartstore_lalaposh/23.jpg',
+        'works/smartstore_lalaposh/24.jpg',
+        'works/smartstore_lalaposh/25.jpg',
+      ]},
+    ],
+  },
   'web-11': {
     type: 'viewer',
     cat: 'Content Design',
@@ -978,14 +1016,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     });
   }
 
-  function setViewerImages(images, animate, maxWidth, centered) {
+  function setViewerImages(images, animate, maxWidth, centered, seamless) {
     clearTimeout(switchTimer);
     viewerImgWrap.scrollTop = 0;
     const html = images.map((src, i) =>
       `<img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}>`
     ).join('');
     const apply = () => {
-      viewerImgStack.classList.toggle('is-image-center', !!centered);
+      viewerImgStack.classList.toggle('is-image-center',    !!centered);
+      viewerImgStack.classList.toggle('is-image-seamless',  !!seamless);
       viewerImgStack.style.maxWidth = maxWidth || '';
       viewerImgStack.style.margin   = maxWidth ? '0 auto' : '';
       viewerImgStack.innerHTML = html;
@@ -1007,6 +1046,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     killShortformST();
     viewerImgStack.classList.remove('is-cardnews');
     viewerImgStack.classList.remove('is-image-center');
+    viewerImgStack.classList.remove('is-image-seamless');
     viewerImgWrap.style.background = view.bg || '';
     viewerOverlay.classList.toggle('is-light-bg', !!view.bg);
     if (view.type === 'iframe') {
@@ -1133,7 +1173,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerIframe.src = '';
       viewerBannerGrid.classList.remove('is-active');
       viewerBannerGrid.scrollTop = 0;
-      setViewerImages(view.images, animate, view.maxWidth, view.centered);
+      setViewerImages(view.images, animate, view.maxWidth, view.centered, view.seamless);
     }
   }
 

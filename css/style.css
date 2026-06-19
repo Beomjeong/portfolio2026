@@ -865,6 +865,17 @@ img { display: block; max-width: 100%; }
   max-width: 100%;
   height: auto;
 }
+#viewerImgStack.is-image-seamless {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#viewerImgStack.is-image-seamless img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 #viewerImgStack.is-cardnews .cn-card {
   position: sticky;
   top: 0;
