@@ -1039,11 +1039,14 @@ img { display: block; max-width: 100%; }
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s ease;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0s 0.25s;
 }
 #sfVideoOverlay.is-open {
   opacity: 1;
   pointer-events: all;
+  visibility: visible;
+  transition: opacity 0.25s ease, visibility 0s 0s;
 }
 #sfVideoClose {
   position: absolute;
