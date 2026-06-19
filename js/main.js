@@ -222,9 +222,10 @@ ScrollTrigger.create({
 (function initConstellation() {
   const canvas = document.getElementById('constellationCanvas');
   const ctx    = canvas.getContext('2d');
-  const ACCENT = '0,229,184';
-  const COUNT  = 90;
-  const DIST   = 140;
+  const ACCENT    = '0,229,184';
+  const isMobile  = canvas.offsetWidth < 768;
+  const COUNT     = isMobile ? 45 : 90;
+  const DIST      = isMobile ? 90 : 140;
   const mouse  = { x: -9999, y: -9999 };
 
   function resize() {
