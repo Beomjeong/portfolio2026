@@ -479,7 +479,7 @@ const MODAL_DATA = {
     tools: ['tool-ai', 'tool-ps', 'tool-ae'],
     desc: '위례포에버의원 블로그 마케팅용 이미지카드입니다. \n원장님과 충분한 소통 후 위례포에버의원 브랜드 아이덴티티에 맞춰 기획, 카피라이팅, 디자인을 진행했습니다.',
     views: [
-      { label: '병원 소개', type: 'cardnews', images: [
+      { label: '병원 소개', centered: true, maxWidth: '700px', images: [
         'works/webpromo_forever/intro_1.jpg',
         'works/webpromo_forever/intro_2.jpg',
         'works/webpromo_forever/intro_3.jpg',
@@ -491,7 +491,7 @@ const MODAL_DATA = {
         'works/webpromo_forever/intro_9.jpg',
         'works/webpromo_forever/intro_10.jpg',
       ]},
-      { label: '시술 소개', type: 'cardnews', images: [
+      { label: '시술 소개', centered: true, maxWidth: '700px', images: [
         'works/webpromo_forever/onda_1.jpg',
         'works/webpromo_forever/onda_2.jpg',
         'works/webpromo_forever/onda_3.jpg',
@@ -618,7 +618,7 @@ const MODAL_DATA = {
     tools: ['tool-ps', 'tool-ai'],
     desc: '꽃집 뉴스레터, 자사몰 게시 등 온라인에서 홍보용으로 활용할 이미지 카드 디자인을 의뢰받아 제작하였습니다.',
     views: [
-      { label: 'Card Design', type: 'cardnews', images: [
+      { label: 'Card Design', centered: true, maxWidth: '700px', images: [
         'works/card_flower/flower-01.jpg',
         'works/card_flower/flower-02.jpg',
         'works/card_flower/flower-03.jpg',
@@ -799,19 +799,31 @@ function closeModal() {
 }
 
 document.querySelectorAll('.card-link[data-modal]').forEach(link => {
-  link.addEventListener('click', e => {
+  let _tapY = 0, _tapFired = false;
+  link.addEventListener('touchstart', e => {
+    _tapY = e.touches[0].clientY;
+  }, { passive: true });
+  link.addEventListener('touchend', e => {
+    if (Math.abs(e.changedTouches[0].clientY - _tapY) > 8) return;
     e.preventDefault();
+    _tapFired = true;
     const id = link.dataset.modal;
     const data = MODAL_DATA[id];
-    if (data && data.type === 'viewer') {
-      openViewer(id);
-    } else {
-      openModal(id);
-    }
+    if (data && data.type === 'viewer') openViewer(id);
+    else openModal(id);
+  }, { passive: false });
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    if (_tapFired) { _tapFired = false; return; }
+    const id = link.dataset.modal;
+    const data = MODAL_DATA[id];
+    if (data && data.type === 'viewer') openViewer(id);
+    else openModal(id);
   });
 });
 
 closeBtn.addEventListener('click', closeModal);
+closeBtn.addEventListener('touchend', e => { e.preventDefault(); closeModal(); }, { passive: false });
 overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal(); });
 
@@ -842,6 +854,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   let switchTimer = null;
   let lastScrollTop = 0;
   let cardSTs = [];
+  let _pendingOpenRaf = null;
+  let _viewerClosing = false;
   let hangingScrollHandler = null;
   let shortformScrollHandler = null;
 
@@ -951,7 +965,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     const applyPadding = () => {
       const deficit = viewerImgWrap.clientHeight - lastCard.offsetHeight;
       viewerImgStack.style.paddingBottom = Math.max(0, deficit) + 'px';
-      ScrollTrigger.refresh();
+      cardSTs.forEach(st => st.refresh());
     };
     const imgs = Array.from(viewerImgStack.querySelectorAll('img'));
     let remaining = imgs.filter(img => !img.complete).length;
@@ -1074,14 +1088,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
       viewerIframe.src = '';
       viewerBannerGrid.classList.remove('is-active');
       viewerImgWrap.scrollTop = 0;
-      viewerImgStack.classList.add('is-cardnews');
       const loadCards = () => {
         viewerImgStack.innerHTML = view.images.map((src, i) =>
-          `<div class="cn-card" style="z-index:${i + 1}"><img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}></div>`
+          `<div class="cn-card"><img src="${encodeURI(src)}" alt=""${i > 0 ? ' loading="lazy"' : ''}></div>`
         ).join('');
         viewerImgStack.style.opacity = '1';
         applyImgFadeIn();
-        initCardnewsStack();
+        requestAnimationFrame(() => {
+          viewerImgStack.classList.add('is-cardnews');
+          initCardnewsStack();
+        });
       };
       if (animate) {
         viewerImgStack.style.opacity = '0';
@@ -1231,37 +1247,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     const data = MODAL_DATA[id];
     if (!data || data.type !== 'viewer') return;
 
-    viewerCatEl.textContent   = data.cat;
-    viewerTitleEl.textContent = data.title;
-    viewerSubEl.textContent   = data.sub;
-    viewerContEl.textContent  = data.contribution;
-    viewerDescEl.textContent  = data.desc;
-    viewerToolsEl.innerHTML   = data.tools.map(t => `<li class="${t}"></li>`).join('');
-
-    viewerTabsEl.innerHTML = '';
-    data.views.forEach((view, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'viewer-tab' + (i === 0 ? ' active' : '');
-      btn.textContent = view.label;
-      btn.addEventListener('click', () => {
-        viewerTabsEl.querySelectorAll('.viewer-tab').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        viewerPanel.classList.remove('scroll-hidden');
-        lastScrollTop = 0;
-        switchView(view, true);
-      });
-      viewerTabsEl.appendChild(btn);
-    });
-
-    viewerPanel.classList.remove('collapsed', 'scroll-hidden');
-    lastScrollTop = 0;
-    switchView(data.views[0], false);
+    if (_pendingOpenRaf) { cancelAnimationFrame(_pendingOpenRaf); _pendingOpenRaf = null; }
+    _viewerClosing = false;
+    viewerImgWrap.style.overflowY = '';
 
     viewerOverlay.setAttribute('aria-hidden', 'false');
     viewerOverlay.classList.add('is-open');
-
     history.pushState({ popup: 'viewer' }, '');
     _popupOpen = 'viewer';
+
+    if (viewerTween) viewerTween.kill();
+    gsap.set(viewerOverlay, { opacity: 0 });
+    viewerTween = gsap.to(viewerOverlay, { opacity: 1, duration: 0.35, ease: 'power2.out' });
 
     const scrollY = window.scrollY;
     ScrollTrigger.getAll().forEach(st => st.disable(false));
@@ -1270,17 +1267,48 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     document.body.style.top = `-${scrollY}px`;
     document.body.style.width = '100%';
 
-    if (viewerTween) viewerTween.kill();
-    gsap.set(viewerOverlay, { opacity: 0 });
-    viewerTween = gsap.to(viewerOverlay, { opacity: 1, duration: 0.35, ease: 'power2.out' });
+    _pendingOpenRaf = requestAnimationFrame(() => {
+      _pendingOpenRaf = null;
+      viewerCatEl.textContent   = data.cat;
+      viewerTitleEl.textContent = data.title;
+      viewerSubEl.textContent   = data.sub;
+      viewerContEl.textContent  = data.contribution;
+      viewerDescEl.textContent  = data.desc;
+      viewerToolsEl.innerHTML   = data.tools.map(t => `<li class="${t}"></li>`).join('');
+
+      viewerTabsEl.innerHTML = '';
+      data.views.forEach((view, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'viewer-tab' + (i === 0 ? ' active' : '');
+        btn.textContent = view.label;
+        btn.addEventListener('click', () => {
+          viewerTabsEl.querySelectorAll('.viewer-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          viewerPanel.classList.remove('scroll-hidden');
+          lastScrollTop = 0;
+          switchView(view, true);
+        });
+        viewerTabsEl.appendChild(btn);
+      });
+
+      viewerPanel.classList.remove('collapsed', 'scroll-hidden');
+      lastScrollTop = 0;
+      switchView(data.views[0], false);
+    });
   }
 
   function closeViewer() {
+    if (_viewerClosing) return;
+    _viewerClosing = true;
+
+    if (_pendingOpenRaf) { cancelAnimationFrame(_pendingOpenRaf); _pendingOpenRaf = null; }
+
     if (_popupOpen === 'viewer') {
       _popupOpen = null;
       history.back();
     }
-    killCardSTs();
+    cardSTs.forEach(st => st.kill());
+    cardSTs = [];
     if (viewerTween) viewerTween.kill();
 
     const scrollY = parseInt(document.body.style.top || '0') * -1;
@@ -1289,11 +1317,17 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
     document.body.style.top = '';
     document.body.style.width = '';
     window.scrollTo({ top: scrollY, behavior: 'instant' });
-    ScrollTrigger.getAll().forEach(st => st.enable(false));
 
     viewerTween = gsap.to(viewerOverlay, {
       opacity: 0, duration: 0.3, ease: 'power2.in',
       onComplete: () => {
+        _viewerClosing = false;
+        viewerImgStack.style.paddingBottom = '';
+        viewerImgStack.querySelectorAll('.cn-card').forEach(c => {
+          gsap.set(c, { clearProps: 'scale,filter' });
+        });
+        viewerImgWrap.style.overflowY = '';
+        ScrollTrigger.getAll().forEach(st => st.enable(false));
         killHangingST();
         killShortformST();
         viewerImgWrap.style.background = '';
@@ -1309,7 +1343,20 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
   });
 
 
-  document.getElementById('viewerClose').addEventListener('click', closeViewer);
+  const viewerCloseBtn = document.getElementById('viewerClose');
+  let _closeTapFired = false;
+  viewerCloseBtn.addEventListener('touchstart', () => {
+    viewerImgWrap.style.overflowY = 'hidden';
+  }, { passive: true });
+  viewerCloseBtn.addEventListener('touchend', e => {
+    e.preventDefault();
+    _closeTapFired = true;
+    closeViewer();
+  }, { passive: false });
+  viewerCloseBtn.addEventListener('click', () => {
+    if (_closeTapFired) { _closeTapFired = false; return; }
+    closeViewer();
+  });
   document.getElementById('sfVideoClose').addEventListener('click', () => {
     sfVideoOverlay.classList.remove('is-open');
     sfVideoIframe.src = '';
