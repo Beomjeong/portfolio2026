@@ -645,9 +645,9 @@ const MODAL_DATA = {
     cat: 'Print Design',
     title: 'PC방 신문 지면광고',
     sub: '신문 지면광고',
-    contribution: '디자인·기획 100%',
+    contribution: '디자인 100%',
     tools: ['tool-ai', 'tool-ps'],
-    desc: 'PC방 제휴사 게임 홍보용 신문 지면광고입니다.\n광고주의 니즈에 맞춰 기획, 카피라이팅 및 디자인을 담당했습니다.',
+    desc: '아이러브 PC방 신문 지면광고 디자인입니다.\n자사 PC방 관리프로그램 및 서비스 홍보를 위해 제작되었습니다.',
     views: [
       { label: '지면광고', type: 'hanging', images: [
         'works/print_newspaper/1.png',
@@ -679,7 +679,7 @@ const MODAL_DATA = {
     cat: 'Print Design',
     title: 'PC방 게임 오프라인 홍보 포스터',
     sub: '프로모션 포스터',
-    contribution: '디자인·기획 100%',
+    contribution: '디자인 100%',
     tools: ['tool-ai', 'tool-ps'],
     desc: '제휴사 게임 홍보용 포스터 디자인입니다.\n광고주의 니즈를 반영하여 디자인을 진행했습니다.',
     views: [
