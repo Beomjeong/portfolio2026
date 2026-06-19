@@ -1260,7 +1260,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.cl
 
     const setup = () => {
       const sceneH   = viewerImgWrap.clientHeight;
-      const thumbH   = Math.max(160, Math.floor(sceneH * 0.56));
+      const isMobile = window.innerWidth <= 600;
+      const thumbH   = Math.floor(sceneH * (0.6));
       scene.style.height = sceneH + 'px';
       scene.style.setProperty('--sf-thumb-h', thumbH + 'px');
       gsap.set(track, { opacity: 0 });
