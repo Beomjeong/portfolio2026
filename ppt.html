@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Designer KIM BEOM JEONG - Portfolio (Print)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <style>
+    :root {
+      --accent: #00E5B8;
+      --accent-dark: #00b58f;
+      --bg: #ffffff;
+      --surface: #f7f7f7;
+      --text: #111111;
+      --text-muted: #777777;
+      --border: #e6e6e6;
+      --font-en: 'DM Sans', sans-serif;
+      --font-ko: 'Noto Sans KR', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #dcdcdc;
+      color: var(--text);
+      font-family: var(--font-en), var(--font-ko);
+    }
+
+    /* ── 화면에서만 보이는 안내 바 ── */
+    .print-bar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 14px 20px;
+      background: #111111;
+      color: #fff;
+      font-size: 14px;
+    }
+    .print-bar button {
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #06231d;
+      cursor: pointer;
+    }
+    .print-bar button:hover { background: var(--accent-dark); }
+
+    /* ── 페이지(A4) ── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 24px auto;
+      padding: 14mm 16mm;
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(0,0,0,.18);
+    }
+
+    .page-title {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10mm;
+      border-bottom: 2px solid var(--text);
+      padding-bottom: 4mm;
+    }
+    .page-title .num {
+      font-family: var(--font-en);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+    .page-title h2 {
+      font-family: var(--font-en);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── COVER ── */
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cover-top .logo { height: 22px; }
+    .cover-mid { margin-top: 40mm; }
+    .cover-mid .greeting {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 6mm;
+    }
+    .cover-mid h1 {
+      font-family: var(--font-en);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .cover-mid h1 .accent { color: var(--accent-dark); }
+    .cover-mid .tagline {
+      margin-top: 8mm;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .cover-notice {
+      margin-top: 10mm;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6mm;
+      padding: 5mm 6mm;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .cover-notice p {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .cover-notice .site-link {
+      flex-shrink: 0;
+      display: inline-block;
+      font-family: var(--font-en);
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      padding: 3mm 6mm;
+      border-radius: 999px;
+      background: var(--text);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .cover-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 12mm;
+      border-top: 1px solid var(--border);
+    }
+    .cover-bottom .role {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .cover-bottom .contact {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+    .cover-bottom .contact a { color: var(--text-muted); text-decoration: none; }
+
+    /* ── WORKS ── */
+    .works-cat-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      margin: 6mm 0 4mm;
+    }
+    .works-cat-label:first-of-type { margin-top: 0; }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5mm 4mm;
+    }
+    .work-card {
+      break-inside: avoid;
+    }
+    .work-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .work-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .work-card h3 {
+      font-size: 11.5px;
+      font-weight: 500;
+      margin-top: 2mm;
+      line-height: 1.4;
+    }
+    .work-card p {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: .5mm;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 42mm 1fr;
+      gap: 10mm;
+      margin-bottom: 10mm;
+    }
+    .about-photo {
+      width: 42mm;
+      height: 52mm;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+    .about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .about-contact {
+      margin-top: 4mm;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+    .about-contact a { color: var(--text-muted); text-decoration: none; }
+    .about-contact strong { color: var(--text); font-weight: 500; margin-right: 4px; }
+
+    .about-headline {
+      font-family: var(--font-ko);
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 5mm;
+    }
+    .about-desc {
+      font-size: 11px;
+      line-height: 1.75;
+      color: #333;
+      text-align: justify;
+    }
+    .about-desc strong { color: var(--accent-dark); font-weight: 700; }
+
+    .skills-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8mm;
+      margin-top: 7mm;
+    }
+    .skills-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 3mm;
+    }
+    .skills-list, .tools-list { list-style: none; }
+    .skills-list li {
+      font-size: 11.5px;
+      padding: 2mm 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tools-list li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6mm;
+      padding: 1.8mm 0;
+    }
+    .tool-name { font-size: 11px; white-space: nowrap; }
+    .tool-bar {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .tool-fill {
+      height: 100%;
+      background: var(--accent-dark);
+      border-radius: 2px;
+    }
+
+    /* ── CAREER ── */
+    .career-list { list-style: none; }
+    .career-item {
+      display: grid;
+      grid-template-columns: 30mm 1fr;
+      gap: 4mm;
+      padding: 4mm 0;
+      border-bottom: 1px solid var(--border);
+      break-inside: avoid;
+    }
+    .career-item:first-child { padding-top: 0; }
+    .career-period {
+      font-family: var(--font-en);
+      font-size: 10.5px;
+      color: var(--text-muted);
+      padding-top: .5mm;
+    }
+    .career-info strong { font-size: 12.5px; font-weight: 700; margin-right: 6px; }
+    .career-info > span {
+      font-size: 10.5px;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+    .career-duties {
+      list-style: none;
+      margin-top: 2mm;
+    }
+    .career-duties li {
+      position: relative;
+      padding-left: 10px;
+      font-size: 10.5px;
+      color: #333;
+      line-height: 1.65;
+      margin-bottom: 1.2mm;
+    }
+    .career-duties li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .footer-note {
+      margin-top: 10mm;
+      padding-top: 4mm;
+      border-top: 1px solid var(--border);
+      font-size: 9.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* ══════════════ PRINT ══════════════ */
+    @media print {
+      .print-bar { display: none; }
+      html, body { background: #fff; }
+      .page {
+        width: auto;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+      }
+      .page + .page { page-break-before: always; }
+      .work-card, .career-item { break-inside: avoid; }
+    }
+
+    @page {
+      size: A4;
+      margin: 14mm 16mm;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="print-bar">
+    <span>PDF 저장: 브라우저 인쇄(⌘/Ctrl+P) → 대상 "PDF로 저장"</span>
+    <button onclick="window.print()">인쇄하기</button>
+  </div>
+
+  <!-- ═══════════ PAGE 1: COVER ═══════════ -->
+  <section class="page cover">
+    <div class="cover-top">
+      <img class="logo" src="assets/logo_beomjeong.svg" alt="KIM BEOM JEONG">
+    </div>
+    <div class="cover-mid">
+      <p class="greeting">안녕하세요! 저는</p>
+      <h1><span class="accent">콘텐츠 디자이너</span><br>김범정입니다.</h1>
+      <p class="tagline">단순히 예쁘기만한 디자인보다<br>목표에 맞는 결과 도달에 집중합니다.</p>
+      <div class="cover-notice">
+        <p>본 PDF는 포트폴리오 웹페이지를 PDF로 변환한 것으로,<br>실제 작업물은 웹사이트에서 확인 부탁드립니다.</p>
+        <a class="site-link" href="https://beomjeong.github.io/portfolio2026/" target="_blank" rel="noopener">웹사이트 바로가기 →</a>
+      </div>
+    </div>
+    <div class="cover-bottom">
+      <span class="role">Content Director &amp; Designer</span>
+      <div class="contact">
+        <div><a href="mailto:hisokang@gmail.com">hisokang@gmail.com</a></div>
+        <div><a href="https://instagram.com/integral_j">@integral_j</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PAGE 2: WORKS ═══════════ -->
+  <section class="page">
+    <div class="page-title">
+      <span class="num">01</span>
+      <h2>Works</h2>
+    </div>
+
+    <p class="works-cat-label">Web Promotion</p>
+    <div class="works-grid">
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/webpromo_diaII/work_thumb_diaII.jpg" alt=""></div>
+        <h3>디아블로II 악마술사 출시기념 이벤트</h3>
+        <p>Web Promotion · 적응형 페이지 / 배너</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/webpromo_nte/work_thumb_nte.jpg" alt=""></div>
+        <h3>이환 그랜드 오픈 기념 이벤트</h3>
+        <p>Web Promotion · 반응형 페이지 / 배너</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/webpromo_kakaopay/work_thumb_kakaopay.jpg" alt=""></div>
+        <h3>카카오페이 첫 결제 할인 프로모션</h3>
+        <p>Web Promotion · 반응형 페이지 / 배너</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/webpromo_endfield/work_thumb_endfield.jpg" alt=""></div>
+        <h3>명일방주: 앤드필드 PC방 플레이 이벤트</h3>
+        <p>Web Promotion · 반응형 페이지 / 배너</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/webpromo_qr/work_thumb_qr.jpg" alt=""></div>
+        <h3>피카플레이 QR로그인 이벤트</h3>
+        <p>Web Promotion · 반응형 페이지 / 배너</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/webpromo_sol/work_thumb_sol.jpg" alt=""></div>
+        <h3>SOL: inchant 그랜드 론칭 기념 프로모션</h3>
+        <p>Web Promotion · 반응형 페이지 / 배너</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/webpromo_forever/work_thumb_forever.jpg" alt=""></div>
+        <h3>병의원 마케팅 - 위례포에버의원</h3>
+        <p>Content Design · 블로그 카드뉴스</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/blog_seoulbest/work_thumb_seoulbest.jpg" alt=""></div>
+        <h3>병의원 마케팅 - 서울베스트치과</h3>
+        <p>Content Design · 블로그용 상세페이지</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/smartstore_lalaposh/web_thumb_lalaposh.jpg" alt=""></div>
+        <h3>스마트스토어 파티 풍선 상세페이지</h3>
+        <p>Content Design · 상세페이지</p>
+      </div>
+    </div>
+
+    <p class="works-cat-label">Printing</p>
+    <div class="works-grid">
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/poster_resort/work_thumb_resortpromo.jpg" alt=""></div>
+        <h3>양양 SPA리조트 프로모션 포스터</h3>
+        <p>Print design · 포스터</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/poster_menu/work_thumb_resortmenu.jpg" alt=""></div>
+        <h3>양양 SPA리조트 F&amp;B 메뉴판</h3>
+        <p>Print design · 메뉴판</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/poster_gamepromo/work_thumb_game.jpg" alt=""></div>
+        <h3>PC방 게임 오프라인 홍보 포스터</h3>
+        <p>Print design · 포스터</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/print_newspaper/print_thumb_news.jpg" alt=""></div>
+        <h3>PC방 신문 지면광고</h3>
+        <p>Print design · 지면광고</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/print_label/web_thumb_label.jpg" alt=""></div>
+        <h3>수제청 라벨</h3>
+        <p>Print design · 라벨 디자인</p>
+      </div>
+    </div>
+
+    <p class="works-cat-label">Video</p>
+    <div class="works-grid">
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/shortform_01/shorts_thumb_rv.jpg" alt=""></div>
+        <h3>체험단 리뷰 숏폼 영상</h3>
+        <p>Video · Short Form</p>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb"><img src="works/longform_01/video_thumb_bnb.jpg" alt=""></div>
+        <h3>airbnb 숙소 PR Video</h3>
+        <p>Video · Long Form</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PAGE 3: ABOUT ═══════════ -->
+  <section class="page">
+    <div class="page-title">
+      <span class="num">02</span>
+      <h2>About</h2>
+    </div>
+
+    <div class="about-grid">
+      <div>
+        <div class="about-photo">
+          <img src="assets/profile.jpg" alt="KIM BEOM JEONG">
+        </div>
+        <div class="about-contact">
+          <div><strong>Email</strong>hisokang@gmail.com</div>
+          <div><strong>Instagram</strong>@integral_j</div>
+        </div>
+      </div>
+      <div>
+        <h3 class="about-headline">기획부터 디자인까지<br>필요한 곳에 가장 먼저 닿는 손길</h3>
+        <p class="about-desc">
+          2013년부터 여행, 의류, 리조트, 공방, 에어비앤비 등 다양한 분야에서 홍보 마케팅 및 디자인 업무를 경험해왔으며, 현재는 프로모션 상세페이지 및 홍보 배너 디자인 위주 작업을 전담하는
+          콘텐츠 디자이너의 길을 걷고 있습니다.<br>
+          제 가장 큰 강점은 기획과 설계가 가능한 디자이너로서 <strong>기획부터 디자인까지</strong> 전담할 수 있다는 것입니다.
+          또한 신기술 습득과 새로운 분야에 도전하는 것에 주저함이 없으며, 최근에는 <strong>AI툴을 적극 활용하여 자신의 업무역량의 한계를 끊임없이 확장하고 있습니다.</strong> 실제로 기존
+          콘텐츠 디자이너라는 범주에서 벗어나, Claude Code 및 Figma mcp를 활용한 웹페이지 코딩작업까지 업무범위를 넓혀 폭넓은 디자인이 가능하게 되었습니다.
+          저는 업무에 임함에 있어 <strong>가장 중요한 것은 소통</strong>이라고 생각합니다. 개인의 고집보다는 팀원 및 고객사와의 협업을 가장 중요시하며, 프로젝트의 목표에 가장 효과적으로
+          도달할 수 있는 결과물을 만드는 것을 최우선으로 생각합니다.
+          함께 일하게 된다면 유연한 바운더리와 적극적인 소통으로 즐겁고 효율적인 협업을 만들어 나갈 것을 약속드립니다.
+        </p>
+
+        <div class="skills-wrap">
+          <div>
+            <h4 class="skills-label">Skills</h4>
+            <ul class="skills-list">
+              <li>상세페이지 · 배너</li>
+              <li>기획 · 카피라이팅</li>
+              <li>인쇄 · 판촉물</li>
+              <li>영상 제작 · 편집</li>
+              <li>사진 촬영 · 편집</li>
+              <li>3D 에셋 모델링</li>
+              <li>일본어(JLPT N1)</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="skills-label">Tools</h4>
+            <ul class="tools-list">
+              <li><span class="tool-name">Photoshop</span><div class="tool-bar"><div class="tool-fill" style="width:100%"></div></div></li>
+              <li><span class="tool-name">Illustrator</span><div class="tool-bar"><div class="tool-fill" style="width:100%"></div></div></li>
+              <li><span class="tool-name">Lightroom</span><div class="tool-bar"><div class="tool-fill" style="width:90%"></div></div></li>
+              <li><span class="tool-name">Premiere Pro</span><div class="tool-bar"><div class="tool-fill" style="width:40%"></div></div></li>
+              <li><span class="tool-name">After Effects</span><div class="tool-bar"><div class="tool-fill" style="width:40%"></div></div></li>
+              <li><span class="tool-name">Figma</span><div class="tool-bar"><div class="tool-fill" style="width:70%"></div></div></li>
+              <li><span class="tool-name">Blender</span><div class="tool-bar"><div class="tool-fill" style="width:40%"></div></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PAGE 4: CAREER ═══════════ -->
+  <section class="page">
+    <div class="page-title">
+      <span class="num">03</span>
+      <h2>Career</h2>
+    </div>
+
+    <ul class="career-list">
+      <li class="career-item">
+        <span class="career-period">2026.01 — 2026.06</span>
+        <div class="career-info">
+          <strong>(주)미디어웹</strong><span>Web Designer · 프리랜서(상근직)</span>
+          <ul class="career-duties">
+            <li>이벤트페이지·배너 디자인 — 기존 통이미지 적응형이었던 페이지를 Claude Code를 활용해 반응형 페이지로 제작하였으며, AI 도입으로 기존 예상제작 기간인 7일에서 3일로 약 50%이상 단축함</li>
+            <li>신문 지면광고, X배너 등 오프라인 홍보물</li>
+          </ul>
+        </div>
+      </li>
+      <li class="career-item">
+        <span class="career-period">2023.12 — 2024.06</span>
+        <div class="career-info">
+          <strong>인트로마케팅</strong><span>Content Director · 프리랜서(상근직)</span>
+          <ul class="career-duties">
+            <li>병원 마케팅 블로그 콘텐츠 제작 — 타사와 차별화된 "상세페이지형 블로그 홍보 이미지" 도입을 통해 1달 내 신규 계약 3건 증가 및 기존 고객사(병원) 계약 연장 100% 유지</li>
+            <li>배너·상세페이지 디자인</li>
+            <li>CPA 이메일 마케팅·랜딩페이지</li>
+            <li>마케팅용 블로그 원고 작성</li>
+          </ul>
+        </div>
+      </li>
+      <li class="career-item">
+        <span class="career-period">2023.07 — 2023.10</span>
+        <div class="career-info">
+          <strong>LALAPOSH</strong><span>Content Director · 프리랜서(상근직)</span>
+          <ul class="career-duties">
+            <li>파티스타일 공방 브랜딩</li>
+            <li>스마트스토어 상세페이지 제작</li>
+            <li>에어비앤비 숙소 오픈 및 브랜딩</li>
+            <li>에어비앤비 숙소 홍보용 영상제작</li>
+          </ul>
+        </div>
+      </li>
+      <li class="career-item">
+        <span class="career-period">2023.07 — 2023.11</span>
+        <div class="career-info">
+          <strong>정군축산</strong><span>Content Director · 프리랜서</span>
+          <ul class="career-duties">
+            <li>정육점 온라인스토어 브랜딩</li>
+            <li>사진·영상 촬영 및 편집</li>
+            <li>스마트스토어 상세페이지 제작</li>
+          </ul>
+        </div>
+      </li>
+      <li class="career-item">
+        <span class="career-period">2020.03 — 2023.06</span>
+        <div class="career-info">
+          <strong>(주)더앤리조트</strong><span>Content Designer &amp; PM · 정규직</span>
+          <ul class="career-duties">
+            <li>320객실 온천리조트 오픈멤버</li>
+            <li>홍보판촉물·이벤트 배너·랜딩페이지 제작</li>
+            <li>웹·모바일 홈페이지 기획</li>
+          </ul>
+        </div>
+      </li>
+      <li class="career-item">
+        <span class="career-period">2014.01 — 2014.12</span>
+        <div class="career-info">
+          <strong>(주)바리앤유 바가지머리</strong><span>Marketer · 정규직</span>
+          <ul class="career-duties">
+            <li>여성의류쇼핑몰 SNS 이벤트 콘텐츠 제작</li>
+          </ul>
+        </div>
+      </li>
+      <li class="career-item">
+        <span class="career-period">2013.03 — 2013.12</span>
+        <div class="career-info">
+          <strong>(주)브라이트스푼</strong><span>Travel Coordinator · 정규직</span>
+          <ul class="career-duties">
+            <li>일본 시코쿠 관광 코디네이터 : 가가와현, 도쿠시마현 담당</li>
+            <li>일본 시마네현 한국 공식 블로그 운영 및 관리</li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <p class="footer-note">
+      본 포트폴리오는 Claude Code로 직접 제작하였습니다. 작업물은 각 표시된 툴을 이용하여 모두 직접 제작한 결과물이며 무단으로 도용 또는 배포할 경우 법적 조치를 취할 수 있습니다.<br>
+      © 2026 KIM BEOM JEONG. All rights reserved.
+    </p>
+  </section>
+
+</body>
+
+</html>
